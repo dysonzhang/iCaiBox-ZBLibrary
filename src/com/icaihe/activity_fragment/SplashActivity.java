@@ -1,6 +1,7 @@
 package com.icaihe.activity_fragment;
 
 import com.icaihe.R;
+import com.icaihe.application.ICHApplication;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,7 +20,14 @@ public class SplashActivity extends Activity {
 
 			@Override
 			public void run() {
-				startActivity(AboutActivity.createIntent(SplashActivity.this));
+				if (ICHApplication.getInstance().getCurrentUser() == null) {
+					// 未登录
+					startActivity(AboutActivity.createIntent(SplashActivity.this));
+				} else {
+					// 已登录
+					startActivity(AboutActivity.createIntent(SplashActivity.this));
+				}
+				
 				finish();
 			}
 		}, 500);
