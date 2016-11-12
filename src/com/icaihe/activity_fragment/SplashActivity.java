@@ -22,15 +22,15 @@ public class SplashActivity extends Activity {
 			public void run() {
 				if (ICHApplication.getInstance().getCurrentUser() == null) {
 					// 未登录
-					startActivity(AboutActivity.createIntent(SplashActivity.this));
+					startActivity(LoginActivity.createIntent(SplashActivity.this));
 				} else {
 					// 已登录
-					startActivity(AboutActivity.createIntent(SplashActivity.this));
+					startActivity(LoginActivity.createIntent(SplashActivity.this));
 				}
 				
 				finish();
 			}
-		}, 500);
+		}, 1000);
 	}
 
 	@Override

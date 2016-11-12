@@ -2,8 +2,12 @@
 <resources>
 
     <color name="edit_text">#928C7E</color>
-   
     <color name="bt_text">#A29E95</color>
+   <color name="golden">#F5D781</color>
+    <color name="golden_pressd">#C5A457</color>
+    <color name="main_bg_color">#2B271B</color>
+    <color name="tab_bg_color">#393627</color>
+    
     <color name="yellow">#F99503</color>
     <color name="gray_service">#ff626862</color>
     <color name="gray_closed">#ffCEC5AE</color>
@@ -30,7 +34,6 @@
     <color name="backColor">#2000</color>
     <color name="red_dark">#ffa34238</color>
     <color name="red_packet">#ffe90f02</color>
-    
     <color name="red_weibo">#fffa4c3d</color>
     <color name="red_weibo_pressed">#ffe64638</color>
     <color name="orange_ff">#ffff6000</color>

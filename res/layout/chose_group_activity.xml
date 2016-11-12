@@ -1,0 +1,50 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/activity_page"
+    android:background="@color/main_bg_color" >
+
+    <LinearLayout style="@style/ll_vertical_match_match" >
+
+        <RelativeLayout style="@style/topbar_bg_golden" >
+
+            <ImageView
+                style="@style/topbar_return_img"
+                android:visibility="gone" />
+
+            <TextView
+                style="@style/topbar_title"
+                android:layout_centerHorizontal="true"
+                android:text="请选择" />
+
+            <TextView
+                style="@style/topbar_right_btn"
+                android:text=""
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout style="@style/ll_vertical_match_match" >
+
+            <Button
+                android:id="@+id/bt_create_group"
+                style="@style/btn_large_golden"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="100dp"
+                android:drawableLeft="@drawable/icon_create_group"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:text="创建财盒群" />
+
+            <Button
+                android:id="@+id/bt_add_group"
+                style="@style/btn_large_golden"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:drawableLeft="@drawable/icon_add_group"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:text="加入财盒群" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

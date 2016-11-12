@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.util.Log;
 import cn.jpush.android.api.JPushInterface;
 import zuo.biao.library.base.BaseApplication;
+import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.StringUtil;
 
 /**
@@ -32,12 +33,15 @@ public class ICHApplication extends BaseApplication {
 		super.onCreate();
 		context = this;
 		
+		DataKeeper.init(context);
+		
         JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);     		// 初始化 JPush
         
 		Intent localIntent = new Intent();
 		localIntent.setClass(this, RestartService.class);
 		this.startService(localIntent);
+		
 	}
 	
 	private static User currentUser = null;

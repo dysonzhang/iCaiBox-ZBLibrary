@@ -9,12 +9,15 @@
 
     <style name="bottom_tab_ll" parent="ll_vertical_match_match">
         <item name="android:width">0dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
-    <style name="bottom_tab_iv" parent="img_btn"></style>
+    <style name="bottom_tab_iv" parent="img_btn">
+        <item name="android:padding">2dp</item>
+    </style>
 
-    <style name="bottom_tab_tv" parent="text_micro">
-        <item name="android:textColor">@color/black_white_color_selector</item>
+    <style name="bottom_tab_tv" parent="text_small">
+        <item name="android:textColor">@color/gray_golden_color_selector</item>
     </style>
 
     <style name="push_style">

@@ -71,7 +71,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="com.icaihe.activity_fragment.LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.icaihe.activity_fragment.ChoseGroupActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.icaihe.activity_fragment.CreateGroupActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.icaihe.activity_fragment.SerachGroupActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.icaihe.activity_fragment.CompleteInfoActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.icaihe.activity_fragment.MainTabActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -85,9 +109,10 @@
         <!-- http://lbsyun.baidu.com/apiconsole/key -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="wceGBlITYkavcUy1o9uNP6q1lTgyYakd" /> 
+            android:value="wceGBlITYkavcUy1o9uNP6q1lTgyYakd" />
 
-        <!--For test only 测试状态通知栏，需要打开的Activity 
+        <!--
+        For test only 测试状态通知栏，需要打开的Activity 
         <activity
             android:name="com.icaihe.jpush.TestActivity"
             android:exported="false" >
@@ -95,7 +120,8 @@
                 <action android:name="jpush.testAction" />
                 <category android:name="jpush.testCategory" />
             </intent-filter>
-        </activity>-->
+        </activity>
+        -->
 
 
         <!-- Rich push 核心功能 since 2.0.6 -->
@@ -181,7 +207,7 @@
 
         <!-- User defined.  For test only  用户自定义的广播接收器 -->
         <receiver
-            android:name="icaihe.alarm.action.MyReceiver"
+            android:name="com.icaihe.jpush.MyReceiver"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
@@ -225,6 +251,68 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="0c050a76c1daba2e2c18e313" /> <!-- </>值来自开发者平台取得的AppKey -->
+
+
+        <!-- ZBLibrary <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
+
+
+        <!-- ui <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
+
+        <activity
+            android:name="zuo.biao.library.ui.SelectPictureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/WindowCompleteAlpha"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="zuo.biao.library.ui.CutPictureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Window"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="zuo.biao.library.ui.WebViewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden|adjustResize" />
+        <activity
+            android:name="zuo.biao.library.ui.EditTextInfoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustPan|adjustUnspecified" />
+        <activity
+            android:name="zuo.biao.library.ui.ServerSettingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="zuo.biao.library.ui.TopMenuWindow"
+            android:screenOrientation="portrait"
+            android:theme="@style/Window"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="zuo.biao.library.ui.BottomMenuWindow"
+            android:screenOrientation="portrait"
+            android:theme="@style/Window"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="zuo.biao.library.ui.EditTextInfoWindow"
+            android:screenOrientation="portrait"
+            android:theme="@style/Window"
+            android:windowSoftInputMode="stateVisible|adjustResize|adjustUnspecified" />
+        <activity
+            android:name="zuo.biao.library.ui.PlacePickerWindow"
+            android:screenOrientation="portrait"
+            android:theme="@style/Window"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="zuo.biao.library.ui.DatePickerWindow"
+            android:screenOrientation="portrait"
+            android:theme="@style/Window"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="zuo.biao.library.ui.TimePickerWindow"
+            android:screenOrientation="portrait"
+            android:theme="@style/Window"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <!-- ui >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
 
     </application>
 
