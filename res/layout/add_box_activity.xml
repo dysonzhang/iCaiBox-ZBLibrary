@@ -13,7 +13,7 @@
             <TextView
                 style="@style/topbar_title"
                 android:layout_centerHorizontal="true"
-                android:text="添加财盒" />
+                android:text="创建财盒群" />
 
             <TextView
                 style="@style/topbar_right_btn"
@@ -32,8 +32,23 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edittext_bg"
                 android:drawableRight="@drawable/delete_selector"
-                android:hint="财盒网络科技"
-                android:enabled="false"
+                android:hint="企业组织名称"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                android:textColor="@color/golden"
+                android:textColorHint="@color/edit_text"
+                android:textSize="18sp" />
+
+            <com.icaihe.widget.ClearEditText
+                android:id="@+id/et_setup_man"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edittext_bg"
+                android:drawableRight="@drawable/delete_selector"
+                android:hint="创始人"
                 android:paddingLeft="10dp"
                 android:singleLine="true"
                 android:textColor="@color/golden"
@@ -45,7 +60,36 @@
                 android:layout_marginTop="20dip" >
 
                 <com.icaihe.widget.ClearEditText
-                    android:id="@+id/et_ichid"
+                    android:id="@+id/et_company_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dip"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/edittext_bg"
+                    android:drawableRight="@drawable/delete_selector"
+                    android:enabled="false"
+                    android:hint="企业组织创立日期"
+                    android:singleLine="true"
+                    android:textColor="@color/golden"
+                    android:textColorHint="@color/edit_text"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/ib_chose_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dip"
+                    android:background="@drawable/icon_chose_date" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                style="@style/ll_horizontal_match_wrap"
+                android:layout_marginTop="20dip" >
+
+                <com.icaihe.widget.ClearEditText
+                    android:id="@+id/et_company_location"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
@@ -53,7 +97,7 @@
                     android:background="@drawable/edittext_bg"
                     android:drawableRight="@drawable/delete_selector"
                     android:enabled="false"
-                    android:hint="请扫码获取财盒ID"
+                    android:hint="企业组织地址"
                     android:paddingLeft="10dp"
                     android:singleLine="true"
                     android:textColor="@color/golden"
@@ -66,59 +110,11 @@
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dip"
-                    android:background="@drawable/icon_scan_qrcode" />
+                    android:background="@drawable/icon_chose_location" />
             </RelativeLayout>
 
-            <com.icaihe.widget.ClearEditText
-                android:id="@+id/et_wifi_ssid"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="20dip"
-                android:layout_marginRight="20dip"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edittext_bg"
-                android:drawableRight="@drawable/delete_selector"
-                android:hint="WIFI SSID"
-                android:paddingLeft="10dp"
-                android:singleLine="true"
-                android:textColor="@color/golden"
-                android:textColorHint="@color/edit_text"
-                android:textSize="18sp" />
-
-            <com.icaihe.widget.ClearEditText
-                android:id="@+id/et_wifi_pwd"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="20dip"
-                android:layout_marginRight="20dip"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edittext_bg"
-                android:drawableRight="@drawable/delete_selector"
-                android:hint="WIFI密码"
-                android:paddingLeft="10dp"
-                android:singleLine="true"
-                android:textColor="@color/golden"
-                android:textColorHint="@color/edit_text"
-                android:textSize="18sp" />
-
-            <com.icaihe.widget.ClearEditText
-                android:id="@+id/et_box_name"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="20dip"
-                android:layout_marginRight="20dip"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edittext_bg"
-                android:drawableRight="@drawable/delete_selector"
-                android:hint="财盒名称"
-                android:paddingLeft="10dp"
-                android:singleLine="true"
-                android:textColor="@color/golden"
-                android:textColorHint="@color/edit_text"
-                android:textSize="18sp" />
-
             <Button
-                android:id="@+id/bt_create_box"
+                android:id="@+id/bt_create"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_get_code"
