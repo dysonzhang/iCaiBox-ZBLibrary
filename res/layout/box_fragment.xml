@@ -15,10 +15,11 @@
                 android:gravity="center" >
 
                 <TextView
-                    android:id="@+id/tv_name"
+                    android:id="@+id/tv_box_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="30dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
                     android:text="dyson"
                     android:textColor="@color/golden"
                     android:textSize="22dp" />
@@ -32,9 +33,9 @@
                     android:src="@drawable/box_bg" />
 
                 <TextView
-                    android:id="@+id/tv_phone"
+                    android:id="@+id/tv_add_time"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="30dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="5dp"
                     android:text="添加时间：2016-11-06 15:00"

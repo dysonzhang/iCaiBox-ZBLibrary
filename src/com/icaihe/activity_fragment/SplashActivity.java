@@ -6,6 +6,7 @@ import com.icaihe.application.ICHApplication;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 闪屏activity
@@ -37,6 +38,18 @@ public class SplashActivity extends Activity {
 	public void finish() {
 		super.finish();
 		overridePendingTransition(R.anim.fade, R.anim.hold);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		JPushInterface.onResume(getApplicationContext());
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		JPushInterface.onResume(getApplicationContext());
 	}
 
 }
