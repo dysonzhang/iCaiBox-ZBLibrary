@@ -8,7 +8,7 @@ import com.icaihe.application.ICHApplication;
 import zuo.biao.library.bean.Parameter;
 import zuo.biao.library.manager.HttpManager;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
-import zuo.biao.library.util.MD5Util;
+import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.SettingUtil;
 import zuo.biao.library.util.StringUtil;
 
@@ -38,20 +38,10 @@ public class HttpRequest {
 
 	/** 基础URL，这里服务器设置可切换 */
 	public static final String URL_BASE = SettingUtil.getCurrentServerAddress(ICHApplication.getInstance());
-	public static final String KEY_PAGE_NUM = "pageNum";
-
-	// 示例代码<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	// user<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	public static final String KEY_RANGE = "range";
-
 	public static final String KEY_ID = "id";
-	public static final String KEY_USER_ID = "userId";
 	public static final String KEY_CURRENT_USER_ID = "currentUserId";
-
-	public static final String KEY_NAME = "name";
-	public static final String KEY_PHONE = "phone";
 	public static final String KEY_PASSWORD = "password";
 	public static final String KEY_AUTH_CODE = "authCode";
 
@@ -60,84 +50,545 @@ public class HttpRequest {
 	public static final int SEX_FEMAIL = 2;
 	public static final int SEX_ALL = 3;
 
-	// account<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	public static final String KEY_USER_ID = "userId";
+	public static final String KEY_PHONE = "phone";
+	public static final String KEY_TYPE = "type";
+	public static final String KEY_CODE = "code";
+
+	public static final String KEY_GROUP_NAME = "groupName";
+	public static final String KEY_CREATOR_NAME = "creatorName";
+	public static final String KEY_GROUP_CREATE_TIME = "gCreateTime";
+	public static final String KEY_GROUP_ADDRESS = "groupAddress";
+	public static final String KEY_GROUP_ADDRESS_X = "addressX";
+	public static final String KEY_GROUP_ADDRESS_Y = "addressY";
+
+	public static final String KEY_GROUP_ID = "groupId";
+	public static final String KEY_USER_NAME = "userName";
+	public static final String KEY_GROUP_JOIN_DATE = "joinDate";
+
+	public static final String KEY_ICH_ID = "ichId";
+	public static final String KEY_BOX_NAME = "boxName";
+	public static final String KEY_WIFI_ID = "wifiId";
+
+	public static final String KEY_BOX_ID = "boxId";
+	public static final String KEY_KEY = "key";
+
+	public static final String KEY_BACK_TIME = "backTime";
+	public static final String KEY_REMARK = "remark";
+
+	public static final String KEY_PAGE_NO = "pageNo";
+	public static final String KEY_MESSAGE = "message";
 
 	/**
-	 * 注册
+	 * 获取短信验证码
 	 * 
 	 * @param phone
-	 * @param password
+	 * @param type
+	 *            登录的地方传1
 	 * @param listener
 	 */
-	public static void register(final String phone, final String password, final int requestCode,
+	public static final int RESULT_GET_CODE_SUCCEED = 100;
+
+	public static void getCode(final String phone, final int type, final int requestCode,
 			final OnHttpResponseListener listener) {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 		addExistParameter(paramList, KEY_PHONE, phone);
-		addExistParameter(paramList, KEY_PASSWORD, MD5Util.MD5(password));
+		addExistParameter(paramList, KEY_TYPE, type);
 
-		HttpManager.getInstance().post(paramList, URL_BASE + "user/register", requestCode, listener);
+		HttpManager.getInstance().post(paramList, URL_BASE + "initApi/sendCode", requestCode, listener);
 	}
 
 	/**
-	 * 登陆
+	 * 验证码登录
 	 * 
 	 * @param phone
-	 * @param password
+	 * @param code
 	 * @param listener
 	 */
-	public static void login(final String phone, final String password, final int requestCode,
+	public static final int RESULT_LOGN_SUCCEED = 101;
+
+	public static void login(final String phone, final String code, final int requestCode,
 			final OnHttpResponseListener listener) {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 		addExistParameter(paramList, KEY_PHONE, phone);
-		addExistParameter(paramList, KEY_PASSWORD, MD5Util.MD5(password));
+		addExistParameter(paramList, KEY_CODE, code);
 
-		HttpManager.getInstance().post(paramList, URL_BASE + "user/login", requestCode, listener);
+		HttpManager.getInstance().post(paramList, URL_BASE + "initApi/login", requestCode, listener);
 	}
 
-	// account>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	/**
+	 * 创建财盒群
+	 * 
+	 * @param groupName
+	 * @param creatorName
+	 * @param gCreateTime
+	 * @param groupAddress
+	 * @param addressX
+	 * @param addressY
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_CREATE_GROUP_SUCCEED = 102;
+
+	public static void createGroup(final String groupName, final String creatorName, final String gCreateTime,
+			final String groupAddress, final String addressX, final String addressY, final int requestCode,
+			final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_GROUP_NAME, groupName);
+		addExistParameter(paramList, KEY_CREATOR_NAME, creatorName);
+		addExistParameter(paramList, KEY_GROUP_CREATE_TIME, gCreateTime);
+		addExistParameter(paramList, KEY_GROUP_ADDRESS, groupAddress);
+		addExistParameter(paramList, KEY_GROUP_ADDRESS_X, addressX);
+		addExistParameter(paramList, KEY_GROUP_ADDRESS_Y, addressY);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/group/add" + "?token=" + token, requestCode,
+				listener);
+	}
 
 	/**
-	 * 获取用户
+	 * 搜索财盒群
 	 * 
+	 * @param groupName
+	 * @param listener
+	 */
+	public static final int RESULT_SEARCH_GROUP_SUCCEED = 103;
+
+	public static void searchGroup(final String groupName, final int requestCode,
+			final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+		addExistParameter(paramList, KEY_GROUP_NAME, groupName);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/group/list" + "?token=" + token, requestCode,
+				listener);
+	}
+
+	/**
+	 * 加入财盒群
+	 * 
+	 * @param groupId
+	 * @param userName
+	 * @param joinDate
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_JOIN_GROUP_SUCCEED = 104;
+
+	public static void joinGroup(long groupId, final String userName, final String joinDate, final int requestCode,
+			final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_GROUP_ID, groupId);
+		addExistParameter(paramList, KEY_USER_NAME, userName);
+		addExistParameter(paramList, KEY_GROUP_JOIN_DATE, joinDate);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/group/join" + "?token=" + token, requestCode,
+				listener);
+	}
+
+	/**
+	 * 添加财盒
+	 * 
+	 * @param ichId
+	 * @param boxName
+	 * @param groupId
+	 * @param wifiId
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_ADD_BOX_SUCCEED = 105;
+
+	public static void addBox(final String ichId, final String boxName, final long groupId, final String wifiId,
+			final int requestCode, final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_ICH_ID, ichId);
+		addExistParameter(paramList, KEY_BOX_NAME, boxName);
+		addExistParameter(paramList, KEY_GROUP_ID, groupId);
+		addExistParameter(paramList, KEY_WIFI_ID, wifiId);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/box/add" + "?token=" + token, requestCode,
+				listener);
+	}
+
+	/**
+	 * 修改财盒wifiid
+	 * 
+	 * @param boxId
+	 * @param wifiId
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_UPDATE_BOX_WIFI_ID_SUCCEED = 106;
+
+	public static void updateBoxWifiId(final long boxId, final String wifiId, final int requestCode,
+			final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_BOX_ID, boxId);
+		addExistParameter(paramList, KEY_WIFI_ID, wifiId);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/box/wifiId/update" + "?token=" + token,
+				requestCode, listener);
+	}
+
+	/**
+	 * 查看财盒
+	 * 
+	 * @param boxId
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_QUERY_BOX_DETAIL_SUCCEED = 107;
+
+	public static void queryBoxDetail(final long boxId, final int requestCode, final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_BOX_ID, boxId);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/box/detail" + "?token=" + token, requestCode,
+				listener);
+	}
+
+	/**
+	 * 开箱
+	 * 
+	 * @param boxId
+	 * @param type
+	 *            此处type=1
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_OPEN_BOX_SUCCEED = 108;
+
+	public static void openBox(final long boxId, final int type, final int requestCode,
+			final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_TYPE, type);
+		addExistParameter(paramList, KEY_BOX_ID, boxId);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxRecord/add" + "?token=" + token, requestCode,
+				listener);
+	}
+
+	/**
+	 * 开箱握手协议
+	 * 
+	 * @param ichId
+	 * @param key
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_OPEN_BOX_AGREEMENT_SUCCEED = 109;
+
+	public static void openBoxAgreement(final String ichId, final String key, final int requestCode,
+			final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_KEY, key);
+		addExistParameter(paramList, KEY_ICH_ID, ichId);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/agreement/openBox/detail" + "?token=" + token,
+				requestCode, listener);
+	}
+
+	/**
+	 * 外借
+	 * 
+	 * @param type
+	 *            此处type=4
+	 * @param boxId
+	 * @param backTime
+	 * @param remark
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_BORROW_BOX_SUCCEED = 110;
+
+	public static void borrowBox(final String type, final long boxId, final String backTime, final String remark,
+			final int requestCode, final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_TYPE, type);
+		addExistParameter(paramList, KEY_BOX_ID, boxId);
+		addExistParameter(paramList, KEY_BACK_TIME, backTime);
+		addExistParameter(paramList, KEY_REMARK, remark);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxRecord/add" + "?token=" + token, requestCode,
+				listener);
+	}
+
+	/**
+	 * 即借即还
+	 * 
+	 * @param type
+	 *            此处type=5
+	 * @param boxId
+	 * @param remark
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_BORROW_RETURN_BOX_SUCCEED = 111;
+
+	public static void borrowReturnBox(final String type, final long boxId, final String remark, final int requestCode,
+			final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_TYPE, type);
+		addExistParameter(paramList, KEY_BOX_ID, boxId);
+		addExistParameter(paramList, KEY_REMARK, remark);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxRecord/add" + "?token=" + token, requestCode,
+				listener);
+	}
+
+	/**
+	 * 授权管理列表
+	 * 
+	 * @param groupId
+	 * @param boxId
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_GET_BOX_AUTH_LIST_SUCCEED = 112;
+
+	public static void getBoxAuthorityList(final long groupId, final long boxId, final int requestCode,
+			final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_GROUP_ID, groupId);
+		addExistParameter(paramList, KEY_BOX_ID, boxId);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/groupMember/authority/list" + "?token=" + token,
+				requestCode, listener);
+	}
+
+	/**
+	 * 通讯录列表
+	 * 
+	 * @param groupId
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_GET_GROUP_MENBER_SUCCEED = 113;
+
+	public static void getGroupMemberList(final long groupId, final int requestCode,
+			final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_GROUP_ID, groupId);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/groupMember/list" + "?token=" + token, requestCode,
+				listener);
+	}
+
+	/**
+	 * 授权开箱
+	 * 
+	 * @param boxId
 	 * @param userId
 	 * @param requestCode
 	 * @param listener
 	 */
-	public static void getUser(long userId, final int requestCode, final OnHttpResponseListener listener) {
+	public static final int RESULT_AUTH_USER_SUCCEED = 114;
+
+	public static void authUser(final long boxId, final long userId, final int requestCode,
+			final OnHttpResponseListener listener) {
 		List<Parameter> paramList = new ArrayList<Parameter>();
-		addExistParameter(paramList, KEY_CURRENT_USER_ID, ICHApplication.getInstance().getCurrentUserId());
+
+		addExistParameter(paramList, KEY_BOX_ID, boxId);
 		addExistParameter(paramList, KEY_USER_ID, userId);
 
-		HttpManager.getInstance().post(paramList, URL_BASE + "user/information", requestCode, listener);
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxUser/add" + "?token=" + token, requestCode,
+				listener);
 	}
 
-	public static final int RESULT_GET_USER_SUCCEED = 100;
-
-	public static final int USER_LIST_RANGE_ALL = 0;
-	public static final int USER_LIST_RANGE_RECOMMEND = 1;
-
 	/**
-	 * 获取用户列表
+	 * 取消授权开箱
 	 * 
-	 * @param range
-	 * @param pageNum
+	 * @param boxId
+	 * @param userId
 	 * @param requestCode
 	 * @param listener
 	 */
-	public static void getUserList(int range, int pageNum, final int requestCode,
+	public static final int RESULT_CANCEL_AUTH_USER_SUCCEED = 115;
+
+	public static void cancelAuthUser(final long boxId, final long userId, final int requestCode,
 			final OnHttpResponseListener listener) {
 		List<Parameter> paramList = new ArrayList<Parameter>();
-		addExistParameter(paramList, KEY_CURRENT_USER_ID, ICHApplication.getInstance().getCurrentUserId());
-		addExistParameter(paramList, KEY_RANGE, range);
-		addExistParameter(paramList, KEY_PAGE_NUM, pageNum);
 
-		HttpManager.getInstance().get(paramList, URL_BASE + "user/list", requestCode, listener);
+		addExistParameter(paramList, KEY_BOX_ID, boxId);
+		addExistParameter(paramList, KEY_USER_ID, userId);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxUser/delete" + "?token=" + token, requestCode,
+				listener);
 	}
 
-	public static final int RESULT_GET_USER_LIST_SUCCEED = 110;
+	/**
+	 * 获取用户个人信息
+	 * 
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_GET_USER_DETAIL_SUCCEED = 116;
 
-	// user>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	public static void getUserDetail(final int requestCode, final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
 
-	// 示例代码>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/user/detail" + "?token=" + token, requestCode,
+				listener);
+	}
+
+	/**
+	 * 获取用户动态
+	 * 
+	 * @param pageNo
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_GET_USER_NOTICE_SUCCEED = 117;
+
+	public static void getUserNotice(final int pageNo, final int requestCode, final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_PAGE_NO, pageNo);
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/boxRecord/userRecord/list" + "?token=" + token,
+				requestCode, listener);
+	}
+
+	/**
+	 * 查看开箱记录
+	 * 
+	 * @param boxId
+	 * @param userName
+	 * @param pageNo
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_QUERY_OPEN_RECORDS_SUCCEED = 118;
+
+	public static void queryOpenRecords(final int boxId, final String userName, final int pageNo, final int requestCode,
+			final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_BOX_ID, boxId);
+		addExistParameter(paramList, KEY_USER_NAME, userName);
+		addExistParameter(paramList, KEY_PAGE_NO, pageNo);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxRecord/openRecord/list" + "?token=" + token,
+				requestCode, listener);
+	}
+
+	/**
+	 * 查看报警记录（包含保险箱报警和保险箱电量不足）
+	 * 
+	 * @param boxId
+	 * @param pageNo
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_QUERY_ALARM_RECORDS_SUCCEED = 119;
+
+	public static void queryAlarmRecords(final int boxId, final int pageNo, final int requestCode,
+			final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_BOX_ID, boxId);
+		addExistParameter(paramList, KEY_PAGE_NO, pageNo);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxRecord/alarmRecord/list" + "?token=" + token,
+				requestCode, listener);
+	}
+
+	/**
+	 * 查看群成员（我的财盒）
+	 * 
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_GROUP_USER_SUCCEED = 120;
+
+	public static void getGroupUsers(final int requestCode, final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/groupMember/group/list" + "?token=" + token,
+				requestCode, listener);
+	}
+
+	/**
+	 * 意见反馈
+	 * 
+	 * @param message
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_FEEDBACK_SUCCEED = 121;
+
+	public static void feedback(final String message, final int requestCode, final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		addExistParameter(paramList, KEY_MESSAGE, message);
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/message/add" + "?token=" + token, requestCode,
+				listener);
+	}
+
+	/**
+	 * 未读报警记录条数清零
+	 * 
+	 * @param requestCode
+	 * @param listener
+	 */
+	public static final int RESULT_RESET_ALARM_NUM_SUCCEED = 122;
+
+	public static void resetAlarmNum(final int requestCode, final OnHttpResponseListener listener) {
+		List<Parameter> paramList = new ArrayList<Parameter>();
+
+		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+
+		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/alarmNum/delete" + "?token=" + token, requestCode,
+				listener);
+	}
 
 }

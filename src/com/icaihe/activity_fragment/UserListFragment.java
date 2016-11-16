@@ -63,10 +63,7 @@ implements OnItemClickListener, CacheCallBack<User> {
 
 	
 
-	public static final int RANGE_ALL = HttpRequest.USER_LIST_RANGE_ALL;
-	public static final int RANGE_RECOMMEND = HttpRequest.USER_LIST_RANGE_RECOMMEND;
-
-	private int range = RANGE_ALL;
+	private int range = 0;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
@@ -146,7 +143,7 @@ implements OnItemClickListener, CacheCallBack<User> {
 
 			@Override
 			public void run() {
-				onHttpRequestSuccess(0, HttpRequest.RESULT_GET_USER_LIST_SUCCEED
+				onHttpRequestSuccess(0, 100,""
 						, Json.toJSONString(TestUtil.getUserList(pageNum, getCachePageSize())));
 			}
 		}, 1000);

@@ -60,20 +60,18 @@ public class NoticeListFragment extends BaseFragment implements OnClickListener 
 		bundle.putLong(ARGUMENT_USER_ID, userId);
 		bundle.putString(ARGUMENT_USER_NAME, userName);
 
-		bundle.putInt(ARGUMENT_RANGE, HttpRequest.USER_LIST_RANGE_ALL);
+		bundle.putInt(ARGUMENT_RANGE, 0);
 
 		fragment.setArguments(bundle);
 		return fragment;
 	}
 
 	// 与Activity通信>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	public static final int RANGE_ALL = HttpRequest.USER_LIST_RANGE_ALL;
-	public static final int RANGE_RECOMMEND = HttpRequest.USER_LIST_RANGE_RECOMMEND;
+ 
 
 	private long userId = 0;
 	private String userName = null;
-	private int range = RANGE_ALL;
+	private int range = 0;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

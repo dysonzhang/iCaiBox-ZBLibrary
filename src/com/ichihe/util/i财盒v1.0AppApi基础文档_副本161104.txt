@@ -1,0 +1,590 @@
+
+1.0版本功能：注册，登录，初始化WiFi设置保险箱，绑定保险箱，蓝牙开箱，报警记录，开箱记录 。
+主要概括为三大模块：用户模块+保险箱模块+通知记录模块
+
+一， 说明
+    (1)返回json数据格式说明：
+       state：状态    //（1：SUCCESS，0：ERROR，-1：UnLogin，-2：NoPermission）
+       data：数据
+       message：说明
+
+       例如：{"state":1,"message":"获取数据成功！","data":1466667342278}
+
+    (2)请求说明：所有的请求需要带上token参数。
+      （登录除外，token通过登录‘/initApi/login’来获取,目前有效期7天，过期或者服务器重启后需重新获取token）
+       例如：http://localhost:8080/icaihe/api/v1/demo?token=94a625089169d175e852545808f9c2e9
+
+   （3）一些类型说明：
+       》消息推送：使用极光推送
+       根据 useId 来标识；
+       推送额外参数 actiontype 说明:
+       1：WIFI配置成功
+       2：报警
+       3：电量不足
+       4：开箱
+       5：关箱
+       6: 外借到期归还提醒
+
+       》用户动态中对应type说明：
+       1：开箱
+       2：授权开箱
+       3：取消授权
+       4：外借
+       5：即借即还
+       6：外借到期归还提醒
+       7：保险箱报警；
+       8：保险箱电量不足
+
+二，接口
+
+http://localhost:8080/icaihe/
+http://114.55.109.235:8080/icaihe/
+
+---短信验证码
+/initApi/sendCode
+[POST]
+phone
+type （登录的地方传入  1 ）
+
+返回：
+{
+  "state": 1,
+  "message": "发送验证码成功！",
+  "data": null
+}
+
+
+---登录（说明：测试阶段，登录的地方验证码可以随意输入便可登录）
+/initApi/login
+[POST]
+phone
+code
+
+返回值：
+{
+  "state": 1,
+  "message": "登录成功！",
+  "data": {
+    "token": "A6kK5pVdU42UMZF65uInSrflS6r1sTRO7pKDaiaiXSs%3D",
+    "userId": 1,             //用户id
+    "name": "lhy",           //用户姓名
+    "phone": "15266668767",  //用户手机号
+    "alarmNum": "0",         //表示未读报警记录数目
+    "isNewUser": false,      //如果是群组创建人或者群组成员，此处为false；如果没有创建群组，也没有加入某个群组，此处为true。
+    "groupId": 11,           //所在群组ID
+    "companyName": "xxx",    //所在群组名称
+    "boxId": 12,             //具有开箱权限的财盒的ID
+    "wifiId": "TP-link113"   //财盒绑定的无线网的名称
+  }
+}
+或者：
+{
+  "state": 0,
+  "message": "验证码错误！",
+  "data": null
+}
+
+
+
+---创建财盒群
+/api/v1/group/add
+[POST]
+groupName
+creatorName
+gCreateTime
+groupAddress
+addressX
+addressY
+
+返回值：
+{
+  "state": 1,
+  "message": "恭喜！创建财盒群成功！",
+  "data": {
+    "id": 12,
+    "groupName": "ceshihaha",
+    "groupCreateTime": "2016-08-26",
+    "groupAddress": "shanghai",
+    "addressX": "11.008",
+    "addressY": "66.987",
+    "createTime": "2016-08-26 10:45:52",
+    "updateTime": null
+  }
+}
+
+
+---搜索财盒群
+/api/v1/group/list
+[POST]
+groupName
+
+返回：
+{
+  "state": 1,
+  "message": "Success",
+  "data": [
+    {
+      "groupId": 3,
+      "groupName": "ceshi"
+    },
+    {
+      "groupId": 4,
+      "groupName": "ceshi2"
+    },
+    {
+      "groupId": 12,
+      "groupName": "ceshihaha"
+    }
+  ]
+}
+
+
+---加入财盒群
+/api/v1/group/join
+[POST]
+groupId
+userName
+joinDate
+
+返回：
+{
+  "state": 1,
+  "message": "加入财盒群成功！",
+  "data": null
+}
+
+---添加财盒
+/api/v1/box/add
+[POST]
+ichId
+boxName
+groupId
+wifiId
+
+返回：
+{
+  "state": 1,
+  "message": "创建成功！",
+  "data": {
+    "boxId": 3
+  }
+}
+
+---修改财盒wifiid
+/api/v1/box/wifiId/update
+[POST]
+boxId
+wifiId
+
+返回：
+{
+  "state": 1,
+  "message": "修改成功！",
+  "data": null
+}
+
+---查看财盒
+/api/v1/box/detail
+[GET]
+boxId
+
+
+返回：
+{
+  "state": 1,
+  "message": "Success",
+  "data": {
+    "id": 3,
+    "ichId": "ICH0000001212",
+    "ibeaconId": "ibbbhhh00022112",
+    "wifiId": "w3122231",
+    "wifiPassword": "p23231242",
+    "boxName": "ceshiCH12hei",
+    "groupId": 12,
+    "createTime": "2016-08-26 11:01:36",
+    "updateTime": null
+  }
+}
+
+
+---开箱
+/api/v1/boxRecord/add
+[POST]
+type （此处type=1）
+boxId
+
+返回;
+{
+  "state": 1,
+  "message": "Success",
+  "data": null
+}
+
+
+---开箱握手协议
+/api/v1/agreement/openBox/detail
+[POST]
+ichId
+key
+
+返回：
+{
+  "state": 1,
+  "message": "Success",
+  "data": "e619"
+}
+
+---外借
+/api/v1/boxRecord/add
+[POST]
+type （此处type=4）
+boxId
+backTime
+remark
+
+返回;
+{
+  "state": 1,
+  "message": "Success",
+  "data": null
+}
+
+
+
+---即借即还
+/api/v1/boxRecord/add
+[POST]
+type （此处type=5）
+boxId
+remark
+
+返回;
+{
+  "state": 1,
+  "message": "Success",
+  "data": null
+}
+
+
+
+---授权管理列表
+/api/v1/groupMember/authority/list
+[GET]
+groupId
+boxId
+
+返回:
+{
+  "state": 1,
+  "message": "Success",
+  "data": [
+    {
+      "joinDate": null,
+      "authority": 1,        // ‘0’表示未授权开箱，‘1’表示已经授权开箱
+      "userId": 1,
+      "userName": "lhy",
+      "userPhone": "15211111111",
+      "userHead": "1myg.jpg"
+    },
+    {
+      "joinDate": "2016-08-21",
+      "authority": 0,        // ‘0’表示未授权开箱，‘1’表示已经授权开箱
+      "userId": 4,
+      "userName": "xiaobai",
+      "userPhone": "15500000000",
+      "userHead": null
+    }
+  ]
+}
+
+
+
+---通讯录
+/api/v1/groupMember/list
+[GET]
+groupId
+
+{
+  "state": 1,
+  "message": "Success",
+  "data": [
+    {
+      "joinDate": null,
+      "userId": 1,
+      "userName": "lhy",
+      "userPhone": "15200000000",
+      "userHead": "1myg.jpg"
+    },
+    {
+      "joinDate": "2016-08-21",
+      "userId": 4,
+      "userName": "xiaobai",
+      "userPhone": "15500000000",
+      "userHead": null
+    }
+  ]
+}
+
+
+
+---授权开箱
+/api/v1/boxUser/add
+[POST]
+boxId
+userId
+
+返回：
+{
+  "state": 1,
+  "message": "授权成功！",
+  "data": null
+}
+
+---取消开箱授权
+/api/v1/boxUser/delete
+[POST]
+boxId
+userId
+
+返回：
+{
+  "state": 1,
+  "message": "取消成功！",
+  "data": null
+}
+
+
+---获取用户个人信息
+/api/v1/user/detail
+[GET]
+
+返回:
+{
+  "state": 1,
+  "message": "Success",
+  "data": {
+    "userId": 1,
+    "name": "lhy",
+    "phone": "15277665533",
+    "alarmNum": "0",
+    "isNewUser": false,
+    "groupId": 11,
+    "companyName": "xxx",
+    "boxId": 12,
+    "wifiId": "TP-link113"
+  }
+}
+
+---用户动态
+/api/v1/boxRecord/userRecord/list
+[GET]
+pageNo
+
+返回:
+{
+  "state": 1,
+  "message": "Success",
+  "data": {
+    "pageNo": 1,
+    "pageSize": 20,
+    "totalRecord": 6,
+    "totalPage": 1,
+    "results": [
+      {
+        "createTime": "2016-08-26 11:21:47",
+        "remark": "取消授权给：xiaobai",
+        "userName": "lhy",
+        "type": 3,
+        "userHead": "1myg.jpg"
+      },
+      {
+        "createTime": "2016-08-26 11:21:20",
+        "remark": "授权给：xiaobai",
+        "userName": "lhy",
+        "type": 2,
+        "userHead": "1myg.jpg"
+      },
+      {
+        "createTime": "2016-08-26 11:11:07",
+        "remark": "开了财盒",
+        "userName": "lhy",
+        "type": 1,
+        "userHead": "1myg.jpg"
+      },
+      {
+        "createTime": "2016-08-26 11:06:31",
+        "remark": "即借即还",
+        "userName": "lhy",
+        "type": 5,
+        "userHead": "1myg.jpg"
+      },
+      {
+        "createTime": "2016-08-26 11:06:27",
+        "remark": "外借:公章和注册文档",
+        "userName": "lhy",
+        "type": 4,
+        "userHead": "1myg.jpg"
+      },
+      {
+        "createTime": "2016-08-26 11:06:03",
+        "remark": "开了财盒",
+        "userName": "lhy",
+        "type": 1,
+        "userHead": "1myg.jpg"
+      }
+    ]
+  }
+}
+
+
+---查看开箱记录
+/api/v1/boxRecord/openRecord/list
+[POST]
+boxId
+userName
+pageNo
+
+返回:
+{
+  "state": 1,
+  "message": "Success",
+  "data": {
+    "pageNo": 1,
+    "pageSize": 20,
+    "totalRecord": 4,
+    "totalPage": 1,
+    "results": [
+      {
+        "createTime": "2016-08-26 11:11:07",
+        "remark": "开了财盒",
+        "userName": "lhy",
+        "type": 1,
+        "userHead": "1myg.jpg"
+      },
+      {
+        "createTime": "2016-08-26 11:06:31",
+        "remark": "即借即还",
+        "userName": "lhy",
+        "type": 5,
+        "userHead": "1myg.jpg"
+      },
+      {
+        "createTime": "2016-08-26 11:06:27",
+        "remark": "外借",
+        "userName": "lhy",
+        "type": 4,
+        "userHead": "1myg.jpg"
+      },
+      {
+        "createTime": "2016-08-26 11:06:03",
+        "remark": "开了财盒",
+        "userName": "lhy",
+        "type": 1,
+        "userHead": "1myg.jpg"
+      }
+    ]
+  }
+}
+
+
+---查看报警记录（包含保险箱报警和保险箱电量不足）
+/api/v1/boxRecord/alarmRecord/list
+[POST]
+boxId
+pageNo
+
+返回:
+{
+  "state": 1,
+  "message": "Success",
+  "data": {
+    "pageNo": 1,
+    "pageSize": 20,
+    "totalRecord": 2,
+    "totalPage": 1,
+    "results": [
+      {
+        "createTime": "2016-08-26 11:11:07",
+        "remark": "保险箱报警",
+        "type": 7
+      },
+      {
+        "createTime": "2016-08-26 11:06:31",
+        "remark": "保险箱电量不足",
+        "type": 8
+      }
+    ]
+  }
+}
+
+
+---查看群成员（我的财盒）
+/api/v1/groupMember/group/list
+[GET]
+
+返回data包含:
+{
+  "state": 1,
+  "message": "Success",
+  "data": {
+    "groupId": 12,
+    "groupName": "ceshihaha",
+    "createTime": "2016-08-26 10:45:52",
+    "memberList": [
+      {
+        "joinDate": null,
+        "userId": 1,
+        "userName": "lhy",
+        "type": 0,
+        "userHead": "1myg.jpg"
+      },
+      {
+        "joinDate": "2016-08-21",
+        "userId": 4,
+        "userName": "xiaobai",
+        "type": 1,
+        "userHead": null
+      }
+    ]
+  }
+}
+
+
+---意见反馈
+/api/v1/message/add
+[POST]
+message
+
+返回：
+{
+  "state": 1,
+  "message": "反馈成功！",
+  "data": null
+}
+
+
+---未读报警记录条数清零
+/api/v1/alarmNum/delete
+[POST]
+
+返回：
+{
+  "state": 1,
+  "message": "清零成功！",
+  "data": null
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

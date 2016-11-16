@@ -71,7 +71,7 @@ public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDr
 		case 1:
 			return BoxFragment.createInstance();
 		case 2:
-			return ContractFragment.createInstance(ContractFragment.RANGE_ALL);
+			return ContractFragment.createInstance(0);
 		case 3:
 			return MySettingFragment.createInstance();
 		default:
