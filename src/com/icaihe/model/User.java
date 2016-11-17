@@ -9,16 +9,16 @@ public class User extends BaseModel {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final int SEX_MAIL = 0;
-	public static final int SEX_FEMAIL = 1;
-	public static final int SEX_UNKNOW = 2;
-
-	int sex;
-	String head; // 头像
-	String name; // 名字
-	String phone; // 电话号码
-	String tag; // 标签
-	boolean starred; // 星标
+	String token; // "A6kK5pVdU42UMZF65uInSrflS6r1sTRO7pKDaiaiXSs%3D"
+	// long id; // 用户id
+	String name; // 用户姓名
+	String phone; // 用户手机号
+	String alarmNum;// 表示未读报警记录数目
+	boolean isNewUser; // 如果是群组创建人或者群组成员，此处为false；如果没有创建群组，也没有加入某个群组，此处为true。
+	long groupId;// 所在群组ID
+	String companyName;// 所在群组名称
+	long boxId;// 具有开箱权限的财盒的ID
+	String wifiId;// 财盒绑定的无线网的名称
 
 	/**
 	 * 默认构造方法，JSON等解析时必须要有
@@ -40,20 +40,12 @@ public class User extends BaseModel {
 		this.name = name;
 	}
 
-	public int getSex() {
-		return sex;
+	public String getToken() {
+		return token;
 	}
 
-	public void setSex(int sex) {
-		this.sex = sex;
-	}
-
-	public String getHead() {
-		return head;
-	}
-
-	public void setHead(String head) {
-		this.head = head;
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public String getName() {
@@ -72,20 +64,52 @@ public class User extends BaseModel {
 		this.phone = phone;
 	}
 
-	public String getTag() {
-		return tag;
+	public String getAlarmNum() {
+		return alarmNum;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
+	public void setAlarmNum(String alarmNum) {
+		this.alarmNum = alarmNum;
 	}
 
-	public boolean getStarred() {
-		return starred;
+	public boolean isNewUser() {
+		return isNewUser;
 	}
 
-	public void setStarred(boolean starred) {
-		this.starred = starred;
+	public void setNewUser(boolean isNewUser) {
+		this.isNewUser = isNewUser;
+	}
+
+	public long getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public long getBoxId() {
+		return boxId;
+	}
+
+	public void setBoxId(long boxId) {
+		this.boxId = boxId;
+	}
+
+	public String getWifiId() {
+		return wifiId;
+	}
+
+	public void setWifiId(String wifiId) {
+		this.wifiId = wifiId;
 	}
 
 	@Override

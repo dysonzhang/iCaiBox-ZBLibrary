@@ -2,6 +2,9 @@ package com.icaihe.activity_fragment;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.icaihe.R;
 import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;
@@ -18,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
+import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.ui.DatePickerWindow;
 import zuo.biao.library.util.SettingUtil;
 import zuo.biao.library.util.TimeUtil;
@@ -30,9 +34,7 @@ import zuo.biao.library.util.TimeUtil;
  */
 public class CreateGroupActivity extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	private static final String TAG = "CreateGroupActivity";
-
-	// 启动方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	// private static final String TAG = "CreateGroupActivity";
 
 	/**
 	 * 启动这个Activity的Intent
@@ -44,8 +46,6 @@ public class CreateGroupActivity extends BaseActivity
 		return new Intent(context, CreateGroupActivity.class);
 	}
 
-	// 启动方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 	@Override
 	public Activity getActivity() {
 		return this;
@@ -56,18 +56,14 @@ public class CreateGroupActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.create_group_activity, this);
 
-		// 功能归类分区方法，必须调用<<<<<<<<<<
 		initView();
 		initData();
 		initEvent();
-		// 功能归类分区方法，必须调用>>>>>>>>>>
 
 		if (SettingUtil.isOnTestMode) {
 			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
 		}
 	}
-
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	private ImageView iv_back;
 
@@ -100,32 +96,19 @@ public class CreateGroupActivity extends BaseActivity
 		bt_create = (Button) findViewById(R.id.bt_create);
 	}
 
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 	@Override
 	public void initData() {
 		super.initData();
-
 	}
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
 	public void initEvent() {
 		super.initEvent();
-
 		iv_back.setOnClickListener(this);
-
 		ib_chose_date.setOnClickListener(this);
 		ib_chose_location.setOnClickListener(this);
 		bt_create.setOnClickListener(this);
 	}
-
-	// 系统自带监听方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
 	public void onDragBottom(boolean rightToLeft) {
@@ -148,7 +131,7 @@ public class CreateGroupActivity extends BaseActivity
 			// overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
 			// enterAnim = exitAnim = R.anim.null_anim;
 			// finish();
-			et_company_location.setText("打开地图选择地址");
+			et_company_location.setText("地图上选择的地址");
 			break;
 		case R.id.bt_create:
 			create();
@@ -158,15 +141,57 @@ public class CreateGroupActivity extends BaseActivity
 		}
 	}
 
+	/**
+	 * TODO 创建财盒群
+	 */
 	private void create() {
 		if (checkFormValid()) {
-			startActivity(CompleteInfoActivity.createIntent(context));
-			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
+
+			String groupName = et_company_name.getText().toString();
+			String creatorName = et_setup_man.getText().toString();
+			String gCreateTime = et_company_date.getText().toString();
+			String groupAddress = et_company_location.getText().toString();
+			String addressX = "121.1111";
+			String addressY = "32.2222";
+
+			HttpRequest.createGroup(groupName, creatorName, gCreateTime, groupAddress, addressX, addressY,
+					HttpRequest.RESULT_CREATE_GROUP_SUCCEED, new OnHttpResponseListener() {
+
+						@Override
+						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
+								String resultData) {
+							showShortToast("创建成功！");
+
+							JSONObject jsonObject;
+							long groupId = 0L;
+							String groupName = "";
+							try {
+								jsonObject = new JSONObject(resultData);
+								groupId = jsonObject.getLong("groupId");
+								groupName = jsonObject.getString("groupName");
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+
+							Intent intent = CompleteInfoActivity.createIntent(context);
+							intent.putExtra("groupId", groupId);
+							intent.putExtra("groupName", groupName);
+							startActivity(intent);
+							overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
+							finish();
+						}
+
+						@Override
+						public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+							showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
+									+ resultMessage);
+						}
+					});
 		}
 	}
 
 	/**
-	 * 验证表单
+	 * TODO 创建财盒群表单验证
 	 * 
 	 * @return
 	 */
@@ -200,7 +225,6 @@ public class CreateGroupActivity extends BaseActivity
 	}
 
 	private int[] selectedDate = new int[] { 1971, 0, 1 };
-	// 系统自带监听方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	private static final int REQUEST_TO_DATE_PICKER = 1;
 
 	@Override
@@ -220,7 +244,6 @@ public class CreateGroupActivity extends BaseActivity
 						selectedDate[i] = list.get(i);
 					}
 					showShortToast("选择的日期为" + selectedDate[0] + "-" + (selectedDate[1] + 1) + "-" + selectedDate[2]);
-
 					et_company_date.setText(selectedDate[0] + "-" + (selectedDate[1] + 1) + "-" + selectedDate[2]);
 				}
 			}
@@ -229,10 +252,4 @@ public class CreateGroupActivity extends BaseActivity
 			break;
 		}
 	}
-	// Event事件区(只要存在事件监听代码就是)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// 内部类,尽量少用<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	// 内部类,尽量少用>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 }

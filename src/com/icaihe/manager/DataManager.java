@@ -33,7 +33,7 @@ public class DataManager {
 	// 用户
 	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-	private String PATH_USER = "PATH_USER";
+	private String PATH_USER = "PATH_ICAIBOX_USER";
 
 	public final String KEY_USER = "KEY_USER";
 	public final String KEY_USER_ID = "KEY_USER_ID";
@@ -110,7 +110,7 @@ public class DataManager {
 	}
 
 	/**
-	 * 获取用户
+	 * 获取某一个userId的用户
 	 * 
 	 * @param context
 	 * @param userId
@@ -152,7 +152,7 @@ public class DataManager {
 	}
 
 	/**
-	 * 保存用户
+	 * 保存用户 保存任意一个用户的信息
 	 * 
 	 * @param context
 	 * @param user
@@ -168,7 +168,7 @@ public class DataManager {
 	 * @param sdf
 	 * @param user
 	 */
-	public void saveUser(SharedPreferences sdf, User user) {
+	private void saveUser(SharedPreferences sdf, User user) {
 		if (sdf == null || user == null) {
 			Log.e(TAG, "saveUser sdf == null || user == null >> return;");
 			return;

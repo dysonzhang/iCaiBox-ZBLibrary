@@ -21,6 +21,7 @@
         android:textColor="@color/black" />
 
     <Button
+        android:id="@+id/bt_add_group"
         style="@style/btn_small_golden"
         android:layout_marginRight="10dp"
         android:text="加 入" />

@@ -19,8 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
+import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.ui.DatePickerWindow;
 import zuo.biao.library.util.SettingUtil;
+import zuo.biao.library.util.StringUtil;
 import zuo.biao.library.util.TimeUtil;
 
 /**
@@ -31,9 +33,7 @@ import zuo.biao.library.util.TimeUtil;
  */
 public class CompleteInfoActivity extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	private static final String TAG = "CompleteInfoActivity";
-
-	// 启动方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	// private static final String TAG = "CompleteInfoActivity";
 
 	/**
 	 * 启动这个Activity的Intent
@@ -45,8 +45,6 @@ public class CompleteInfoActivity extends BaseActivity
 		return new Intent(context, CompleteInfoActivity.class);
 	}
 
-	// 启动方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 	@Override
 	public Activity getActivity() {
 		return this;
@@ -57,18 +55,14 @@ public class CompleteInfoActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.complete_info_activity, this);
 
-		// 功能归类分区方法，必须调用<<<<<<<<<<
 		initView();
 		initData();
 		initEvent();
-		// 功能归类分区方法，必须调用>>>>>>>>>>
 
 		if (SettingUtil.isOnTestMode) {
 			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
 		}
 	}
-
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	private ImageView iv_back;
 	private TextView tv_add_group_tips;
@@ -76,6 +70,9 @@ public class CompleteInfoActivity extends BaseActivity
 	private ClearEditText et_add_date;
 	private ImageButton ib_chose_date;
 	private Button bt_add_group;
+
+	private long groupId = 0L;
+	private String groupName = "";
 
 	@Override
 	public void initView() {
@@ -89,30 +86,24 @@ public class CompleteInfoActivity extends BaseActivity
 		bt_add_group = (Button) findViewById(R.id.bt_add_group);
 	}
 
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 	@Override
 	public void initData() {
 		super.initData();
 
+		Intent intent = getIntent();
+		groupId = intent.getLongExtra("groupId", 0L);
+		groupName = intent.getStringExtra("groupName");
+
+		tv_add_group_tips.setText("您已选择加入" + groupName + "财盒群，请完善个人信息。");
 	}
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
 	public void initEvent() {
 		super.initEvent();
-
 		iv_back.setOnClickListener(this);
 		ib_chose_date.setOnClickListener(this);
 		bt_add_group.setOnClickListener(this);
 	}
-
-	// 系统自带监听方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
 	public void onDragBottom(boolean rightToLeft) {
@@ -130,24 +121,75 @@ public class CompleteInfoActivity extends BaseActivity
 					TimeUtil.getDateDetail(System.currentTimeMillis())), REQUEST_TO_DATE_PICKER, false);
 			break;
 		case R.id.bt_add_group:
-			startActivity(MainTabActivity.createIntent(context).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
-
-			enterAnim = exitAnim = R.anim.null_anim;
-			finish();
-			
+			addGroup();
 			break;
 		default:
 			break;
 		}
 	}
 
+	/**
+	 * 表单验证
+	 * 
+	 * @return
+	 */
+	private boolean checkForm() {
+		if (!StringUtil.isNotEmpty(et_user_name.getText().toString().trim(), false)) {
+			showShortToast("请填写您的昵称");
+			return false;
+		}
+		if (!StringUtil.isNotEmpty(et_add_date.getText().toString().trim(), false)) {
+			showShortToast("请选择你加入的日期");
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * TODO 加入财盒群
+	 */
+	private void addGroup() {
+
+		if (groupId == 0L) {
+			showShortToast("加入失败，财盒群ID为0！");
+			return;
+		}
+		if (checkForm()) {
+			String userName = et_user_name.getText().toString();
+			String joinDate = et_add_date.getText().toString();
+
+			HttpRequest.joinGroup(groupId, userName, joinDate, HttpRequest.RESULT_JOIN_GROUP_SUCCEED,
+					new OnHttpResponseListener() {
+
+						@Override
+						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
+								String resultData) {
+							showShortToast("加入成功！");
+
+							startActivity(
+									MainTabActivity.createIntent(context).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+							overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
+
+							enterAnim = exitAnim = R.anim.null_anim;
+							finish();
+						}
+
+						@Override
+						public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+							showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
+									+ resultMessage);
+						}
+					});
+		}
+
+	}
+
 	@Override
 	public boolean onLongClick(View v) {
 		return false;
 	}
+
 	private int[] selectedDate = new int[] { 1971, 0, 1 };
-	// 系统自带监听方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	private static final int REQUEST_TO_DATE_PICKER = 1;
 
 	@Override
@@ -167,7 +209,6 @@ public class CompleteInfoActivity extends BaseActivity
 						selectedDate[i] = list.get(i);
 					}
 					showShortToast("选择的日期为" + selectedDate[0] + "-" + (selectedDate[1] + 1) + "-" + selectedDate[2]);
-
 					et_add_date.setText(selectedDate[0] + "-" + (selectedDate[1] + 1) + "-" + selectedDate[2]);
 				}
 			}
@@ -176,12 +217,4 @@ public class CompleteInfoActivity extends BaseActivity
 			break;
 		}
 	}
-	// 系统自带监听方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// 内部类,尽量少用<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	// 内部类,尽量少用>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 }

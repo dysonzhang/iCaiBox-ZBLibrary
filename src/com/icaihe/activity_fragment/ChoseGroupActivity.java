@@ -21,10 +21,9 @@ import zuo.biao.library.util.SettingUtil;
  * @author dyson
  *
  */
-public class ChoseGroupActivity extends BaseActivity implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	private static final String TAG = "ChoseGroupActivity";
-
-	// 启动方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+public class ChoseGroupActivity extends BaseActivity
+		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
+	// private static final String TAG = "ChoseGroupActivity";
 
 	/**
 	 * 启动这个Activity的Intent
@@ -36,8 +35,6 @@ public class ChoseGroupActivity extends BaseActivity implements OnClickListener,
 		return new Intent(context, ChoseGroupActivity.class);
 	}
 
-	// 启动方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 	@Override
 	public Activity getActivity() {
 		return this;
@@ -48,18 +45,14 @@ public class ChoseGroupActivity extends BaseActivity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chose_group_activity, this);
 
-		// 功能归类分区方法，必须调用<<<<<<<<<<
 		initView();
 		initData();
 		initEvent();
-		// 功能归类分区方法，必须调用>>>>>>>>>>
 
 		if (SettingUtil.isOnTestMode) {
 			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
 		}
 	}
-
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	private Button bt_create_group;
 	private Button bt_add_group;
@@ -67,34 +60,21 @@ public class ChoseGroupActivity extends BaseActivity implements OnClickListener,
 	@Override
 	public void initView() {
 		super.initView();
-
 		bt_create_group = (Button) findViewById(R.id.bt_create_group);
 		bt_add_group = (Button) findViewById(R.id.bt_add_group);
 	}
 
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 	@Override
 	public void initData() {
 		super.initData();
-
 	}
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
 	public void initEvent() {
 		super.initEvent();
-		
 		bt_create_group.setOnClickListener(this);
 		bt_add_group.setOnClickListener(this);
 	}
-
-	// 系统自带监听方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
 	public void onDragBottom(boolean rightToLeft) {
@@ -104,7 +84,6 @@ public class ChoseGroupActivity extends BaseActivity implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-
 		case R.id.bt_create_group:
 			startActivity(CreateGroupActivity.createIntent(context));
 			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
@@ -122,13 +101,4 @@ public class ChoseGroupActivity extends BaseActivity implements OnClickListener,
 	public boolean onLongClick(View v) {
 		return false;
 	}
-
-	// 系统自带监听方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// 内部类,尽量少用<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	// 内部类,尽量少用>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 }

@@ -1,6 +1,14 @@
 package com.icaihe.activity_fragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.icaihe.R;
+import com.icaihe.adapter.GroupAdapter;
+import com.icaihe.model.Group;
 import com.ichihe.util.HttpRequest;
 
 import android.app.Activity;
@@ -21,6 +29,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
+import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.SettingUtil;
 
 /**
@@ -31,10 +40,7 @@ import zuo.biao.library.util.SettingUtil;
  */
 public class SerachGroupActivity extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	private static final String TAG = "SerachGroupActivity";
-
-	// 启动方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
+	// private static final String TAG = "SerachGroupActivity";
 	/**
 	 * 启动这个Activity的Intent
 	 * 
@@ -44,8 +50,6 @@ public class SerachGroupActivity extends BaseActivity
 	public static Intent createIntent(Context context) {
 		return new Intent(context, SerachGroupActivity.class);
 	}
-
-	// 启动方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 	@Override
 	public Activity getActivity() {
@@ -57,23 +61,20 @@ public class SerachGroupActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.serach_group_activity, this);
 
-		// 功能归类分区方法，必须调用<<<<<<<<<<
 		initView();
 		initData();
 		initEvent();
-		// 功能归类分区方法，必须调用>>>>>>>>>>
 
 		if (SettingUtil.isOnTestMode) {
 			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
 		}
 	}
 
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 	private ImageView iv_back;
 	private EditText et_search;
 	private Button bt_clear_search;
 	private ListView lv_groups;
+	private GroupAdapter groupAdapter;
 
 	@Override
 	public void initView() {
@@ -85,19 +86,10 @@ public class SerachGroupActivity extends BaseActivity
 		lv_groups = (ListView) findViewById(R.id.lv_groups);
 	}
 
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 	@Override
 	public void initData() {
 		super.initData();
-
 	}
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
 	public void initEvent() {
@@ -132,13 +124,13 @@ public class SerachGroupActivity extends BaseActivity
 				if (keyCode == KeyEvent.KEYCODE_ENTER) {
 					Toast.makeText(SerachGroupActivity.this, et_search.getText().toString().trim(), Toast.LENGTH_LONG)
 							.show();
+					String groupName = et_search.getText().toString().trim();
+					search(groupName);
 				}
 				return false;
 			}
 		});
 	}
-
-	// 系统自带监听方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
 	public void onDragBottom(boolean rightToLeft) {
@@ -162,17 +154,62 @@ public class SerachGroupActivity extends BaseActivity
 		}
 	}
 
+	/**
+	 * 将返回的json财盒群数据转成List
+	 * 
+	 * @param resultData
+	 * @return
+	 */
+	private List<Group> getGroupListByJsonData(String resultData) {
+		List<Group> groupList = new ArrayList<Group>();
+		JSONArray jsonArray;
+		try {
+			jsonArray = new JSONArray(resultData);
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jObject = jsonArray.getJSONObject(i);
+				String groupName = jObject.getString("groupName");
+				long groupId = jObject.getLong("groupId");
+				Group group = new Group();
+				group.setId(groupId);
+				group.setGroupName(groupName);
+				groupList.add(group);
+			}
+			return groupList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			showShortToast("搜索财盒群数据转换异常！");
+			return null;
+		}
+	}
+
+	/**
+	 * TODO 搜索财盒群
+	 * 
+	 * @param groupName
+	 */
+	private void search(String groupName) {
+		HttpRequest.searchGroup(groupName, HttpRequest.RESULT_SEARCH_GROUP_SUCCEED, new OnHttpResponseListener() {
+
+			@Override
+			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
+				List<Group> groupList = getGroupListByJsonData(resultData);
+				if (groupList != null) {
+					groupAdapter = new GroupAdapter(context, groupList);
+					lv_groups.setAdapter(groupAdapter);
+					groupAdapter.notifyDataSetChanged();
+				}
+			}
+
+			@Override
+			public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+				showShortToast(
+						"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
+			}
+		});
+	}
+
 	@Override
 	public boolean onLongClick(View v) {
 		return false;
 	}
-
-	// 系统自带监听方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// 内部类,尽量少用<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	// 内部类,尽量少用>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 }

@@ -1,6 +1,11 @@
 package com.icaihe.activity_fragment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.icaihe.R;
+import com.icaihe.application.ICHApplication;
+import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;
 
@@ -13,9 +18,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
-import zblibrary.demo.DEMO.DemoMainActivity;
 import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
+import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.SettingUtil;
 
@@ -26,9 +31,7 @@ import zuo.biao.library.util.SettingUtil;
  *
  */
 public class LoginActivity extends BaseActivity implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	private static final String TAG = "LoginActivity";
-
-	// 启动方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	// private static final String TAG = "LoginActivity";
 
 	/**
 	 * 启动这个Activity的Intent
@@ -40,8 +43,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 		return new Intent(context, LoginActivity.class);
 	}
 
-	// 启动方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 	@Override
 	public Activity getActivity() {
 		return this;
@@ -52,18 +53,15 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_activity, this);
 
-		// 功能归类分区方法，必须调用<<<<<<<<<<
 		initView();
 		initData();
 		initEvent();
-		// 功能归类分区方法，必须调用>>>>>>>>>>
 
 		if (SettingUtil.isOnTestMode) {
 			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
 		}
 	}
 
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	private TimeCount time = new TimeCount(60000, 1000);
 
 	private ClearEditText et_phone;
@@ -74,38 +72,25 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 	@Override
 	public void initView() {
 		super.initView();
-
 		et_phone = (ClearEditText) findViewById(R.id.et_phone);
 		et_code = (ClearEditText) findViewById(R.id.et_code);
 		bt_get_code = (Button) findViewById(R.id.bt_get_code);
 		bt_login = (Button) findViewById(R.id.bt_login);
 	}
 
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 	@Override
 	public void initData() {
 		super.initData();
-
 	}
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
 	public void initEvent() {
 		super.initEvent();
-
 		et_phone.setOnClickListener(this);
 		et_code.setOnClickListener(this);
 		bt_get_code.setOnClickListener(this);
 		bt_login.setOnClickListener(this);
 	}
-
-	// 系统自带监听方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
 	public void onDragBottom(boolean rightToLeft) {
@@ -127,20 +112,36 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 	}
 
 	/**
-	 * @Description: TODO 获取手机验证码
+	 * TODO 获取手机验证码
 	 */
 	private void getCode() {
 		if (checkPhone()) {
-			// 发送请求获取手机验证码
 			// 开始计时
 			time.start();
 
-			// 收到验证码后存储手机号码
-			DataKeeper.save(DataKeeper.getRootSharedPreferences(), "verifyPhone", et_phone.getText().toString());
+			final String phone = et_phone.getText().toString();
+			HttpRequest.getCode(phone, 1, HttpRequest.RESULT_GET_CODE_SUCCEED, new OnHttpResponseListener() {
 
+				@Override
+				public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
+						String resultData) {
+					// 收到验证码后存储手机号码
+					DataKeeper.save(DataKeeper.getRootSharedPreferences(), "verifyPhone", phone);
+					showShortToast("验证码已发送，请稍候...");
+				}
+
+				@Override
+				public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+					showShortToast(
+							"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
+				}
+			});
 		}
 	}
 
+	/**
+	 * TODO 手机号和验证码登录
+	 */
 	private void login() {
 		if (checkFormValid()) {
 			// 验证存储的手机号是否为空
@@ -149,14 +150,84 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 				return;
 			}
 
-			// 发送请求登录
-			startActivity(ChoseGroupActivity.createIntent(context));
-			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
+			final String phone = et_phone.getText().toString();
+			final String code = et_code.getText().toString();
+
+			HttpRequest.login(phone, code, HttpRequest.RESULT_LOGN_SUCCEED, new OnHttpResponseListener() {
+
+				@Override
+				public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
+						String resultData) {
+
+					showShortToast("登录成功！");
+
+					// 保存用户信息
+					User user = saveUserInfo(resultData);
+
+					// 跳转到选择财盒群组界面
+					if (user.isNewUser()) {
+						startActivity(ChoseGroupActivity.createIntent(context));
+						overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
+					} else {
+						startActivity(MainTabActivity.createIntent(context));
+						overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
+					}
+					finish();
+				}
+
+				@Override
+				public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+					showShortToast(
+							"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
+				}
+			});
 		}
 	}
 
 	/**
-	 * 验证手机号
+	 * TODO 保存用户登录信息
+	 * 
+	 * @param resultData
+	 * @return
+	 */
+	private User saveUserInfo(String resultData) {
+
+		JSONObject jsonObject;
+		try {
+			jsonObject = new JSONObject(resultData);
+
+			String token = jsonObject.getString("token");
+			int userId = jsonObject.getInt("userId");
+			String name = jsonObject.getString("name");
+			String phone = jsonObject.getString("phone");
+			String alarmNum = jsonObject.getString("alarmNum");
+			boolean isNewUser = jsonObject.getBoolean("isNewUser");
+			int groupId = jsonObject.getInt("groupId");
+			String companyName = jsonObject.getString("companyName");
+			int boxId = jsonObject.getInt("boxId");
+			String wifiId = jsonObject.getString("wifiId");
+
+			User user = new User();
+			user.setId(userId);
+			user.setToken(token);
+			user.setBoxId(boxId);
+			user.setCompanyName(companyName);
+			user.setGroupId(groupId);
+			user.setName(name);
+			user.setNewUser(isNewUser);
+			user.setPhone(phone);
+			user.setAlarmNum(alarmNum);
+			user.setWifiId(wifiId);
+			ICHApplication.getInstance().saveCurrentUser(user);
+			return user;
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * TODO 检测手机号
 	 * 
 	 * @return
 	 */
@@ -177,7 +248,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 	}
 
 	/**
-	 * 验证手机号和验证码
+	 * TODO 检测手机号和验证码
 	 * 
 	 * @return
 	 */
@@ -215,13 +286,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 		return false;
 	}
 
-	// 系统自带监听方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// 内部类,尽量少用<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	/**
-	 * 获取验证码倒计时
+	 * TODO 获取验证码倒计时
 	 * 
 	 * @author dyson
 	 *
@@ -243,6 +309,4 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 			bt_get_code.setText(millisUntilFinished / 1000 + "秒后可重发");
 		}
 	}
-	// 内部类,尽量少用>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 }
