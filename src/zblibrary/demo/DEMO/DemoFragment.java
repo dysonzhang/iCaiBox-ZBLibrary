@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.icaihe.R;
-import com.icaihe.activity_fragment.UserActivity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -209,7 +208,7 @@ public class DemoFragment extends BaseFragment {
 		lvDemoFragment.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				toActivity(UserActivity.createIntent(context, id));
+//				toActivity(UserActivity.createIntent(context, id));
 			}
 		});
 		//示例代码>>>>>>>>>>>>>>>>>>>

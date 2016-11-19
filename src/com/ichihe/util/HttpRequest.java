@@ -9,7 +9,6 @@ import com.icaihe.manager.DataManager;
 import zuo.biao.library.bean.Parameter;
 import zuo.biao.library.manager.HttpManager;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
-import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.SettingUtil;
 import zuo.biao.library.util.StringUtil;
 
@@ -19,7 +18,6 @@ import zuo.biao.library.util.StringUtil;
  * @use 添加请求方法xxxMethod >> HttpRequest.xxxMethod(...)
  */
 public class HttpRequest {
-	// private static final String TAG = "HttpRequest";
 
 	/**
 	 * 添加请求参数，value为空时不添加

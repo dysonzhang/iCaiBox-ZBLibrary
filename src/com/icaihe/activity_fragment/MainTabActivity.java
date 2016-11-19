@@ -1,6 +1,7 @@
 package com.icaihe.activity_fragment;
 
 import com.icaihe.R;
+import com.icaihe.application.ICHApplication;
 
 import android.app.Activity;
 import android.content.Context;
@@ -65,7 +66,12 @@ public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDr
 	protected Fragment getFragment(int position) {
 		switch (position) {
 		case 1:
-			return BoxFragment.createInstance();
+			long boxId = ICHApplication.getInstance().getCurrentUser().getBoxId();
+			if (boxId == 0) {
+				return AddBoxFragment.createInstance();
+			} else {
+				return BoxFragment.createInstance();
+			}
 		case 2:
 			return ContractFragment.createInstance();
 		case 3:

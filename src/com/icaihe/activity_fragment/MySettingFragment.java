@@ -1,6 +1,7 @@
 package com.icaihe.activity_fragment;
 
 import com.icaihe.R;
+import com.icaihe.application.ICHApplication;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,9 +21,7 @@ import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
  * @use new MySettingFragment(),详细使用见.DemoFragmentActivity(initData方法内)
  */
 public class MySettingFragment extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
-	private static final String TAG = "MySettingFragment";
-
-	// 与Activity通信<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	// private static final String TAG = "MySettingFragment";
 
 	/**
 	 * 创建一个Fragment实例
@@ -33,25 +32,17 @@ public class MySettingFragment extends BaseFragment implements OnClickListener, 
 		return new MySettingFragment();
 	}
 
-	// 与Activity通信>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		// 类相关初始化，必须使用<<<<<<<<<<<<<<<<
 		super.onCreateView(inflater, container, savedInstanceState);
 		setContentView(R.layout.my_setting_fragment);
-		// 类相关初始化，必须使用>>>>>>>>>>>>>>>>
 
-		// 功能归类分区方法，必须调用<<<<<<<<<<
 		initView();
 		initData();
 		initEvent();
-		// 功能归类分区方法，必须调用>>>>>>>>>>
 
 		return view;
 	}
-
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	private ImageView iv_setting_head;
 	private TextView tv_user_name;
@@ -59,33 +50,27 @@ public class MySettingFragment extends BaseFragment implements OnClickListener, 
 	private Button bt_logout;
 
 	@Override
-	public void initView() {// 必须调用
+	public void initView() {
 		iv_setting_head = (ImageView) findViewById(R.id.iv_setting_head);
 		tv_user_name = (TextView) findViewById(R.id.tv_user_name);
 		tv_user_phone = (TextView) findViewById(R.id.tv_user_phone);
 		bt_logout = (Button) findViewById(R.id.bt_logout);
 	}
 
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 	@Override
-	public void initData() {// 必须调用
-		tv_user_name.setText("dysonzhang");
-		tv_user_phone.setText("18666668888");
+	public void initData() {
+		String name = ICHApplication.getInstance().getCurrentUser().getName();
+		String phone = ICHApplication.getInstance().getCurrentUser().getPhone();
+		tv_user_name.setText(name + "");
+		tv_user_phone.setText(phone + "");
 	}
 
 	private void logout() {
 		context.finish();
 	}
 
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 	@Override
-	public void initEvent() {// 必须调用
+	public void initEvent() {
 
 		iv_setting_head.setOnClickListener(this);
 		bt_logout.setOnClickListener(this);
@@ -134,17 +119,4 @@ public class MySettingFragment extends BaseFragment implements OnClickListener, 
 			break;
 		}
 	}
-
-	// 类相关监听<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	// 类相关监听>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// 系统自带监听方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// 内部类,尽量少用<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	// 内部类,尽量少用>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 }

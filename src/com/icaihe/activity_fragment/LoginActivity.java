@@ -5,7 +5,6 @@ import org.json.JSONObject;
 
 import com.icaihe.R;
 import com.icaihe.application.ICHApplication;
-import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;
@@ -32,14 +31,7 @@ import zuo.biao.library.util.SettingUtil;
  *
  */
 public class LoginActivity extends BaseActivity implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	// private static final String TAG = "LoginActivity";
 
-	/**
-	 * 启动这个Activity的Intent
-	 * 
-	 * @param context
-	 * @return
-	 */
 	public static Intent createIntent(Context context) {
 		return new Intent(context, LoginActivity.class);
 	}

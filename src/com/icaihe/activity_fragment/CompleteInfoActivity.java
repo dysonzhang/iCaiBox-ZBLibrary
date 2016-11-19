@@ -2,8 +2,11 @@ package com.icaihe.activity_fragment;
 
 import java.util.ArrayList;
 
+import com.alibaba.fastjson.JSON;
 import com.icaihe.R;
+import com.icaihe.application.ICHApplication;
 import com.icaihe.manager.DataManager;
+import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;
 
@@ -167,10 +170,16 @@ public class CompleteInfoActivity extends BaseActivity
 								String resultData) {
 							showShortToast("加入成功！");
 
+							// 更新用户信息
+							User user = ICHApplication.getInstance().getCurrentUser();
+							user.setCompanyName(groupName);
+							user.setGroupId(groupId);
+							ICHApplication.getInstance().saveCurrentUser(user);
+
+							//跳转至主页
 							startActivity(
 									MainTabActivity.createIntent(context).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 							overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
-
 							enterAnim = exitAnim = R.anim.null_anim;
 							finish();
 						}

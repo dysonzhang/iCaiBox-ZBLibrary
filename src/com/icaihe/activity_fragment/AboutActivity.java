@@ -206,11 +206,11 @@ public class AboutActivity extends BaseActivity implements OnClickListener, OnLo
 			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
 			break;
 		case R.id.llAboutBottomTabActivity:
-			startActivity(BottomTabActivity.createIntent(context).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
-
-			enterAnim = exitAnim = R.anim.null_anim;
-			finish();
+//			startActivity(BottomTabActivity.createIntent(context).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+//			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
+//
+//			enterAnim = exitAnim = R.anim.null_anim;
+//			finish();
 			break;
 
 		case R.id.llAboutShare:

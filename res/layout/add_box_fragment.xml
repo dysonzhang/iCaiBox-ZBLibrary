@@ -8,7 +8,8 @@
 
             <ImageView
                 android:id="@+id/iv_back"
-                style="@style/topbar_return_img" />
+                style="@style/topbar_return_img" 
+                android:visibility="gone"/>
 
             <TextView
                 style="@style/topbar_title"

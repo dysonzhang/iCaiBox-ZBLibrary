@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.icaihe.R;
-import com.icaihe.activity_fragment.UserActivity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -147,7 +146,7 @@ public class DemoListFragment extends BaseListFragment<Entry<String, String>, Li
 		lvBaseList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				toActivity(UserActivity.createIntent(context, id));
+//				toActivity(UserActivity.createIntent(context, id));
 			}
 		});
 		//示例代码>>>>>>>>>>>>>>>>>>>
