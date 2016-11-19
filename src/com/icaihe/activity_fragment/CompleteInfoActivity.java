@@ -3,6 +3,7 @@ package com.icaihe.activity_fragment;
 import java.util.ArrayList;
 
 import com.icaihe.R;
+import com.icaihe.manager.DataManager;
 import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;
 
@@ -178,10 +179,12 @@ public class CompleteInfoActivity extends BaseActivity
 						public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
 							showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
 									+ resultMessage);
+							DataManager.getInstance().saveCurrentUser(null);
+							startActivity(LoginActivity.createIntent(context));
+							finish();
 						}
 					});
 		}
-
 	}
 
 	@Override

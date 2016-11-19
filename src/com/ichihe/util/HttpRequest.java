@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.icaihe.application.ICHApplication;
+import com.icaihe.manager.DataManager;
 
 import zuo.biao.library.bean.Parameter;
 import zuo.biao.library.manager.HttpManager;
@@ -142,7 +143,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_GROUP_ADDRESS_X, addressX);
 		addExistParameter(paramList, KEY_GROUP_ADDRESS_Y, addressY);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/group/add" + "?token=" + token, requestCode,
 				listener);
@@ -161,7 +162,7 @@ public class HttpRequest {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 		addExistParameter(paramList, KEY_GROUP_NAME, groupName);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/group/list" + "?token=" + token, requestCode,
 				listener);
@@ -186,7 +187,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_USER_NAME, userName);
 		addExistParameter(paramList, KEY_GROUP_JOIN_DATE, joinDate);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/group/join" + "?token=" + token, requestCode,
 				listener);
@@ -213,7 +214,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_GROUP_ID, groupId);
 		addExistParameter(paramList, KEY_WIFI_ID, wifiId);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/box/add" + "?token=" + token, requestCode,
 				listener);
@@ -236,7 +237,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_BOX_ID, boxId);
 		addExistParameter(paramList, KEY_WIFI_ID, wifiId);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/box/wifiId/update" + "?token=" + token,
 				requestCode, listener);
@@ -256,7 +257,7 @@ public class HttpRequest {
 
 		addExistParameter(paramList, KEY_BOX_ID, boxId);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/box/detail" + "?token=" + token, requestCode,
 				listener);
@@ -280,7 +281,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_TYPE, type);
 		addExistParameter(paramList, KEY_BOX_ID, boxId);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxRecord/add" + "?token=" + token, requestCode,
 				listener);
@@ -303,7 +304,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_KEY, key);
 		addExistParameter(paramList, KEY_ICH_ID, ichId);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/agreement/openBox/detail" + "?token=" + token,
 				requestCode, listener);
@@ -331,7 +332,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_BACK_TIME, backTime);
 		addExistParameter(paramList, KEY_REMARK, remark);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxRecord/add" + "?token=" + token, requestCode,
 				listener);
@@ -357,7 +358,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_BOX_ID, boxId);
 		addExistParameter(paramList, KEY_REMARK, remark);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxRecord/add" + "?token=" + token, requestCode,
 				listener);
@@ -380,7 +381,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_GROUP_ID, groupId);
 		addExistParameter(paramList, KEY_BOX_ID, boxId);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/groupMember/authority/list" + "?token=" + token,
 				requestCode, listener);
@@ -401,7 +402,7 @@ public class HttpRequest {
 
 		addExistParameter(paramList, KEY_GROUP_ID, groupId);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/groupMember/list" + "?token=" + token, requestCode,
 				listener);
@@ -424,7 +425,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_BOX_ID, boxId);
 		addExistParameter(paramList, KEY_USER_ID, userId);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxUser/add" + "?token=" + token, requestCode,
 				listener);
@@ -447,7 +448,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_BOX_ID, boxId);
 		addExistParameter(paramList, KEY_USER_ID, userId);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxUser/delete" + "?token=" + token, requestCode,
 				listener);
@@ -464,7 +465,7 @@ public class HttpRequest {
 	public static void getUserDetail(final int requestCode, final OnHttpResponseListener listener) {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/user/detail" + "?token=" + token, requestCode,
 				listener);
@@ -483,7 +484,7 @@ public class HttpRequest {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 
 		addExistParameter(paramList, KEY_PAGE_NO, pageNo);
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/boxRecord/userRecord/list" + "?token=" + token,
 				requestCode, listener);
@@ -508,7 +509,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_USER_NAME, userName);
 		addExistParameter(paramList, KEY_PAGE_NO, pageNo);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxRecord/openRecord/list" + "?token=" + token,
 				requestCode, listener);
@@ -531,7 +532,7 @@ public class HttpRequest {
 		addExistParameter(paramList, KEY_BOX_ID, boxId);
 		addExistParameter(paramList, KEY_PAGE_NO, pageNo);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/boxRecord/alarmRecord/list" + "?token=" + token,
 				requestCode, listener);
@@ -548,7 +549,7 @@ public class HttpRequest {
 	public static void getGroupUsers(final int requestCode, final OnHttpResponseListener listener) {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/groupMember/group/list" + "?token=" + token,
 				requestCode, listener);
@@ -568,7 +569,7 @@ public class HttpRequest {
 
 		addExistParameter(paramList, KEY_MESSAGE, message);
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/message/add" + "?token=" + token, requestCode,
 				listener);
@@ -585,10 +586,9 @@ public class HttpRequest {
 	public static void resetAlarmNum(final int requestCode, final OnHttpResponseListener listener) {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 
-		String token = DataKeeper.getRootSharedPreferences().getString("token", "");
+		String token = DataManager.getInstance().getCurrentUser().getToken();
 
 		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/alarmNum/delete" + "?token=" + token, requestCode,
 				listener);
 	}
-
 }

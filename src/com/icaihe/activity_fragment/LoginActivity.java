@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import com.icaihe.R;
 import com.icaihe.application.ICHApplication;
+import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;

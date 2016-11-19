@@ -2,10 +2,7 @@ package com.icaihe.view;
 
 import com.icaihe.R;
 import com.icaihe.activity_fragment.CompleteInfoActivity;
-import com.icaihe.application.ICHApplication;
 import com.icaihe.model.Group;
-import com.ichihe.util.HttpRequest;
-import com.ichihe.util.MyTimeUtil;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,7 +15,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import zuo.biao.library.base.BaseModel;
 import zuo.biao.library.base.BaseView;
-import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.Log;
 
 /**

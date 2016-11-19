@@ -16,9 +16,8 @@ import zuo.biao.library.interfaces.OnBottomDragListener;
  * @use MainTabActivity.createIntent(...)
  */
 public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDragListener {
-	private static final String TAG = "MainTabActivity";
+	// private static final String TAG = "MainTabActivity";
 
-	// 启动方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	/**
 	 * 启动这个Activity的Intent
 	 * 
@@ -28,7 +27,6 @@ public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDr
 	public static Intent createIntent(Context context) {
 		return new Intent(context, MainTabActivity.class);
 	}
-	// 启动方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 	@Override
 	public Activity getActivity() {
@@ -39,14 +37,12 @@ public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDr
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_tab_activity, this);
-		// 功能归类分区方法，必须调用<<<<<<<<<<
+
 		initView();
 		initData();
 		initEvent();
-		// 功能归类分区方法，必须调用>>>>>>>>>>
 	}
 
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	@Override
 	public void initView() {// 必须调用
 		super.initView();
@@ -71,11 +67,11 @@ public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDr
 		case 1:
 			return BoxFragment.createInstance();
 		case 2:
-			return ContractFragment.createInstance(0);
+			return ContractFragment.createInstance();
 		case 3:
 			return MySettingFragment.createInstance();
 		default:
-			return NoticeListFragment.createInstance(0, "dysonzhang");
+			return NoticeListFragment.createInstance();
 		}
 	};
 
@@ -88,21 +84,12 @@ public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDr
 		// View.VISIBLE);
 
 		tvBaseTitle.setText(TAB_NAMES[position]);
-
 	}
-
-	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
-	public void initData() {// 必须调用
+	public void initData() {
 		super.initData();
 	}
-
-	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
 	public void initEvent() {// 必须调用
@@ -113,8 +100,6 @@ public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDr
 	public void onDragBottom(boolean rightToLeft) {
 
 	}
-
-	// 系统自带监听方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	// 双击手机返回键退出<<<<<<<<<<<<<<<<<<<<<
 	private long firstTime = 0;// 第一次返回按钮计时
@@ -137,16 +122,4 @@ public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDr
 		return super.onKeyUp(keyCode, event);
 	}
 	// 双击手机返回键退出>>>>>>>>>>>>>>>>>>>>>
-
-	// 类相关监听<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	// 类相关监听>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// 系统自带监听方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// Event事件区(只要存在事件监听代码就是)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	// 内部类,尽量少用<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	// 内部类,尽量少用>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 }

@@ -30,25 +30,23 @@ import android.view.View.OnClickListener;
 import zuo.biao.library.interfaces.ActivityPresenter;
 import zuo.biao.library.util.CommonUtil;
 
-/**扫描二维码Activity
- * @author Lemon
+/**
+ * 扫描二维码Activity
+ * 
  * @use toActivity(ScanActivity.createIntent(...));
  */
 public class ScanActivity extends CaptureActivity implements Callback, ActivityPresenter, OnClickListener {
 	public static final String TAG = "ScanActivity";
 
-	//启动方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	/**启动这个Activity的Intent
+	/**
+	 * 启动这个Activity的Intent
+	 * 
 	 * @param context
 	 * @return
 	 */
 	public static Intent createIntent(Context context) {
 		return new Intent(context, ScanActivity.class);
 	}
-
-	//启动方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 
 	@Override
 	public Activity getActivity() {
@@ -61,25 +59,22 @@ public class ScanActivity extends CaptureActivity implements Callback, ActivityP
 		setContentView(R.layout.scan_activity);
 		init(this, (SurfaceView) findViewById(R.id.svCameraScan), (ViewfinderView) findViewById(R.id.vfvCameraScan));
 
-		//功能归类分区方法，必须调用<<<<<<<<<<
 		initView();
 		initData();
 		initEvent();
-		//功能归类分区方法，必须调用>>>>>>>>>>
 
 	}
-
-
-	//UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	@Override
-	public void initView() {//必须调用
+	public void initView() {
 
 	}
 
-
 	private boolean isOpen = false;
-	/**打开或关闭闪关灯
+
+	/**
+	 * 打开或关闭闪关灯
+	 * 
 	 * @param open
 	 */
 	private void switchLight(boolean open) {
@@ -89,68 +84,36 @@ public class ScanActivity extends CaptureActivity implements Callback, ActivityP
 		isOpen = CameraManager.get().switchLight(open);
 	}
 
-
-
-	//UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
-
-
-
-
-
-
-
-
-	//Data数据区(存在数据获取或处理代码，但不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 	@Override
-	public void initData() {//必须调用
-
+	public void initData() {
 	}
 
-
-	//Data数据区(存在数据获取或处理代码，但不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
-
-
-
-
-
-
-	//Event事件区(只要存在事件监听代码就是)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 	@Override
-	public void initEvent() {//必须调用
-
+	public void initEvent() {
 		findViewById(R.id.ivCameraScanLight).setOnClickListener(this);
 	}
-
 
 	@Override
 	public void onReturnClick(View v) {
 		finish();
-	}	
+	}
+
 	@Override
 	public void onForwardClick(View v) {
-		CommonUtil.toActivity(context, QRCodeActivity.createIntent(context, 1));
+		// CommonUtil.toActivity(context, QRCodeActivity.createIntent(context,
+		// 1));
 	}
-	
-	//系统自带监听方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.ivCameraScanLight:
-			switchLight(! isOpen);
+			switchLight(!isOpen);
 			break;
 		default:
 			break;
 		}
 	}
-
 
 	@Override
 	public boolean isAlive() {
@@ -161,28 +124,4 @@ public class ScanActivity extends CaptureActivity implements Callback, ActivityP
 	public boolean isRunning() {
 		return false;
 	}
-
-	//类相关监听<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
-	//类相关监听>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-	//系统自带监听方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
-	//Event事件区(只要存在事件监听代码就是)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
-
-
-
-
-
-
-	//内部类,尽量少用<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
-
-	//内部类,尽量少用>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 }

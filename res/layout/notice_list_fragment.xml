@@ -73,8 +73,8 @@
             android:text="最新动态" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lv_notice"
+    <zuo.biao.library.ui.xlistview.XListView
+        android:id="@+id/lvBaseList"
         style="@style/lv" />
 
 </LinearLayout>

@@ -12,6 +12,7 @@ import cn.jpush.android.api.JPushInterface;
 /**
  * 
  * 闪屏activity
+ * 
  * @author dyson
  *
  */
@@ -33,7 +34,7 @@ public class SplashActivity extends Activity {
 					// 已登录
 					if (user.isNewUser()) {
 						startActivity(ChoseGroupActivity.createIntent(SplashActivity.this));
-					}else{
+					} else {
 						startActivity(MainTabActivity.createIntent(SplashActivity.this));
 					}
 				}

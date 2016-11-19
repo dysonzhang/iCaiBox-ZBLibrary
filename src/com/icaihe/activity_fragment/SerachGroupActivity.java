@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import com.icaihe.R;
 import com.icaihe.adapter.GroupAdapter;
+import com.icaihe.manager.DataManager;
 import com.icaihe.model.Group;
 import com.ichihe.util.HttpRequest;
 
@@ -204,6 +205,9 @@ public class SerachGroupActivity extends BaseActivity
 			public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
 				showShortToast(
 						"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
+				DataManager.getInstance().saveCurrentUser(null);
+				startActivity(LoginActivity.createIntent(context));
+				finish();
 			}
 		});
 	}
