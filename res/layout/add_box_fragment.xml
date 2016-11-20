@@ -4,23 +4,23 @@
 
     <LinearLayout style="@style/ll_vertical_match_match" >
 
-        <RelativeLayout style="@style/topbar_bg_golden" >
-
-            <ImageView
-                android:id="@+id/iv_back"
-                style="@style/topbar_return_img" 
-                android:visibility="gone"/>
+        <LinearLayout
+            style="@style/ll_vertical_match_match"
+            android:layout_height="wrap_content"
+            android:background="#F1C83B" >
 
             <TextView
-                style="@style/topbar_title"
-                android:layout_centerHorizontal="true"
-                android:text="添加财盒" />
-
-            <TextView
-                style="@style/topbar_right_btn"
-                android:text="GitHub"
-                android:visibility="gone" />
-        </RelativeLayout>
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                 android:layout_marginLeft="10dp"
+                android:drawableLeft="@drawable/icon_info"
+                android:gravity="left|center"
+                android:text=" 请配置您的财盒信息，步骤如下：\n 1.确认手机已连接WIFI；\n 2.扫财盒上的二维码获取财盒ID；\n 3.填写WIFI密码；点击“开始配置”即可；"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <LinearLayout style="@style/ll_vertical_match_match" >
 
@@ -33,8 +33,8 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/edittext_bg"
                 android:drawableRight="@drawable/delete_selector"
-                android:hint="财盒网络科技"
                 android:enabled="false"
+                android:hint="财盒网络科技"
                 android:paddingLeft="10dp"
                 android:singleLine="true"
                 android:textColor="@color/golden"
@@ -127,9 +127,10 @@
                 android:layout_marginRight="20dip"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/button_bg"
-                android:text="确认创建"
+                android:text="开始配置"
                 android:textColor="@color/golden"
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
+
 </FrameLayout>

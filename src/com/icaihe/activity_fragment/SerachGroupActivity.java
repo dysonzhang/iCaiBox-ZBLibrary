@@ -41,13 +41,7 @@ import zuo.biao.library.util.SettingUtil;
  */
 public class SerachGroupActivity extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	// private static final String TAG = "SerachGroupActivity";
-	/**
-	 * 启动这个Activity的Intent
-	 * 
-	 * @param context
-	 * @return
-	 */
+
 	public static Intent createIntent(Context context) {
 		return new Intent(context, SerachGroupActivity.class);
 	}
@@ -166,6 +160,12 @@ public class SerachGroupActivity extends BaseActivity
 		JSONArray jsonArray;
 		try {
 			jsonArray = new JSONArray(resultData);
+
+			if (jsonArray.length() <= 0) {
+				showShortToast("尚未搜索到此财盒群名称");
+				return groupList;
+			}
+
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jObject = jsonArray.getJSONObject(i);
 				String groupName = jObject.getString("groupName");
@@ -175,12 +175,13 @@ public class SerachGroupActivity extends BaseActivity
 				group.setGroupName(groupName);
 				groupList.add(group);
 			}
-			return groupList;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			showShortToast("搜索财盒群数据转换异常！");
-			return null;
 		}
+		
+		return groupList;
 	}
 
 	/**
@@ -193,6 +194,10 @@ public class SerachGroupActivity extends BaseActivity
 
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
+				if (resultData.equals("null")) {
+					showShortToast("未搜索到相关财盒群");
+					return;
+				}
 				List<Group> groupList = getGroupListByJsonData(resultData);
 				if (groupList != null) {
 					groupAdapter = new GroupAdapter(context, groupList);

@@ -186,21 +186,30 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 	private User saveUserInfo(String resultData) {
 
 		JSONObject jsonObject;
+		User user = new User();
 		try {
 			jsonObject = new JSONObject(resultData);
 
-			String token = jsonObject.getString("token");
-			int userId = jsonObject.getInt("userId");
-			String name = jsonObject.getString("name");
-			String phone = jsonObject.getString("phone");
-			String alarmNum = jsonObject.getString("alarmNum");
-			boolean isNewUser = jsonObject.getBoolean("isNewUser");
-			int groupId = jsonObject.getInt("groupId");
-			String companyName = jsonObject.getString("companyName");
-			int boxId = jsonObject.getInt("boxId");
-			String wifiId = jsonObject.getString("wifiId");
+			String token = jsonObject.getString("token").equals("null") ? "" : jsonObject.getString("token");
+			Long userId = Long
+					.parseLong(jsonObject.getString("userId").equals("null") ? "0" : jsonObject.getString("userId"));
+			String name = jsonObject.getString("name").equals("null") ? "" : jsonObject.getString("name");
+			String phone = jsonObject.getString("phone").equals("null") ? "" : jsonObject.getString("phone");
+			String alarmNum = jsonObject.getString("alarmNum").equals("null") ? "" : jsonObject.getString("alarmNum");
 
-			User user = new User();
+			Boolean isNewUser = jsonObject.getBoolean("isNewUser");
+			Long groupId = Long
+					.parseLong(jsonObject.getString("groupId").equals("null") ? "0" : jsonObject.getString("groupId"));
+
+			String companyName = jsonObject.getString("companyName").equals("null") ? ""
+					: jsonObject.getString("companyName");
+
+			Long boxId = Long
+					.parseLong(jsonObject.getString("boxId").equals("null") ? "0" : jsonObject.getString("boxId"));
+
+			String wifiId = jsonObject.getString("wifiId").equals("null") ? "" : jsonObject.getString("wifiId");
+
+			// user =JSON.parseObject(resultData, User.class);
 			user.setId(userId);
 			user.setToken(token);
 			user.setBoxId(boxId);
@@ -212,11 +221,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 			user.setAlarmNum(alarmNum);
 			user.setWifiId(wifiId);
 			ICHApplication.getInstance().saveCurrentUser(user);
-			return user;
+
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return null;
+			showShortToast("搜索财盒群数据转换异常！");
 		}
+
+		return user;
 	}
 
 	/**

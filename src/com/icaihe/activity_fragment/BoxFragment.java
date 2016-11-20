@@ -1,6 +1,9 @@
 package com.icaihe.activity_fragment;
 
+import com.alibaba.fastjson.JSON;
 import com.icaihe.R;
+import com.icaihe.application.ICHApplication;
+import com.ichihe.util.HttpRequest;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,33 +13,29 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import zuo.biao.library.base.BaseFragment;
+import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.ui.AlertDialog;
 import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
 
 /**
  * 财盒fragment
  * 
- * @use new BoxFragment(),详细使用见.DemoFragmentActivity(initData方法内)
  */
 public class BoxFragment extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
-//	private static final String TAG = "BoxFragment";
-	/**
-	 * 创建一个Fragment实例
-	 * 
-	 * @return
-	 */
+
 	public static BoxFragment createInstance() {
 		return new BoxFragment();
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		setContentView(R.layout.box_fragment);
-		
+
 		initView();
 		initData();
 		initEvent();
-		
+
 		return view;
 	}
 
@@ -56,8 +55,36 @@ public class BoxFragment extends BaseFragment implements OnClickListener, OnDial
 
 	@Override
 	public void initData() {
-		tv_box_name.setText("dyson的财盒");
-		tv_add_time.setText("添加时间：2016-12-12 12:12");
+
+		long boxId = ICHApplication.getInstance().getCurrentUser().getBoxId();
+
+		HttpRequest.queryBoxDetail(boxId, HttpRequest.RESULT_QUERY_BOX_DETAIL_SUCCEED, new OnHttpResponseListener() {
+			@Override
+			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
+
+				long id = JSON.parseObject(resultData).getLongValue("id");
+				String ichid = JSON.parseObject(resultData).getString("ichId");
+				String ibeaconId = JSON.parseObject(resultData).getString("ibeaconId");
+				String wifiId = JSON.parseObject(resultData).getString("wifiId");
+				String wifiPassword = JSON.parseObject(resultData).getString("wifiPassword");
+				String boxName = JSON.parseObject(resultData).getString("boxName");
+				long groupId = JSON.parseObject(resultData).getLongValue("groupId");
+				String createTime = JSON.parseObject(resultData).getString("createTime");
+				String updateTime = JSON.parseObject(resultData).getString("updateTime");
+
+				String name = ICHApplication.getInstance().getCurrentUser().getName();
+
+				tv_box_name.setText(name + "的财盒");
+				tv_add_time.setText("添加时间：" + createTime);
+			}
+
+			@Override
+			public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+				showShortToast(
+						"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
+			}
+		});
+
 	}
 
 	@Override

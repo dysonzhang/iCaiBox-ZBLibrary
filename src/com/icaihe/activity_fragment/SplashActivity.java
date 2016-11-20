@@ -58,7 +58,7 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		JPushInterface.onResume(getApplicationContext());
+		JPushInterface.onPause(getApplicationContext());
 	}
 
 }

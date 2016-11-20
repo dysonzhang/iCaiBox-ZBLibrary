@@ -23,22 +23,22 @@ import android.view.View.OnClickListener;
 import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.util.Log;
 
-/**基础底部标签Activity
+/**
+ * 基础底部标签Activity
+ * 
  * @author Lemon
  * @use extends BaseBottomTabActivity
  */
 public abstract class BaseBottomTabActivity extends BaseActivity {
 	private static final String TAG = "BaseBottomTabActivity";
 
-
-
 	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 
 	protected static int[] tabClickIds;
 
 	protected View[] vTabClickViews;
 	protected View[][] vTabSelectViews;
+
 	@Override
 	public void initView() {// 必须调用
 		super.initView();
@@ -63,14 +63,17 @@ public abstract class BaseBottomTabActivity extends BaseActivity {
 		}
 	}
 
-
-	/**选择tab，在selectFragment里被调用
+	/**
+	 * 选择tab，在selectFragment里被调用
+	 * 
 	 * @param position
 	 */
 	protected abstract void selectTab(int position);
 
-	/**设置选中状态
-	 * @param position 
+	/**
+	 * 设置选中状态
+	 * 
+	 * @param position
 	 */
 	protected void setTabSelection(int position) {
 		if (vTabSelectViews == null) {
@@ -89,20 +92,22 @@ public abstract class BaseBottomTabActivity extends BaseActivity {
 	}
 
 	protected int currentPosition = 0;
-	/**选择并显示fragment
+
+	/**
+	 * 选择并显示fragment
+	 * 
 	 * @param position
 	 */
 	public void selectFragment(int position) {
-		//消耗资源很少，不像Fragment<<<<<<
+		// 消耗资源很少，不像Fragment<<<<<<
 		setTabSelection(position);
 		selectTab(position);
-		//消耗资源很少，不像Fragment>>>>>>
+		// 消耗资源很少，不像Fragment>>>>>>
 
 		if (currentPosition == position) {
 			if (fragments[position] != null && fragments[position].isVisible()) {
-				Log.e(TAG, "selectFragment currentPosition == position" +
-						" >> fragments[position] != null && fragments[position].isVisible()" +
-						" >> return;	");
+				Log.e(TAG, "selectFragment currentPosition == position"
+						+ " >> fragments[position] != null && fragments[position].isVisible()" + " >> return;	");
 				return;
 			}
 		}
@@ -113,33 +118,29 @@ public abstract class BaseBottomTabActivity extends BaseActivity {
 
 		// 用全局的fragmentTransaction因为already committed 崩溃
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		fragmentTransaction.hide(fragments[currentPosition]);
-		if (fragments[position].isAdded() == false) {
-			fragmentTransaction.add(R.id.flBottomTabFragmentContainer, fragments[position]);
-		}
-		fragmentTransaction.show(fragments[position]).commit();
+		
+//		fragmentTransaction.hide(fragments[currentPosition]);
+//		if (fragments[position].isAdded() == false) {
+//			fragmentTransaction.add(R.id.flBottomTabFragmentContainer, fragments[position]);
+//		}
+//		fragmentTransaction.show(fragments[position]).commit();
+		
+		 if (fragments[position].isAdded() == false) {
+		 fragmentTransaction.replace(R.id.flBottomTabFragmentContainer,
+		 fragments[position]);
+		 }
+		 fragmentTransaction.addToBackStack(null);
+		 fragmentTransaction.commit();
 
 		this.currentPosition = position;
 	};
 
-
 	// UI显示区(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
-
-
-
-
-
-
-
 
 	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-
-
-
 	protected Fragment[] fragments;
+
 	@Override
 	public void initData() {// 必须调用
 		super.initData();
@@ -153,42 +154,41 @@ public abstract class BaseBottomTabActivity extends BaseActivity {
 
 	}
 
-
-	/**获取tab内设置点击事件的View的id
+	/**
+	 * 获取tab内设置点击事件的View的id
+	 * 
 	 * @param position
 	 * @return
 	 */
 	protected abstract int[] getTabClickIds();
 
-	/**获取tab内设置选择事件的View的id，setSelected(position == currentPositon)
+	/**
+	 * 获取tab内设置选择事件的View的id，setSelected(position == currentPositon)
+	 * 
 	 * @return
-	 * @warn 返回int[leghth0][leghth1]必须满足leghth0 >= 1 && leghth1 = getCount() = getTabClickIds().length
+	 * @warn 返回int[leghth0][leghth1]必须满足leghth0 >= 1 && leghth1 = getCount() =
+	 *       getTabClickIds().length
 	 */
 	protected abstract int[][] getTabSelectIds();
 
-	/**获取新的Fragment
+	/**
+	 * 获取新的Fragment
+	 * 
 	 * @param position
 	 * @return
 	 */
 	protected abstract Fragment getFragment(int position);
 
-	/**获取Tab(或Fragment)的数量
+	/**
+	 * 获取Tab(或Fragment)的数量
+	 * 
 	 * @return
 	 */
 	public int getCount() {
-		return tabClickIds == null ? 0 :tabClickIds.length;
+		return tabClickIds == null ? 0 : tabClickIds.length;
 	}
 
 	// Data数据区(存在数据获取或处理代码，但不存在事件监听代码)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
-
-
-
-
-
-
-
 
 	// Event事件区(只要存在事件监听代码就是)<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -210,18 +210,13 @@ public abstract class BaseBottomTabActivity extends BaseActivity {
 
 	// 系统自带监听方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-
 	// 类相关监听<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 
 	// 类相关监听>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 	// 系统自带监听方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-
 	// Event事件区(只要存在事件监听代码就是)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
 
 	// 内部类,尽量少用<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

@@ -2,7 +2,6 @@ package com.icaihe.activity_fragment;
 
 import java.util.ArrayList;
 
-import com.alibaba.fastjson.JSON;
 import com.icaihe.R;
 import com.icaihe.application.ICHApplication;
 import com.icaihe.manager.DataManager;
@@ -37,14 +36,7 @@ import zuo.biao.library.util.TimeUtil;
  */
 public class CompleteInfoActivity extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	// private static final String TAG = "CompleteInfoActivity";
-
-	/**
-	 * 启动这个Activity的Intent
-	 * 
-	 * @param context
-	 * @return
-	 */
+	
 	public static Intent createIntent(Context context) {
 		return new Intent(context, CompleteInfoActivity.class);
 	}
@@ -98,7 +90,7 @@ public class CompleteInfoActivity extends BaseActivity
 		groupId = intent.getLongExtra("groupId", 0L);
 		groupName = intent.getStringExtra("groupName");
 
-		tv_add_group_tips.setText("您已选择加入" + groupName + "财盒群，请完善个人信息。");
+		tv_add_group_tips.setText(" 您已选择加入" + groupName + "财盒群，请完善个人信息。");
 	}
 
 	@Override
@@ -159,7 +151,7 @@ public class CompleteInfoActivity extends BaseActivity
 			return;
 		}
 		if (checkForm()) {
-			String userName = et_user_name.getText().toString();
+			final String userName = et_user_name.getText().toString();
 			String joinDate = et_add_date.getText().toString();
 
 			HttpRequest.joinGroup(groupId, userName, joinDate, HttpRequest.RESULT_JOIN_GROUP_SUCCEED,
@@ -172,8 +164,10 @@ public class CompleteInfoActivity extends BaseActivity
 
 							// 更新用户信息
 							User user = ICHApplication.getInstance().getCurrentUser();
+							user.setName(userName);
 							user.setCompanyName(groupName);
 							user.setGroupId(groupId);
+							user.setNewUser(false);
 							ICHApplication.getInstance().saveCurrentUser(user);
 
 							//跳转至主页

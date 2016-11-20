@@ -78,9 +78,18 @@ public class ContractFragment extends BaseListFragment<Contract, ListView, Contr
 					@Override
 					public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 							String resultData) {
-						showShortToast("加载成功");
+						// showShortToast("加载成功");
 						list = Json.parseArray(resultData, Contract.class);
-						onLoadSucceed(list);
+						
+						
+						runThread("onHttpRequestSuccess", new Runnable() {
+
+							@Override
+							public void run() {
+								onLoadSucceed(list);
+							}
+						});
+						
 					}
 
 					@Override

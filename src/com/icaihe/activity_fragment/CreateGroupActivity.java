@@ -35,14 +35,7 @@ import zuo.biao.library.util.TimeUtil;
  */
 public class CreateGroupActivity extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	// private static final String TAG = "CreateGroupActivity";
-
-	/**
-	 * 启动这个Activity的Intent
-	 * 
-	 * @param context
-	 * @return
-	 */
+	
 	public static Intent createIntent(Context context) {
 		return new Intent(context, CreateGroupActivity.class);
 	}
@@ -168,7 +161,7 @@ public class CreateGroupActivity extends BaseActivity
 							String groupName = "";
 							try {
 								jsonObject = new JSONObject(resultData);
-								groupId = jsonObject.getLong("groupId");
+								groupId = jsonObject.getLong("id");
 								groupName = jsonObject.getString("groupName");
 							} catch (JSONException e) {
 								e.printStackTrace();

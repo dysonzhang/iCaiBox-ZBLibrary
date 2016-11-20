@@ -11,6 +11,7 @@ import com.icaihe.R;
 import com.icaihe.adapter.NoticeAdapter;
 import com.icaihe.application.ICHApplication;
 import com.icaihe.model.Notice;
+import com.icaihe.model.User;
 import com.ichihe.util.HttpRequest;
 
 import android.os.Bundle;
@@ -31,14 +32,11 @@ import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.Json;
 
 /**
- * 用户列表界面fragment
+ * 动态界面fragment
  * 
- * @use new NoticeListFragment(),详细使用见.DemoFragmentActivity(initData方法内)
- * @must 查看 .HttpManager 中的@must和@warn 查看 .SettingUtil 中的@must和@warn
  */
 public class NoticeListFragment extends BaseHttpListFragment<Notice, NoticeAdapter>
 		implements OnItemClickListener, OnClickListener, CacheCallBack<Notice> {
-	// private static final String TAG = "NoticeListFragment";
 
 	public static NoticeListFragment createInstance() {
 		NoticeListFragment fragment = new NoticeListFragment();
@@ -61,6 +59,13 @@ public class NoticeListFragment extends BaseHttpListFragment<Notice, NoticeAdapt
 
 		lvBaseList.onRefresh();
 		return view;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		lvBaseList.onRefresh();
 	}
 
 	private ImageView iv_head_user;
@@ -96,12 +101,25 @@ public class NoticeListFragment extends BaseHttpListFragment<Notice, NoticeAdapt
 	@Override
 	public void initData() {
 		super.initData();
-		String name = ICHApplication.getInstance().getCurrentUser().getName();
+		User user = ICHApplication.getInstance().getCurrentUser();
+		String name = user.getName();
+
 		tv_name.setText(name);
 	}
 
 	@Override
-	public void getListAsync(final int pageNum) {
+	public void onRefresh() {
+		super.onRefresh();
+	}
+
+	@Override
+	public void onLoadMore() {
+		super.onLoadMore();
+	}
+
+	@Override
+	public void getListAsync(int pageNum) {
+
 		HttpRequest.getUserNotice(pageNum, HttpRequest.RESULT_GET_USER_NOTICE_SUCCEED, new OnHttpResponseListener() {
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
@@ -123,7 +141,15 @@ public class NoticeListFragment extends BaseHttpListFragment<Notice, NoticeAdapt
 		try {
 			jsonObject = new JSONObject(resultData);
 			results = jsonObject.getString("results");
-			onHttpRequestSuccess(requestCode, resultCode, resultMessage, results);
+			JSONArray jsonArray = new JSONArray(results);
+
+			if (jsonArray.length() <= 0) {
+				showShortToast("当前暂无最新动态");
+				stopLoadData();
+			} else {
+				onHttpRequestSuccess(requestCode, resultCode, resultMessage, results);
+			}
+
 		} catch (JSONException e) {
 			showShortToast("最新动态数据转换异常！");
 			e.printStackTrace();
@@ -217,13 +243,14 @@ public class NoticeListFragment extends BaseHttpListFragment<Notice, NoticeAdapt
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.iv_head_user:
-			showShortToast("onClick  iv_head_user");
+			// showShortToast("onClick iv_head_user");
 			break;
 		case R.id.tv_name:
-			showShortToast("onClick  tv_name");
+			// showShortToast("onClick tv_name");
 			break;
 		case R.id.bt_my_box:
-			showShortToast("onClick  bt_my_box");
+			MainTabActivity mainTabActivity = (MainTabActivity ) getActivity();
+			mainTabActivity.selectFragment(1);
 			break;
 		case R.id.bt_check_in:
 			showShortToast("onClick  bt_check_in");

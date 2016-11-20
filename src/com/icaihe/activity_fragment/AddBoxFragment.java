@@ -21,6 +21,8 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -99,10 +101,6 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 		bt_add_box.setEnabled(!isApSsidEmpty);
 	}
 
-	private void logout() {
-		context.finish();
-	}
-
 	@Override
 	public void initEvent() {
 		ib_scan_box.setOnClickListener(this);
@@ -113,14 +111,6 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 	public void onDialogButtonClick(int requestCode, boolean isPositive) {
 		if (!isPositive) {
 			return;
-		}
-
-		switch (requestCode) {
-		case 0:
-			logout();
-			break;
-		default:
-			break;
 		}
 	}
 
@@ -156,6 +146,17 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 	}
 
 	/**
+	 * 替换为BoxFragment
+	 */
+	private void replaceToBoxFragment() {
+		FragmentTransaction trasection = getFragmentManager().beginTransaction();
+		Fragment boxFragment = new BoxFragment();
+		trasection.replace(R.id.flBottomTabFragmentContainer, boxFragment);
+		trasection.addToBackStack(null);
+		trasection.commit();
+	}
+
+	/**
 	 * TODO 添加财盒
 	 */
 	private void addBox() {
@@ -177,6 +178,8 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 							User user = ICHApplication.getInstance().getCurrentUser();
 							user.setBoxId(boxId);
 							ICHApplication.getInstance().saveCurrentUser(user);
+							
+							replaceToBoxFragment();
 						}
 
 						@Override
@@ -245,7 +248,7 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 		runUiThread(new Runnable() {
 			@Override
 			public void run() {
-				String text = result.getBssid() + " is connected to the wifi";
+				String text = result.getBssid() + "连接WIFI成功";
 				showShortToast(text);
 				addBox();
 			}
@@ -275,7 +278,7 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 		@Override
 		protected void onPreExecute() {
 			mProgressDialog = new ProgressDialog(context);
-			mProgressDialog.setMessage("Esptouch is configuring, please wait for a moment...");
+			mProgressDialog.setMessage("配置中, 请稍等...");
 			mProgressDialog.setCanceledOnTouchOutside(false);
 			mProgressDialog.setOnCancelListener(new OnCancelListener() {
 				@Override
@@ -290,7 +293,7 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 					}
 				}
 			});
-			mProgressDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Waiting...",
+			mProgressDialog.setButton(DialogInterface.BUTTON_POSITIVE, "等待...",
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -324,7 +327,7 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 		@Override
 		protected void onPostExecute(List<IEsptouchResult> result) {
 			mProgressDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
-			mProgressDialog.getButton(DialogInterface.BUTTON_POSITIVE).setText("Confirm");
+			mProgressDialog.getButton(DialogInterface.BUTTON_POSITIVE).setText("确认");
 			IEsptouchResult firstResult = result.get(0);
 			// check whether the task is cancelled and no results received
 			if (!firstResult.isCancelled()) {
@@ -338,7 +341,7 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 				if (firstResult.isSuc()) {
 					StringBuilder sb = new StringBuilder();
 					for (IEsptouchResult resultInList : result) {
-						sb.append("Esptouch success, bssid = " + resultInList.getBssid() + ",InetAddress = "
+						sb.append("配置成功, bssid = " + resultInList.getBssid() + ",InetAddress = "
 								+ resultInList.getInetAddress().getHostAddress() + "\n");
 						count++;
 						if (count >= maxDisplayCount) {
@@ -350,7 +353,7 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 					}
 					mProgressDialog.setMessage(sb.toString());
 				} else {
-					mProgressDialog.setMessage("Esptouch fail");
+					mProgressDialog.setMessage("配置失败");
 				}
 			}
 		}
