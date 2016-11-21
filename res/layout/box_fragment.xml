@@ -54,7 +54,7 @@
                 android:layout_marginRight="20dip"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/button_bg"
-                android:text="打 开"
+                android:text="打开财盒"
                 android:textColor="@color/golden"
                 android:textSize="18sp" />
 
@@ -67,7 +67,20 @@
                 android:layout_marginRight="20dip"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/button_bg"
-                android:text="授 权"
+                android:text="授权开箱"
+                android:textColor="@color/golden"
+                android:textSize="18sp" />
+            
+            <Button
+                android:id="@+id/bt_config"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/ll_get_code"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_bg"
+                android:text="重新配置WIFI"
                 android:textColor="@color/golden"
                 android:textSize="18sp" />
         </LinearLayout>

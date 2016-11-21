@@ -14,8 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import zuo.biao.library.base.BaseFragment;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
-import zuo.biao.library.ui.AlertDialog;
 import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
+import zuo.biao.library.util.DataKeeper;
 
 /**
  * 财盒fragment
@@ -43,6 +43,8 @@ public class BoxFragment extends BaseFragment implements OnClickListener, OnDial
 	private TextView tv_add_time;
 	private Button bt_open;
 	private Button bt_auth;
+	private Button bt_config;
+	long boxId;
 
 	@Override
 	public void initView() {
@@ -51,12 +53,13 @@ public class BoxFragment extends BaseFragment implements OnClickListener, OnDial
 
 		bt_open = (Button) findViewById(R.id.bt_open);
 		bt_auth = (Button) findViewById(R.id.bt_auth);
+		bt_config = (Button) findViewById(R.id.bt_config);
 	}
 
 	@Override
 	public void initData() {
 
-		long boxId = ICHApplication.getInstance().getCurrentUser().getBoxId();
+		boxId = ICHApplication.getInstance().getCurrentUser().getBoxId();
 
 		HttpRequest.queryBoxDetail(boxId, HttpRequest.RESULT_QUERY_BOX_DETAIL_SUCCEED, new OnHttpResponseListener() {
 			@Override
@@ -72,9 +75,11 @@ public class BoxFragment extends BaseFragment implements OnClickListener, OnDial
 				String createTime = JSON.parseObject(resultData).getString("createTime");
 				String updateTime = JSON.parseObject(resultData).getString("updateTime");
 
-				String name = ICHApplication.getInstance().getCurrentUser().getName();
-
-				tv_box_name.setText(name + "的财盒");
+				DataKeeper.save(DataKeeper.getRootSharedPreferences(), "curr_boxId", boxId+"");
+				DataKeeper.save(DataKeeper.getRootSharedPreferences(), "curr_ichid", ichid);
+				DataKeeper.save(DataKeeper.getRootSharedPreferences(), "curr_boxName", boxName);
+				
+				tv_box_name.setText(boxName + "");
 				tv_add_time.setText("添加时间：" + createTime);
 			}
 
@@ -84,13 +89,13 @@ public class BoxFragment extends BaseFragment implements OnClickListener, OnDial
 						"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
 			}
 		});
-
 	}
 
 	@Override
 	public void initEvent() {
 		bt_open.setOnClickListener(this);
 		bt_auth.setOnClickListener(this);
+		bt_config.setOnClickListener(this);
 	}
 
 	@Override
@@ -101,10 +106,13 @@ public class BoxFragment extends BaseFragment implements OnClickListener, OnDial
 
 		switch (requestCode) {
 		case 0:
-			this.showShortToast("确定打开");
+			this.showShortToast("打开财盒");
 			break;
 		case 1:
-			this.showShortToast("确定取消");
+			this.showShortToast("授权开箱");
+			break;
+		case 2:
+			this.showShortToast("重新配置WIFI");
 			break;
 		default:
 			break;
@@ -115,13 +123,39 @@ public class BoxFragment extends BaseFragment implements OnClickListener, OnDial
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.bt_open:
-			new AlertDialog(context, "打开", "确定打开？", true, 0, this).show();
+			openBox(boxId);
 			break;
 		case R.id.bt_auth:
-			new AlertDialog(context, "授权", "确定授权？", true, 1, this).show();
+			// new AlertDialog(context, "授权开箱", "确定授权开箱？", true, 1,
+			// this).show();
+			break;
+		case R.id.bt_config:
+			// new AlertDialog(context, "重新配置WIFI", "确定重新配置WIFI？", true, 2,
+			// this).show();
 			break;
 		default:
 			break;
 		}
+	}
+
+	/**
+	 * 开箱记录添加
+	 * 
+	 * @param boxId
+	 */
+	private void openBox(long boxId) {
+		HttpRequest.openBox(boxId, 1, HttpRequest.RESULT_OPEN_BOX_SUCCEED, new OnHttpResponseListener() {
+
+			@Override
+			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
+				showShortToast("开箱记录添加成功");
+			}
+
+			@Override
+			public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+				showShortToast(
+						"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
+			}
+		});
 	}
 }

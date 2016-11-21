@@ -265,7 +265,6 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 	private class EsptouchAsyncTask3 extends AsyncTask<String, Void, List<IEsptouchResult>> {
 
 		private ProgressDialog mProgressDialog;
-
 		private IEsptouchTask mEsptouchTask;
 		// without the lock, if the user tap confirm and cancel quickly enough,
 		// the bug will arise. the reason is follows:
@@ -341,7 +340,7 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 				if (firstResult.isSuc()) {
 					StringBuilder sb = new StringBuilder();
 					for (IEsptouchResult resultInList : result) {
-						sb.append("配置成功, bssid = " + resultInList.getBssid() + ",InetAddress = "
+						sb.append("配置成功, bssid = " + resultInList.getBssid() + ",IP地址 = "
 								+ resultInList.getInetAddress().getHostAddress() + "\n");
 						count++;
 						if (count >= maxDisplayCount) {

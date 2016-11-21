@@ -16,18 +16,10 @@ import zuo.biao.library.ui.AlertDialog;
 import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
 
 /**
- * 设置fragment
- * 
- * @use new MySettingFragment(),详细使用见.DemoFragmentActivity(initData方法内)
+ * 我的设置fragment
  */
 public class MySettingFragment extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
-	// private static final String TAG = "MySettingFragment";
-
-	/**
-	 * 创建一个Fragment实例
-	 * 
-	 * @return
-	 */
+	
 	public static MySettingFragment createInstance() {
 		return new MySettingFragment();
 	}

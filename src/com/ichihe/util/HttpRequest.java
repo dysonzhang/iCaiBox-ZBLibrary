@@ -324,7 +324,7 @@ public class HttpRequest {
 	 */
 	public static final int RESULT_BORROW_BOX_SUCCEED = 110;
 
-	public static void borrowBox(final String type, final long boxId, final String backTime, final String remark,
+	public static void borrowBox(final int type, final long boxId, final String backTime, final String remark,
 			final int requestCode, final OnHttpResponseListener listener) {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 
@@ -351,7 +351,7 @@ public class HttpRequest {
 	 */
 	public static final int RESULT_BORROW_RETURN_BOX_SUCCEED = 111;
 
-	public static void borrowReturnBox(final String type, final long boxId, final String remark, final int requestCode,
+	public static void borrowReturnBox(final int type, final long boxId, final String remark, final int requestCode,
 			final OnHttpResponseListener listener) {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 

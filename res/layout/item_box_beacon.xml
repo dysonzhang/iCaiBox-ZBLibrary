@@ -2,27 +2,28 @@
 <!-- Lemon added list中的item里不要用button等默认hasFocus的控件，以免onItemClick事件无响应 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/content_item"
-    android:background="@drawable/bg_item_to_alpha" >
+    android:background="@color/white" >
 
     <ImageView
         android:id="@+id/ivDemoItemHead"
         style="@style/content_item_lf_img"
+        android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@color/alpha_1"
         android:layout_marginRight="6dp"
-        android:layout_width="30dp"/>
+        android:background="@color/alpha_1"
+        android:visibility="gone" />
 
     <TextView
-        android:id="@+id/tvDemoItemName"
+        android:id="@+id/tv_beacon_name"
         style="@style/content_item_lf_tv"
         android:layout_weight="1"
-        android:text="item" />
+        android:text="ICH88888888888"
+        android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/tvDemoItemNumber"
-        style="@style/content_item_rt_tv"
-        android:text="right text" />
-
-    <ImageView style="@style/content_item_rt_img" />
+    <Button
+        android:id="@+id/bt_open_box"
+        style="@style/btn_small_golden"
+        android:layout_marginRight="10dp"
+        android:text="开 箱" />
 
 </LinearLayout>

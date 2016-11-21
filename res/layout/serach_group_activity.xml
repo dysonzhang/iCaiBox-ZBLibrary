@@ -71,12 +71,11 @@
         </LinearLayout>
 
         <LinearLayout style="@style/ll_vertical_match_match" >
-
             <ListView
                 android:id="@+id/lv_groups"
-                style="@style/lv_white" >
-            </ListView>
+                style="@style/lv_white" />
         </LinearLayout>
+        
     </LinearLayout>
 
 </FrameLayout>

@@ -26,7 +26,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -50,8 +49,10 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -103,9 +104,18 @@
             android:name="com.icaihe.activity_fragment.ScanActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.icaihe.activity_fragment.BoxBeaconActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.icaihe.activity_fragment.BoxOpenRemarkActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
 
-         <service android:name="com.bluetooth.RRBLE.SDK.BluetoothLeService" android:enabled="true"/>
-         
+        <service
+            android:name="com.bluetooth.RRBLE.SDK.BluetoothLeService"
+            android:enabled="true" />
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -121,8 +131,7 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="wceGBlITYkavcUy1o9uNP6q1lTgyYakd" />
 
-        <!--
-        For test only 测试状态通知栏，需要打开的Activity 
+        <!--For test only 测试状态通知栏，需要打开的Activity 
         <activity
             android:name="com.icaihe.jpush.TestActivity"
             android:exported="false" >
@@ -130,8 +139,7 @@
                 <action android:name="jpush.testAction" />
                 <category android:name="jpush.testCategory" />
             </intent-filter>
-        </activity>
-        -->
+        </activity> -->
 
 
         <!-- Rich push 核心功能 since 2.0.6 -->

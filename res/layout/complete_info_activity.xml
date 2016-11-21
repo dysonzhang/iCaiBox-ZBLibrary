@@ -22,7 +22,7 @@
 
         <LinearLayout
             style="@style/ll_vertical_match_match"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:background="#F1C83B" >
 
             <TextView

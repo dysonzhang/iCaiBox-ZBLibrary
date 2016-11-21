@@ -13,7 +13,7 @@
             <TextView
                 style="@style/topbar_title"
                 android:layout_centerHorizontal="true"
-                android:text="完善信息" />
+                android:text="开启财盒" />
 
             <TextView
                 style="@style/topbar_right_btn"
@@ -23,7 +23,8 @@
         <LinearLayout
             style="@style/ll_vertical_match_match"
             android:layout_height="60dp"
-            android:background="#F1C83B" >
+            android:background="#F1C83B"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/tv_open_tips"
@@ -60,6 +61,13 @@
                     android:text="正在寻找保险箱信号..."
                     android:textColor="@color/white"
                     android:textSize="20dp" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/ll_vertical_match_match" >
+
+                <ListView
+                    android:id="@+id/lv_beacons"
+                    style="@style/lv_white" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
