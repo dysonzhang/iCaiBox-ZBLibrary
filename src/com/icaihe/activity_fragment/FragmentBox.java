@@ -75,10 +75,11 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 				String createTime = JSON.parseObject(resultData).getString("createTime");
 				String updateTime = JSON.parseObject(resultData).getString("updateTime");
 
-				DataKeeper.save(DataKeeper.getRootSharedPreferences(), "curr_boxId", boxId+"");
+				DataKeeper.save(DataKeeper.getRootSharedPreferences(), "curr_groupId", groupId + "");
+				DataKeeper.save(DataKeeper.getRootSharedPreferences(), "curr_boxId", boxId + "");
 				DataKeeper.save(DataKeeper.getRootSharedPreferences(), "curr_ichid", ichid);
 				DataKeeper.save(DataKeeper.getRootSharedPreferences(), "curr_boxName", boxName);
-				
+
 				tv_box_name.setText(boxName + "");
 				tv_add_time.setText("添加时间：" + createTime);
 			}
@@ -126,8 +127,7 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 			openBox(boxId);
 			break;
 		case R.id.bt_auth:
-			// new AlertDialog(context, "授权开箱", "确定授权开箱？", true, 1,
-			// this).show();
+			toActivity(ActivityAuthMember.createIntent(context));
 			break;
 		case R.id.bt_config:
 			// new AlertDialog(context, "重新配置WIFI", "确定重新配置WIFI？", true, 2,
