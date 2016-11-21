@@ -26,7 +26,7 @@ public class FristBoxFragment extends BaseFragment implements OnClickListener, O
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		setContentView(R.layout.frist_box_fragment);
+		setContentView(R.layout.fragment_frist_box);
 
 		initView();
 		initData();

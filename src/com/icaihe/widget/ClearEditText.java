@@ -1,7 +1,5 @@
 package com.icaihe.widget;
 
-import com.icaihe.R;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;

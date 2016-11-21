@@ -30,7 +30,7 @@ public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDr
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main_tab_activity, this);
+		setContentView(R.layout.activity_main_tab, this);
 
 		initView();
 		initData();

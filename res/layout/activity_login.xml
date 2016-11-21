@@ -1,0 +1,89 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/activity_page" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/bg"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/iv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:contentDescription="title"
+            android:src="@drawable/icaihe_title" />
+
+        <com.icaihe.widget.ClearEditText
+            android:id="@+id/et_phone"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/iv_title"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/edittext_bg"
+            android:drawableRight="@drawable/delete_selector"
+            android:hint="请输入您的手机号"
+            android:numeric="integer"
+            android:singleLine="true"
+            android:textColor="@color/golden"
+            android:textColorHint="@color/edit_text"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:id="@+id/ll_get_code"
+            style="@style/ll_horizontal_match_wrap"
+            android:layout_below="@+id/et_phone"
+            android:layout_marginTop="20dip" >
+
+            <com.icaihe.widget.ClearEditText
+                android:id="@+id/et_code"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="0dip"
+                android:paddingLeft="10dp"
+                android:background="@drawable/edittext_bg"
+                android:drawableRight="@drawable/delete_selector"
+                android:hint="请输入验证码"
+                android:numeric="integer"
+                android:singleLine="true"
+                android:textColor="@color/golden"
+                android:textColorHint="@color/edit_text"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/bt_get_code"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="0dip"
+                android:layout_marginRight="20dip"
+                android:background="@drawable/button_code_bg"
+                android:text="获取验证码"
+                android:textColor="@color/bt_text"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/bt_login"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/ll_get_code"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_bg"
+            android:text="登  录"
+            android:textColor="@color/golden"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</FrameLayout>

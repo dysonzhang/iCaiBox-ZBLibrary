@@ -47,7 +47,7 @@ public class NoticeListFragment extends BaseHttpListFragment<Notice, NoticeAdapt
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState, R.layout.notice_list_fragment);
+		super.onCreateView(inflater, container, savedInstanceState, R.layout.fragment_notice_list);
 		argument = getArguments();
 		if (argument != null) {
 		}

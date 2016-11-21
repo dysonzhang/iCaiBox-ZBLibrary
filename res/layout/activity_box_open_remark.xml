@@ -1,0 +1,156 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/activity_page"
+    android:background="@color/main_bg_color" >
+
+    <LinearLayout style="@style/ll_vertical_match_match" >
+
+        <RelativeLayout style="@style/topbar_bg_golden" >
+
+            <ImageView
+                android:id="@+id/iv_back"
+                style="@style/topbar_return_img" />
+
+            <TextView
+                style="@style/topbar_title"
+                android:layout_centerHorizontal="true"
+                android:text="开箱操作备注" />
+
+            <TextView
+                style="@style/topbar_right_btn"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout
+            style="@style/ll_vertical_match_match"
+            android:layout_height="50dp"
+            android:background="#F1C83B" >
+
+            <TextView
+                android:id="@+id/tv_open_tips"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="10dp"
+                android:drawableLeft="@drawable/icon_info"
+                android:gravity="left|center"
+                android:text=" 请立即取出物件，并及时关闭保险箱。"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/ll_vertical_match_match" >
+
+            <LinearLayout
+                style="@style/ll_vertical_match_wrap"
+                android:background="@drawable/my_head_bg"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/tv_box_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="dyson保险箱"
+                    android:textColor="@color/golden"
+                    android:textSize="22dp" />
+
+                <ImageView
+                    android:id="@+id/iv_icon_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/box_bg" />
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/rg_open_type"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:gravity="center" >
+
+                <RadioButton
+                    android:id="@+id/rb_fast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:checked="true"
+                    android:text="  即借即还"
+                    android:textColor="@color/golden"
+                    android:textSize="18dp" />
+
+                <RadioButton
+                    android:id="@+id/rb_delay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_alignParentRight="true"
+                    android:text="  外借"
+                    android:textColor="@color/golden"
+                    android:textSize="18dp" />
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/et_remark"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_bg"
+                android:gravity="top"
+                android:hint="请填写外借备注"
+                android:minLines="2"
+                android:padding="5dp"
+                android:textColor="@color/golden"
+                android:textColorHint="@color/edit_text"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:id="@+id/rl_return_date"
+                style="@style/ll_horizontal_match_wrap"
+                android:layout_marginTop="20dip" 
+                android:visibility="gone">
+
+                <com.icaihe.widget.ClearEditText
+                    android:id="@+id/et_return_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dip"
+                    android:background="@drawable/edittext_bg"
+                    android:drawableRight="@drawable/delete_selector"
+                    android:enabled="false"
+                    android:hint="预计归还日期"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/golden"
+                    android:textColorHint="@color/edit_text"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/ib_chose_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dip"
+                    android:background="@drawable/icon_chose_date" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/bt_open_confirm"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_get_code"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_bg"
+                android:text="确 认"
+                android:textColor="@color/golden"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

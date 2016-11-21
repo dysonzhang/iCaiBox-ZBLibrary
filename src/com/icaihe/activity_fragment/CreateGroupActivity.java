@@ -48,7 +48,7 @@ public class CreateGroupActivity extends BaseActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.create_group_activity, this);
+		setContentView(R.layout.activity_create_group, this);
 
 		initView();
 		initData();

@@ -27,7 +27,7 @@ public class MySettingFragment extends BaseFragment implements OnClickListener, 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		setContentView(R.layout.my_setting_fragment);
+		setContentView(R.layout.fragment_my_setting);
 
 		initView();
 		initData();

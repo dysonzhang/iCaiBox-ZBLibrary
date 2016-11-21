@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Lemon added list中的item里不要用button等默认hasFocus的控件，以免onItemClick事件无响应 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/content_item"
+    android:background="@drawable/bg_item_to_alpha" >
+
+    <ImageView
+        android:id="@+id/iv_user_head"
+        style="@style/content_item_lf_img"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="6dp"
+        android:background="@drawable/icon_head_small" />
+
+    <LinearLayout
+        style="@style/ll_vertical_wrap_wrap"
+        android:layout_weight="1"
+        android:gravity="left|center" >
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dysonZhang"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/tv_user_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="18688886666"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_auth"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/selector_golden_corners_button"
+        android:text="马上授权/取消授权"
+        android:textColor=""
+        android:textSize="16dp" />
+
+</LinearLayout>

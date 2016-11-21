@@ -44,7 +44,7 @@ public class BoxOpenRemarkActivity extends BaseActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.box_open_remark_activity, this);
+		setContentView(R.layout.activity_box_open_remark, this);
 
 		initView();
 		initData();

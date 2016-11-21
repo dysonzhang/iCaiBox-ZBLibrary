@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/activity_page" >
+
+    <RelativeLayout
+        android:id="@+id/rlBottomTabTopbar"
+        style="@style/topbar_bg" >
+
+        <TextView
+            style="@style/topbar_title"
+            android:layout_centerHorizontal="true"
+            android:text="动态" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/flBottomTabFragmentContainer"
+        style="@style/match_match"
+        android:layout_weight="1"
+        android:background="@color/white" >
+    </FrameLayout>
+
+    <View style="@style/divider_horizontal_1px_golden" />
+
+    <LinearLayout
+        style="@style/ll_horizontal_match_wrap"
+        android:layout_height="60dp"
+        android:background="@color/tab_bg_color" >
+
+        <LinearLayout
+            android:id="@+id/ll_tab_notice"
+            style="@style/bottom_tab_ll"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/iv_tab_notice"
+                style="@style/bottom_tab_iv"
+                android:src="@drawable/notice_selector" />
+
+            <TextView
+                android:id="@+id/tv_tab_notice"
+                style="@style/bottom_tab_tv"
+                android:text="动态" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_tab_box"
+            style="@style/bottom_tab_ll"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/iv_tab_box"
+                style="@style/bottom_tab_iv"
+                android:src="@drawable/box_selector" />
+
+            <TextView
+                android:id="@+id/tv_tab_box"
+                style="@style/bottom_tab_tv"
+                android:text="财盒" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_tab_contract"
+            style="@style/bottom_tab_ll"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/iv_tab_contract"
+                style="@style/bottom_tab_iv"
+                android:src="@drawable/contract_selector" />
+
+            <TextView
+                android:id="@+id/tv_tab_contract"
+                style="@style/bottom_tab_tv"
+                android:text="通讯录" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_tab_my"
+            style="@style/bottom_tab_ll"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/iv_tab_my"
+                style="@style/bottom_tab_iv"
+                android:src="@drawable/my_selector" />
+
+            <TextView
+                android:id="@+id/tv_tab_my"
+                style="@style/bottom_tab_tv"
+                android:text="我的" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

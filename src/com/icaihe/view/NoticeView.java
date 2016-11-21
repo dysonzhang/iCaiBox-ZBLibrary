@@ -36,7 +36,7 @@ public class NoticeView extends BaseView<Notice> implements OnClickListener {
 	@SuppressLint("InflateParams")
 	@Override
 	public View createView(LayoutInflater inflater) {
-		convertView = inflater.inflate(R.layout.notice_item, null);
+		convertView = inflater.inflate(R.layout.item_notice, null);
 
 		tv_user_name = findViewById(R.id.tv_user_name, this);
 		tv_time = findViewById(R.id.tv_time, this);

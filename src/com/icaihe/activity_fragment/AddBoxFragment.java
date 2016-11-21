@@ -48,7 +48,7 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		setContentView(R.layout.add_box_fragment);
+		setContentView(R.layout.fragment_add_box);
 
 		initView();
 		initData();

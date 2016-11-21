@@ -54,7 +54,7 @@ public class SerachGroupActivity extends BaseActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.serach_group_activity, this);
+		setContentView(R.layout.activity_serach_group, this);
 
 		initView();
 		initData();

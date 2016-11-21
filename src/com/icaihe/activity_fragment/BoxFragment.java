@@ -30,7 +30,7 @@ public class BoxFragment extends BaseFragment implements OnClickListener, OnDial
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		setContentView(R.layout.box_fragment);
+		setContentView(R.layout.fragment_box);
 
 		initView();
 		initData();

@@ -36,7 +36,7 @@ public class ContractView extends BaseView<Contract> implements OnClickListener 
 	@SuppressLint("InflateParams")
 	@Override
 	public View createView(LayoutInflater inflater) {
-		convertView = inflater.inflate(R.layout.contract_item, null);
+		convertView = inflater.inflate(R.layout.item_contract, null);
 
 		iv_user_head = findViewById(R.id.iv_user_head, this);
 		tv_user_name = findViewById(R.id.tv_user_name, this);

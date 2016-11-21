@@ -43,7 +43,7 @@ public class ChoseGroupActivity extends BaseActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.chose_group_activity, this);
+		setContentView(R.layout.activity_chose_group, this);
 
 		initView();
 		initData();

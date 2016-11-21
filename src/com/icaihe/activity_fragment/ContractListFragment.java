@@ -38,7 +38,7 @@ public class ContractListFragment extends BaseHttpListFragment<Contract, Contrac
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState, R.layout.contract_fragment);
+		super.onCreateView(inflater, container, savedInstanceState, R.layout.fragment_contract);
 		argument = getArguments();
 		if (argument != null) {
 		}
