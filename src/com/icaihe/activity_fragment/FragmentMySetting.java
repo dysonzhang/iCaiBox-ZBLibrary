@@ -18,10 +18,10 @@ import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
 /**
  * 我的设置fragment
  */
-public class MySettingFragment extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
+public class FragmentMySetting extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
 	
-	public static MySettingFragment createInstance() {
-		return new MySettingFragment();
+	public static FragmentMySetting createInstance() {
+		return new FragmentMySetting();
 	}
 
 	@Override

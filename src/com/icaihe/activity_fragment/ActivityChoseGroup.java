@@ -21,7 +21,7 @@ import zuo.biao.library.util.SettingUtil;
  * @author dyson
  *
  */
-public class ChoseGroupActivity extends BaseActivity
+public class ActivityChoseGroup extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
 	// private static final String TAG = "ChoseGroupActivity";
 
@@ -32,7 +32,7 @@ public class ChoseGroupActivity extends BaseActivity
 	 * @return
 	 */
 	public static Intent createIntent(Context context) {
-		return new Intent(context, ChoseGroupActivity.class);
+		return new Intent(context, ActivityChoseGroup.class);
 	}
 
 	@Override
@@ -85,11 +85,11 @@ public class ChoseGroupActivity extends BaseActivity
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.bt_create_group:
-			startActivity(CreateGroupActivity.createIntent(context));
+			startActivity(ActivityCreateGroup.createIntent(context));
 			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
 			break;
 		case R.id.bt_add_group:
-			startActivity(SerachGroupActivity.createIntent(context));
+			startActivity(ActivitySerachGroup.createIntent(context));
 			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
 			break;
 		default:

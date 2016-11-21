@@ -39,7 +39,7 @@
         android:layout_margin="20dp"
         android:background="@drawable/selector_golden_corners_button"
         android:text="马上授权/取消授权"
-        android:textColor=""
+        android:textColor="@color/black"
         android:textSize="16dp" />
 
 </LinearLayout>

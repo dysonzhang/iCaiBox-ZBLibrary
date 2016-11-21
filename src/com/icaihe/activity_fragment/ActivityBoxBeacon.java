@@ -26,11 +26,11 @@ import zuo.biao.library.util.SettingUtil;
 /**
  * @author dyson
  */
-public class BoxBeaconActivity extends BaseActivity
+public class ActivityBoxBeacon extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
 
 	public static Intent createIntent(Context context) {
-		return new Intent(context, BoxBeaconActivity.class);
+		return new Intent(context, ActivityBoxBeacon.class);
 	}
 
 	@Override

@@ -33,11 +33,11 @@ import zuo.biao.library.util.TimeUtil;
  * @author dyson
  *
  */
-public class CreateGroupActivity extends BaseActivity
+public class ActivityCreateGroup extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
 	
 	public static Intent createIntent(Context context) {
-		return new Intent(context, CreateGroupActivity.class);
+		return new Intent(context, ActivityCreateGroup.class);
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class CreateGroupActivity extends BaseActivity
 								e.printStackTrace();
 							}
 
-							Intent intent = CompleteInfoActivity.createIntent(context);
+							Intent intent = ActivityCompleteInfo.createIntent(context);
 							intent.putExtra("groupId", groupId);
 							intent.putExtra("groupName", groupName);
 							startActivity(intent);
@@ -180,7 +180,7 @@ public class CreateGroupActivity extends BaseActivity
 							showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
 									+ resultMessage);
 							DataManager.getInstance().saveCurrentUser(null);
-							startActivity(LoginActivity.createIntent(context));
+							startActivity(ActivityLogin.createIntent(context));
 							finish();
 						}
 					});

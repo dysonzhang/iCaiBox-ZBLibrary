@@ -17,10 +17,10 @@ import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
  * 财盒fragment
  * 
  */
-public class FristBoxFragment extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
+public class FragmentFristBox extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
 
-	public static FristBoxFragment createInstance() {
-		return new FristBoxFragment();
+	public static FragmentFristBox createInstance() {
+		return new FragmentFristBox();
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class FristBoxFragment extends BaseFragment implements OnClickListener, O
 	 */
 	private void replaceToAddBoxFragment() {
 		FragmentTransaction trasection = getFragmentManager().beginTransaction();
-		Fragment fragment = new AddBoxFragment();
+		Fragment fragment = new FragmentAddBox();
 		trasection.replace(R.id.flBottomTabFragmentContainer, fragment);
 		trasection.addToBackStack(null);
 		trasection.commit();

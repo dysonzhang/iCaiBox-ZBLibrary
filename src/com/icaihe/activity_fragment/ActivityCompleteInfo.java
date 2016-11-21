@@ -34,11 +34,11 @@ import zuo.biao.library.util.TimeUtil;
  * @author dyson
  *
  */
-public class CompleteInfoActivity extends BaseActivity
+public class ActivityCompleteInfo extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
 	
 	public static Intent createIntent(Context context) {
-		return new Intent(context, CompleteInfoActivity.class);
+		return new Intent(context, ActivityCompleteInfo.class);
 	}
 
 	@Override
@@ -172,7 +172,7 @@ public class CompleteInfoActivity extends BaseActivity
 
 							//跳转至主页
 							startActivity(
-									MainTabActivity.createIntent(context).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+									ActivityMainTab.createIntent(context).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 							overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
 							enterAnim = exitAnim = R.anim.null_anim;
 							finish();
@@ -183,7 +183,7 @@ public class CompleteInfoActivity extends BaseActivity
 							showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
 									+ resultMessage);
 							DataManager.getInstance().saveCurrentUser(null);
-							startActivity(LoginActivity.createIntent(context));
+							startActivity(ActivityLogin.createIntent(context));
 							finish();
 						}
 					});

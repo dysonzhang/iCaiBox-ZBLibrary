@@ -35,11 +35,11 @@ import zuo.biao.library.util.Json;
  * 动态界面fragment
  * 
  */
-public class NoticeListFragment extends BaseHttpListFragment<Notice, NoticeAdapter>
+public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapter>
 		implements OnItemClickListener, OnClickListener, CacheCallBack<Notice> {
 
-	public static NoticeListFragment createInstance() {
-		NoticeListFragment fragment = new NoticeListFragment();
+	public static FragmentNoticeList createInstance() {
+		FragmentNoticeList fragment = new FragmentNoticeList();
 		Bundle bundle = new Bundle();
 		fragment.setArguments(bundle);
 		return fragment;
@@ -249,7 +249,7 @@ public class NoticeListFragment extends BaseHttpListFragment<Notice, NoticeAdapt
 			// showShortToast("onClick tv_name");
 			break;
 		case R.id.bt_my_box:
-			MainTabActivity mainTabActivity = (MainTabActivity ) getActivity();
+			ActivityMainTab mainTabActivity = (ActivityMainTab ) getActivity();
 			mainTabActivity.selectFragment(1);
 			break;
 		case R.id.bt_check_in:

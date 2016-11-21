@@ -16,10 +16,10 @@ import zuo.biao.library.interfaces.OnBottomDragListener;
  * 
  * @use MainTabActivity.createIntent(...)
  */
-public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDragListener {
+public class ActivityMainTab extends ActivityBaseBottomTab implements OnBottomDragListener {
 
 	public static Intent createIntent(Context context) {
-		return new Intent(context, MainTabActivity.class);
+		return new Intent(context, ActivityMainTab.class);
 	}
 
 	@Override
@@ -61,16 +61,16 @@ public class MainTabActivity extends BaseBottomTabActivity implements OnBottomDr
 		case 1:
 			long boxId = ICHApplication.getInstance().getCurrentUser().getBoxId();
 			if (boxId == 0) {
-				return FristBoxFragment.createInstance();
+				return FragmentFristBox.createInstance();
 			} else {
-				return BoxFragment.createInstance();
+				return FragmentBox.createInstance();
 			}
 		case 2:
-			return ContractListFragment.createInstance();
+			return FragmentContractList.createInstance();
 		case 3:
-			return MySettingFragment.createInstance();
+			return FragmentMySetting.createInstance();
 		default:
-			return NoticeListFragment.createInstance();
+			return FragmentNoticeList.createInstance();
 		}
 	};
 

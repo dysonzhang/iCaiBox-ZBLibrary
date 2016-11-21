@@ -26,11 +26,11 @@ import zuo.biao.library.util.Json;
  * 通讯录界面fragment
  * 
  */
-public class ContractListFragment extends BaseHttpListFragment<Contract, ContractAdapter>
+public class FragmentContractList extends BaseHttpListFragment<Contract, ContractAdapter>
 		implements OnItemClickListener, OnClickListener, CacheCallBack<Contract> {
 
-	public static ContractListFragment createInstance() {
-		ContractListFragment fragment = new ContractListFragment();
+	public static FragmentContractList createInstance() {
+		FragmentContractList fragment = new FragmentContractList();
 		Bundle bundle = new Bundle();
 		fragment.setArguments(bundle);
 		return fragment;

@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.icaihe.R;
-import com.icaihe.activity_fragment.SplashActivity;
+import com.icaihe.activity_fragment.ActivitySplash;
 import com.icaihe.application.ICHApplication;
 
 import android.app.Notification;
@@ -124,7 +124,7 @@ public class MyReceiver extends BroadcastReceiver {
 
 			} else {
 				// 打开Activity
-				Intent i = new Intent(context, SplashActivity.class);
+				Intent i = new Intent(context, ActivitySplash.class);
 				i.putExtras(bundle);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 						| Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -147,7 +147,7 @@ public class MyReceiver extends BroadcastReceiver {
 
 			} else {
 				// 打开Activity
-				Intent i = new Intent(context, SplashActivity.class);
+				Intent i = new Intent(context, ActivitySplash.class);
 				i.putExtras(bundle);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 						| Intent.FLAG_ACTIVITY_CLEAR_TOP);

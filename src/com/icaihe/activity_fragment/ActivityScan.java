@@ -35,7 +35,7 @@ import zuo.biao.library.util.CommonUtil;
  * 
  * @use toActivity(ScanActivity.createIntent(...));
  */
-public class ScanActivity extends CaptureActivity implements Callback, ActivityPresenter, OnClickListener {
+public class ActivityScan extends CaptureActivity implements Callback, ActivityPresenter, OnClickListener {
 	public static final String TAG = "ScanActivity";
 
 	/**
@@ -45,7 +45,7 @@ public class ScanActivity extends CaptureActivity implements Callback, ActivityP
 	 * @return
 	 */
 	public static Intent createIntent(Context context) {
-		return new Intent(context, ScanActivity.class);
+		return new Intent(context, ActivityScan.class);
 	}
 
 	@Override

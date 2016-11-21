@@ -1,7 +1,7 @@
 package com.icaihe.view;
 
 import com.icaihe.R;
-import com.icaihe.activity_fragment.BoxBeaconActivity;
+import com.icaihe.activity_fragment.ActivityBoxBeacon;
 import com.icaihe.model.BoxBeacon;
 import com.ichihe.util.HttpRequest;
 
@@ -93,7 +93,7 @@ public class BoxBeaconView extends BaseView<BoxBeacon> implements OnClickListene
 						}
 
 						showShortToast("开箱成功后跳转...");
-						Intent intent = BoxBeaconActivity.createIntent(context);
+						Intent intent = ActivityBoxBeacon.createIntent(context);
 						intent.putExtra("boxId", Long.parseLong(curr_boxId));
 						intent.putExtra("boxName", curr_boxName);
 						toActivity(intent);

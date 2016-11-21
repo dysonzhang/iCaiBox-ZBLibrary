@@ -1,58 +1,61 @@
 package com.icaihe.view;
 
 import com.icaihe.R;
-import com.icaihe.activity_fragment.ActivityCompleteInfo;
-import com.icaihe.model.Group;
+import com.icaihe.model.AuthMember;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import zuo.biao.library.base.BaseModel;
 import zuo.biao.library.base.BaseView;
 import zuo.biao.library.util.Log;
 
 /**
- * 搜索财盒View
  * 
  * @author dyson
  *
  */
-public class GroupView extends BaseView<Group> implements OnClickListener {
-	private static final String TAG = "GroupView";
+public class AuthMemberView extends BaseView<AuthMember> implements OnClickListener {
+	private static final String TAG = "AuthMemberView";
 
-	public GroupView(Activity context, Resources resources) {
+	public AuthMemberView(Activity context, Resources resources) {
 		super(context, resources);
 	}
 
-	public TextView tv_group_name;
-	public Button bt_add_group;
+	public ImageView iv_user_head;
+	public TextView tv_user_name;
+	public TextView tv_user_number;
+	public Button bt_auth;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View createView(LayoutInflater inflater) {
-		convertView = inflater.inflate(R.layout.item_serach_group, null);
+		convertView = inflater.inflate(R.layout.item_auth_member, null);
 
-		tv_group_name = findViewById(R.id.tv_group_name, this);
-		bt_add_group = findViewById(R.id.bt_add_group, this);
+		iv_user_head = findViewById(R.id.iv_user_head, this);
+		tv_user_name = findViewById(R.id.tv_user_name, this);
+		tv_user_number = findViewById(R.id.tv_user_number, this);
+		bt_auth = findViewById(R.id.bt_auth, this);
 
 		return convertView;
 	}
 
 	@Override
-	public void setView(Group data) {
+	public void setView(AuthMember data) {
 		if (data == null) {
 			Log.e(TAG, "setView  data == null >> return;");
 			return;
 		}
 		this.data = data;
-		tv_group_name.setText(data.getGroupName());
-		bt_add_group.setOnClickListener(this);
+		tv_user_name.setText(data.getUserName());
+		tv_user_number.setText(data.getUserPhone());
+		bt_auth.setOnClickListener(this);
 	}
 
 	@Override
@@ -61,11 +64,8 @@ public class GroupView extends BaseView<Group> implements OnClickListener {
 			return;
 		}
 		switch (v.getId()) {
-		case R.id.bt_add_group:
-			Intent intent =ActivityCompleteInfo.createIntent(context);
-			intent.putExtra("groupId", data.getId());
-			intent.putExtra("groupName", data.getGroupName());
-			toActivity(intent);
+		case R.id.bt_auth:
+			
 			break;
 		default:
 			break;

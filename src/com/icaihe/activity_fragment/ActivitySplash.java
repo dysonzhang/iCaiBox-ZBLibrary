@@ -16,7 +16,7 @@ import cn.jpush.android.api.JPushInterface;
  * @author dyson
  *
  */
-public class SplashActivity extends Activity {
+public class ActivitySplash extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +29,13 @@ public class SplashActivity extends Activity {
 				User user = ICHApplication.getInstance().getCurrentUser();
 				if (user == null) {
 					// 未登录
-					startActivity(LoginActivity.createIntent(SplashActivity.this));
+					startActivity(ActivityLogin.createIntent(ActivitySplash.this));
 				} else {
 					// 已登录
 					if (user.isNewUser()) {
-						startActivity(ChoseGroupActivity.createIntent(SplashActivity.this));
+						startActivity(ActivityChoseGroup.createIntent(ActivitySplash.this));
 					} else {
-						startActivity(MainTabActivity.createIntent(SplashActivity.this));
+						startActivity(ActivityMainTab.createIntent(ActivitySplash.this));
 					}
 				}
 				finish();

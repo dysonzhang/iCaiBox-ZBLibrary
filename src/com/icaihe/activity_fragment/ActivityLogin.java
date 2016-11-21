@@ -30,10 +30,10 @@ import zuo.biao.library.util.SettingUtil;
  * @author dyson
  *
  */
-public class LoginActivity extends BaseActivity implements OnClickListener, OnLongClickListener, OnBottomDragListener {
+public class ActivityLogin extends BaseActivity implements OnClickListener, OnLongClickListener, OnBottomDragListener {
 
 	public static Intent createIntent(Context context) {
-		return new Intent(context, LoginActivity.class);
+		return new Intent(context, ActivityLogin.class);
 	}
 
 	@Override
@@ -159,10 +159,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener, OnLo
 
 					// 跳转到选择财盒群组界面
 					if (user.isNewUser()) {
-						startActivity(ChoseGroupActivity.createIntent(context));
+						startActivity(ActivityChoseGroup.createIntent(context));
 						overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
 					} else {
-						startActivity(MainTabActivity.createIntent(context));
+						startActivity(ActivityMainTab.createIntent(context));
 						overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
 					}
 					finish();

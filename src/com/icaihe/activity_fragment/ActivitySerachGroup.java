@@ -39,11 +39,11 @@ import zuo.biao.library.util.SettingUtil;
  * @author dyson
  *
  */
-public class SerachGroupActivity extends BaseActivity
+public class ActivitySerachGroup extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
 
 	public static Intent createIntent(Context context) {
-		return new Intent(context, SerachGroupActivity.class);
+		return new Intent(context, ActivitySerachGroup.class);
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class SerachGroupActivity extends BaseActivity
 			@Override
 			public boolean onKey(View arg0, int keyCode, KeyEvent event) {
 				if (keyCode == KeyEvent.KEYCODE_ENTER) {
-					Toast.makeText(SerachGroupActivity.this, et_search.getText().toString().trim(), Toast.LENGTH_LONG)
+					Toast.makeText(ActivitySerachGroup.this, et_search.getText().toString().trim(), Toast.LENGTH_LONG)
 							.show();
 					String groupName = et_search.getText().toString().trim();
 					search(groupName);
@@ -211,7 +211,7 @@ public class SerachGroupActivity extends BaseActivity
 				showShortToast(
 						"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
 				DataManager.getInstance().saveCurrentUser(null);
-				startActivity(LoginActivity.createIntent(context));
+				startActivity(ActivityLogin.createIntent(context));
 				finish();
 			}
 		});

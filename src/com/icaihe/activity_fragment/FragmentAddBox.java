@@ -39,10 +39,10 @@ import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
  * 添加财盒fragment
  * 
  */
-public class AddBoxFragment extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
+public class FragmentAddBox extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
 
-	public static AddBoxFragment createInstance() {
-		return new AddBoxFragment();
+	public static FragmentAddBox createInstance() {
+		return new FragmentAddBox();
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.ib_scan_box:
-			toActivity(ScanActivity.createIntent(context), REQUEST_TO_CAMERA_SCAN);
+			toActivity(ActivityScan.createIntent(context), REQUEST_TO_CAMERA_SCAN);
 			break;
 		case R.id.bt_add_box:
 			boxWifiConnectConfig();
@@ -150,7 +150,7 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 	 */
 	private void replaceToBoxFragment() {
 		FragmentTransaction trasection = getFragmentManager().beginTransaction();
-		Fragment boxFragment = new BoxFragment();
+		Fragment boxFragment = new FragmentBox();
 		trasection.replace(R.id.flBottomTabFragmentContainer, boxFragment);
 		trasection.addToBackStack(null);
 		trasection.commit();
@@ -235,7 +235,7 @@ public class AddBoxFragment extends BaseFragment implements OnClickListener, OnD
 		switch (requestCode) {
 		case REQUEST_TO_CAMERA_SCAN:
 			if (data != null) {
-				String result = data.getStringExtra(ScanActivity.RESULT_QRCODE_STRING);
+				String result = data.getStringExtra(ActivityScan.RESULT_QRCODE_STRING);
 				et_ichid.setText(result);
 			}
 			break;

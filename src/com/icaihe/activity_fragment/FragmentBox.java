@@ -21,10 +21,10 @@ import zuo.biao.library.util.DataKeeper;
  * 财盒fragment
  * 
  */
-public class BoxFragment extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
+public class FragmentBox extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
 
-	public static BoxFragment createInstance() {
-		return new BoxFragment();
+	public static FragmentBox createInstance() {
+		return new FragmentBox();
 	}
 
 	@Override

@@ -30,10 +30,10 @@ import zuo.biao.library.util.TimeUtil;
 /**
  * @author dyson
  */
-public class BoxOpenRemarkActivity extends BaseActivity
+public class ActivityBoxOpenRemark extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
 	public static Intent createIntent(Context context) {
-		return new Intent(context, BoxOpenRemarkActivity.class);
+		return new Intent(context, ActivityBoxOpenRemark.class);
 	}
 
 	@Override
