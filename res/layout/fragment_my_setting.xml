@@ -35,8 +35,8 @@
                     android:id="@+id/tv_user_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="13888888888"
                     android:textColor="@color/white"
                     android:textSize="20dp" />
@@ -47,7 +47,7 @@
                 android:layout_marginTop="0dp" />
 
             <LinearLayout
-                android:id="@+id/ll_my_icaihe"
+                android:id="@+id/ll_my_group"
                 style="@style/content_item_white" >
 
                 <TextView
@@ -98,6 +98,24 @@
                     android:text="关于i财盒" />
 
                 <ImageView style="@style/content_item_rt_img" />
+            </LinearLayout>
+
+            <View style="@style/divider_horizontal_1px" />
+
+            <LinearLayout
+                android:id="@+id/ll_version"
+                style="@style/content_item_white" >
+
+                <TextView
+                    style="@style/content_item_lf_tv"
+                    android:layout_weight="1"
+                    android:text="当前版本" />
+
+                <TextView
+                    android:id="@+id/tv_version"
+                    style="@style/content_item_rt_img"
+                    android:layout_marginRight="10dp"
+                    android:text="v1.0.0" />
             </LinearLayout>
 
             <View style="@style/divider_horizontal_1px" />

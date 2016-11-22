@@ -116,7 +116,11 @@
             android:name="com.icaihe.activity_fragment.ActivityAuthMember"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
-
+       <activity
+            android:name="com.icaihe.activity_fragment.ActivityFeedback"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+       
         <service
             android:name="com.bluetooth.RRBLE.SDK.BluetoothLeService"
             android:enabled="true" />

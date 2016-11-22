@@ -30,9 +30,6 @@ import zuo.biao.library.util.TimeUtil;
 
 /**
  * 完善个人信息界面
- * 
- * @author dyson
- *
  */
 public class ActivityCompleteInfo extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {

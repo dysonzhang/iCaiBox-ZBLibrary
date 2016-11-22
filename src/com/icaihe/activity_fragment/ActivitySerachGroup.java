@@ -35,9 +35,6 @@ import zuo.biao.library.util.SettingUtil;
 
 /**
  * 搜索加入财盒群界面
- * 
- * @author dyson
- *
  */
 public class ActivitySerachGroup extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {

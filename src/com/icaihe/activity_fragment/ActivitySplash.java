@@ -10,11 +10,7 @@ import android.os.Handler;
 import cn.jpush.android.api.JPushInterface;
 
 /**
- * 
  * 闪屏activity
- * 
- * @author dyson
- *
  */
 public class ActivitySplash extends Activity {
 

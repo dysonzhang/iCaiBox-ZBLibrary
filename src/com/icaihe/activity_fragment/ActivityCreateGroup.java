@@ -29,9 +29,6 @@ import zuo.biao.library.util.TimeUtil;
 
 /**
  * 财盒群创建界面
- * 
- * @author dyson
- *
  */
 public class ActivityCreateGroup extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {

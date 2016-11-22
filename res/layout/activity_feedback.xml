@@ -1,0 +1,56 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/activity_page"
+    android:background="@color/main_bg_color" >
+
+    <LinearLayout style="@style/ll_vertical_match_match" >
+
+        <RelativeLayout style="@style/topbar_bg_golden" >
+
+            <ImageView
+                android:id="@+id/iv_back"
+                style="@style/topbar_return_img" />
+
+            <TextView
+                style="@style/topbar_title"
+                android:layout_centerHorizontal="true"
+                android:text="意见反馈" />
+
+            <TextView
+                style="@style/topbar_right_btn"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout style="@style/ll_vertical_match_match" >
+
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edittext_bg"
+                android:gravity="top"
+                android:hint="请填写您的反馈信息，我们会认真听取您的每一个意见或建议。谢谢！"
+                android:minLines="8"
+                android:padding="5dp"
+                android:textColor="@color/golden"
+                android:textColorHint="@color/edit_text"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/bt_submit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_get_code"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_bg"
+                android:text="提 交"
+                android:textColor="@color/golden"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

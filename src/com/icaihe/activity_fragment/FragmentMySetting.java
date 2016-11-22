@@ -2,6 +2,10 @@ package com.icaihe.activity_fragment;
 
 import com.icaihe.R;
 import com.icaihe.application.ICHApplication;
+import com.icaihe.jpush.PushSetUtil;
+import com.icaihe.manager.DataManager;
+import com.ichihe.util.APPManagement;
+import com.ichihe.util.Constant;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,12 +18,13 @@ import android.widget.TextView;
 import zuo.biao.library.base.BaseFragment;
 import zuo.biao.library.ui.AlertDialog;
 import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
+import zuo.biao.library.util.CommonUtil;
 
 /**
  * 我的设置fragment
  */
 public class FragmentMySetting extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
-	
+
 	public static FragmentMySetting createInstance() {
 		return new FragmentMySetting();
 	}
@@ -39,6 +44,7 @@ public class FragmentMySetting extends BaseFragment implements OnClickListener, 
 	private ImageView iv_setting_head;
 	private TextView tv_user_name;
 	private TextView tv_user_phone;
+	private TextView tv_version;
 	private Button bt_logout;
 
 	@Override
@@ -46,6 +52,7 @@ public class FragmentMySetting extends BaseFragment implements OnClickListener, 
 		iv_setting_head = (ImageView) findViewById(R.id.iv_setting_head);
 		tv_user_name = (TextView) findViewById(R.id.tv_user_name);
 		tv_user_phone = (TextView) findViewById(R.id.tv_user_phone);
+		tv_version = (TextView) findViewById(R.id.tv_version);
 		bt_logout = (Button) findViewById(R.id.bt_logout);
 	}
 
@@ -55,9 +62,16 @@ public class FragmentMySetting extends BaseFragment implements OnClickListener, 
 		String phone = ICHApplication.getInstance().getCurrentUser().getPhone();
 		tv_user_name.setText(name + "");
 		tv_user_phone.setText(phone + "");
+		tv_version.setText("v" + APPManagement.getVersionName(context));
 	}
 
 	private void logout() {
+		PushSetUtil pushSetUtil = new PushSetUtil(context);
+		pushSetUtil.setAlias("null");
+
+		DataManager.getInstance().saveCurrentUser(null);
+		startActivity(ActivityLogin.createIntent(context));
+
 		context.finish();
 	}
 
@@ -67,10 +81,11 @@ public class FragmentMySetting extends BaseFragment implements OnClickListener, 
 		iv_setting_head.setOnClickListener(this);
 		bt_logout.setOnClickListener(this);
 
-		findViewById(R.id.ll_my_icaihe).setOnClickListener(this);
+		findViewById(R.id.ll_my_group).setOnClickListener(this);
 		findViewById(R.id.ll_help_center).setOnClickListener(this);
 		findViewById(R.id.ll_feedback).setOnClickListener(this);
 		findViewById(R.id.ll_about).setOnClickListener(this);
+		// findViewById(R.id.ll_version).setOnClickListener(this);
 	}
 
 	@Override
@@ -88,24 +103,28 @@ public class FragmentMySetting extends BaseFragment implements OnClickListener, 
 		}
 	}
 
-	// 系统自带监听方法<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 	@Override
-	public void onClick(View v) {// 直接调用不会显示v被点击效果
+	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.iv_setting_head:
-			showShortToast("onClick  iv_setting_head");
+			// showShortToast("onClick iv_setting_head");
 			break;
 		case R.id.bt_logout:
-			new AlertDialog(context, "退出登录", "确定退出登录？", true, 0, this).show();
+			new AlertDialog(context, "提示", "请确定是否退出登录？", true, 0, this).show();
 			break;
-		case R.id.ll_my_icaihe:
+		case R.id.ll_my_group:
+			// this.toActivity(ActivityFeedback.createIntent(context));
 			break;
 		case R.id.ll_help_center:
+			CommonUtil.openWebSite(context, Constant.APP_WEBSITE_HELP_CENTER);
 			break;
 		case R.id.ll_feedback:
+			this.toActivity(ActivityFeedback.createIntent(context));
 			break;
 		case R.id.ll_about:
+			CommonUtil.openWebSite(context, Constant.APP_WEBSITE_ABOUT);
+			break;
+		case R.id.ll_version:
 			break;
 		default:
 			break;

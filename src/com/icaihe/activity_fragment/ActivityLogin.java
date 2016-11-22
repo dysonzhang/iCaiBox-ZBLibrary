@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import com.icaihe.R;
 import com.icaihe.application.ICHApplication;
+import com.icaihe.jpush.PushSetUtil;
 import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;
@@ -26,9 +27,6 @@ import zuo.biao.library.util.SettingUtil;
 
 /**
  * 手机号登录界面
- * 
- * @author dyson
- *
  */
 public class ActivityLogin extends BaseActivity implements OnClickListener, OnLongClickListener, OnBottomDragListener {
 
@@ -157,6 +155,10 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 					// 保存用户信息
 					User user = saveUserInfo(resultData);
 
+					// JPush推送设置标签和别名
+					PushSetUtil pushSetUtil = new PushSetUtil(context);
+					pushSetUtil.setAlias(user.getId() + "");
+
 					// 跳转到选择财盒群组界面
 					if (user.isNewUser()) {
 						startActivity(ActivityChoseGroup.createIntent(context));
@@ -209,6 +211,8 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 
 			String wifiId = jsonObject.getString("wifiId").equals("null") ? "" : jsonObject.getString("wifiId");
 
+			Boolean isGroupCreator = jsonObject.getBoolean("isGroupCreator");
+
 			// user =JSON.parseObject(resultData, User.class);
 			user.setId(userId);
 			user.setToken(token);
@@ -220,6 +224,7 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 			user.setPhone(phone);
 			user.setAlarmNum(alarmNum);
 			user.setWifiId(wifiId);
+			user.setGroupCreator(isGroupCreator);
 			ICHApplication.getInstance().saveCurrentUser(user);
 
 		} catch (JSONException e) {

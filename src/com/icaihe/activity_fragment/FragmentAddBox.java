@@ -37,7 +37,6 @@ import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
 
 /**
  * 添加财盒fragment
- * 
  */
 public class FragmentAddBox extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
 
@@ -178,7 +177,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 							User user = ICHApplication.getInstance().getCurrentUser();
 							user.setBoxId(boxId);
 							ICHApplication.getInstance().saveCurrentUser(user);
-							
+
 							replaceToBoxFragment();
 						}
 
@@ -292,12 +291,11 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 					}
 				}
 			});
-			mProgressDialog.setButton(DialogInterface.BUTTON_POSITIVE, "等待...",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-						}
-					});
+			mProgressDialog.setButton(DialogInterface.BUTTON_POSITIVE, "等待...", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
 			mProgressDialog.show();
 			mProgressDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
 		}

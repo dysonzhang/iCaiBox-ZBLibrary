@@ -24,7 +24,7 @@ import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.SettingUtil;
 
 /**
- * @author dyson
+ * beacon搜索
  */
 public class ActivityBoxBeacon extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {

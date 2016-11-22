@@ -1,6 +1,7 @@
 package com.icaihe.activity_fragment;
 
 import com.icaihe.R;
+import com.icaihe.manager.DataManager;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,12 +11,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import zuo.biao.library.base.BaseFragment;
 import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
 
 /**
- * 财盒fragment
- * 
+ * 用户无财盒fragment
  */
 public class FragmentFristBox extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
 
@@ -35,17 +36,28 @@ public class FragmentFristBox extends BaseFragment implements OnClickListener, O
 		return view;
 	}
 
+	private TextView tv_box_config_tips;
 	private Button bt_box_config;
 	private Button bt_box_buy;
+	private boolean isCanAddBox;
 
 	@Override
 	public void initView() {
+		tv_box_config_tips = (TextView) findViewById(R.id.tv_box_config_tips);
 		bt_box_config = (Button) findViewById(R.id.bt_box_config);
 		bt_box_buy = (Button) findViewById(R.id.bt_box_buy);
 	}
 
 	@Override
 	public void initData() {
+		isCanAddBox = DataManager.getInstance().getCurrentUser().isGroupCreator();
+		if (isCanAddBox) {
+			tv_box_config_tips.setText(" 您还没有添加财盒哦！马上点击按钮添加吧！");
+			bt_box_config.setVisibility(View.VISIBLE);
+		} else {
+			tv_box_config_tips.setText(" 财盒群还没有授权您管理财盒哦！");
+			bt_box_config.setVisibility(View.GONE);
+		}
 	}
 
 	@Override

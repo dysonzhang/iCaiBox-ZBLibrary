@@ -75,6 +75,7 @@ code
     "companyName": "xxx",    //所在群组名称
     "boxId": 12,             //具有开箱权限的财盒的ID
     "wifiId": "TP-link113"   //财盒绑定的无线网的名称
+    boolean isGroupCreator;//是否是群主 true是 false否 目前只有群主可以添加财盒，修改重新配置，授权
   }
 }
 或者：

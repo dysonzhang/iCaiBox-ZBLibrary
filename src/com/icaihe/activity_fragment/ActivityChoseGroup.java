@@ -17,20 +17,9 @@ import zuo.biao.library.util.SettingUtil;
 
 /**
  * 选择财盒群界面
- * 
- * @author dyson
- *
  */
 public class ActivityChoseGroup extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	// private static final String TAG = "ChoseGroupActivity";
-
-	/**
-	 * 启动这个Activity的Intent
-	 * 
-	 * @param context
-	 * @return
-	 */
 	public static Intent createIntent(Context context) {
 		return new Intent(context, ActivityChoseGroup.class);
 	}

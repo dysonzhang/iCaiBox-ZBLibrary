@@ -61,8 +61,10 @@ public class ActivityMainTab extends ActivityBaseBottomTab implements OnBottomDr
 		case 1:
 			long boxId = ICHApplication.getInstance().getCurrentUser().getBoxId();
 			if (boxId == 0) {
+				//该用户无已授权财盒或拥有财盒
 				return FragmentFristBox.createInstance();
 			} else {
+				//该用户有已财盒或拥有财盒
 				return FragmentBox.createInstance();
 			}
 		case 2:

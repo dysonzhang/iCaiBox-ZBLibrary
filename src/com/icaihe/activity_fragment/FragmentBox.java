@@ -3,6 +3,7 @@ package com.icaihe.activity_fragment;
 import com.alibaba.fastjson.JSON;
 import com.icaihe.R;
 import com.icaihe.application.ICHApplication;
+import com.icaihe.model.User;
 import com.ichihe.util.HttpRequest;
 
 import android.os.Bundle;
@@ -14,12 +15,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import zuo.biao.library.base.BaseFragment;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
+import zuo.biao.library.ui.AlertDialog;
 import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
 import zuo.biao.library.util.DataKeeper;
 
 /**
- * 财盒fragment
- * 
+ * 用户有财盒fragment
  */
 public class FragmentBox extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
 
@@ -44,7 +45,8 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 	private Button bt_open;
 	private Button bt_auth;
 	private Button bt_config;
-	long boxId;
+	private long boxId;
+	private boolean isCanAddBox;
 
 	@Override
 	public void initView() {
@@ -59,8 +61,20 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 	@Override
 	public void initData() {
 
-		boxId = ICHApplication.getInstance().getCurrentUser().getBoxId();
-
+		User user = ICHApplication.getInstance().getCurrentUser();
+		isCanAddBox = user.isGroupCreator();
+		boxId = user.getBoxId();
+		
+		if (isCanAddBox) {
+			bt_open.setVisibility(View.VISIBLE);
+			bt_auth.setVisibility(View.VISIBLE);
+			bt_config.setVisibility(View.VISIBLE);
+		} else {
+			bt_open.setVisibility(View.VISIBLE);
+			bt_auth.setVisibility(View.GONE);
+			bt_config.setVisibility(View.GONE);
+		}
+		
 		HttpRequest.queryBoxDetail(boxId, HttpRequest.RESULT_QUERY_BOX_DETAIL_SUCCEED, new OnHttpResponseListener() {
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
@@ -109,12 +123,6 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 		case 0:
 			this.showShortToast("打开财盒");
 			break;
-		case 1:
-			this.showShortToast("授权开箱");
-			break;
-		case 2:
-			this.showShortToast("重新配置WIFI");
-			break;
 		default:
 			break;
 		}
@@ -130,8 +138,7 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 			toActivity(ActivityAuthMember.createIntent(context));
 			break;
 		case R.id.bt_config:
-			// new AlertDialog(context, "重新配置WIFI", "确定重新配置WIFI？", true, 2,
-			// this).show();
+			new AlertDialog(context, "提示", "请确定是否重新配置财盒的WIFI信息？", true, 0, this).show();
 			break;
 		default:
 			break;

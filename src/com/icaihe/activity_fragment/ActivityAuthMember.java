@@ -24,9 +24,7 @@ import zuo.biao.library.util.Json;
 import zuo.biao.library.util.SettingUtil;
 
 /**
- * 
- * @author dyson
- *
+ * 授权财盒管理
  */
 public class ActivityAuthMember extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
@@ -69,7 +67,7 @@ public class ActivityAuthMember extends BaseActivity
 	@Override
 	public void initData() {
 		super.initData();
-		
+
 		getAuthList();
 	}
 
@@ -121,6 +119,9 @@ public class ActivityAuthMember extends BaseActivity
 							authMemberAdapter = new AuthMemberAdapter(context, authMemberList);
 							lv_authors.setAdapter(authMemberAdapter);
 							authMemberAdapter.notifyDataSetChanged();
+						} else {
+							showShortToast("暂无授权记录");
+							return;
 						}
 					}
 
@@ -130,7 +131,6 @@ public class ActivityAuthMember extends BaseActivity
 								+ resultMessage);
 					}
 				});
-
 	}
 
 	@Override

@@ -4,6 +4,25 @@
 
     <LinearLayout style="@style/ll_vertical_match_match" >
 
+        <LinearLayout
+            style="@style/ll_vertical_match_match"
+            android:layout_height="wrap_content"
+            android:background="#F1C83B" >
+
+            <TextView
+                android:id="@+id/tv_box_config_tips"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/icon_info"
+                android:gravity="left|center"
+                android:text=" "
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/bt_box_config"
             style="@style/btn_large_golden"
@@ -12,7 +31,7 @@
             android:layout_marginTop="100dp"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
-            android:text="已有财盒，立即配置" />
+            android:text="立即配置我的财盒" />
 
         <Button
             android:id="@+id/bt_box_buy"
@@ -22,7 +41,8 @@
             android:layout_marginTop="30dp"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
-            android:text="我要购买" />
+            android:text="我要购买"
+            android:visibility="gone" />
     </LinearLayout>
 
 </FrameLayout>

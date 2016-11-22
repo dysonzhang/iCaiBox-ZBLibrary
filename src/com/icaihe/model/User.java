@@ -19,7 +19,7 @@ public class User extends BaseModel {
 	String companyName;// 所在群组名称
 	long boxId;// 具有开箱权限的财盒的ID
 	String wifiId;// 财盒绑定的无线网的名称
-
+	boolean isGroupCreator;//是否是群主 true是 false否 目前只有群主可以添加财盒，修改重新配置，授权
 	/**
 	 * 默认构造方法，JSON等解析时必须要有
 	 */
@@ -110,6 +110,14 @@ public class User extends BaseModel {
 
 	public void setWifiId(String wifiId) {
 		this.wifiId = wifiId;
+	}
+
+	public boolean isGroupCreator() {
+		return isGroupCreator;
+	}
+
+	public void setGroupCreator(boolean isGroupCreator) {
+		this.isGroupCreator = isGroupCreator;
 	}
 
 	@Override

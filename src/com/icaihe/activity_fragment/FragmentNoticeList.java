@@ -33,7 +33,6 @@ import zuo.biao.library.util.Json;
 
 /**
  * 动态界面fragment
- * 
  */
 public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapter>
 		implements OnItemClickListener, OnClickListener, CacheCallBack<Notice> {
