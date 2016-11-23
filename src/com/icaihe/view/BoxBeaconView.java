@@ -2,11 +2,12 @@ package com.icaihe.view;
 
 import com.icaihe.R;
 import com.icaihe.activity_fragment.ActivityBoxBeacon;
-import com.icaihe.model.BoxBeacon;
+import com.icaihe.activity_fragment.ActivityBoxOpenRemark;
 import com.ichihe.util.HttpRequest;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -14,13 +15,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import zuo.biao.library.base.BaseModel;
 import zuo.biao.library.base.BaseView;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.Log;
 
-public class BoxBeaconView extends BaseView<BoxBeacon> implements OnClickListener {
+public class BoxBeaconView extends BaseView<BluetoothDevice> implements OnClickListener {
 	private static final String TAG = "BoxBeaconView";
 
 	public BoxBeaconView(Activity context, Resources resources) {
@@ -42,24 +42,35 @@ public class BoxBeaconView extends BaseView<BoxBeacon> implements OnClickListene
 	}
 
 	@Override
-	public void setView(BoxBeacon data) {
+	public void setView(BluetoothDevice data) {
 		if (data == null) {
 			Log.e(TAG, "setView  data == null >> return;");
 			return;
 		}
 		this.data = data;
-		tv_beacon_name.setText(data.getBeaconName());
+		tv_beacon_name.setText(data.getName());
 		bt_open_box.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
-		if (BaseModel.isCorrect(data) == false) {
-			return;
-		}
 		switch (v.getId()) {
 		case R.id.bt_open_box:
-			openBoxAgreement(data.getBeaconName(), "");
+
+			// if (data == null)
+			// return;
+			// Intent intent = ActivityBoxOpenRemark.createIntent(context);
+			// intent.putExtra(ActivityBoxOpenRemark.EXTRAS_DEVICE_NAME,
+			// data.getName());
+			// intent.putExtra(ActivityBoxOpenRemark.EXTRAS_DEVICE_ADDRESS,
+			// data.getAddress());
+			//
+			// if (ActivityBoxBeacon.mScanning) {
+			// //
+			// ActivityBoxBeacon.mBluetoothAdapter.stopLeScan(mLeScanCallback);
+			// ActivityBoxBeacon.mScanning = false;
+			// }
+			// toActivity(intent);
 			break;
 		default:
 			break;
@@ -67,7 +78,7 @@ public class BoxBeaconView extends BaseView<BoxBeacon> implements OnClickListene
 	}
 
 	/**
-	 * 开箱握手协议
+	 * TODO 开箱握手协议
 	 * 
 	 * @param beaconName
 	 * @param key
@@ -106,4 +117,26 @@ public class BoxBeaconView extends BaseView<BoxBeacon> implements OnClickListene
 					}
 				});
 	}
+
+	/**
+	 * TODO 开箱记录添加 打开成功时添加
+	 * 
+	 * @param boxId
+	 */
+	private void openBox(long boxId) {
+		HttpRequest.openBox(boxId, 1, HttpRequest.RESULT_OPEN_BOX_SUCCEED, new OnHttpResponseListener() {
+
+			@Override
+			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
+				showShortToast("开箱记录添加成功");
+			}
+
+			@Override
+			public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+				showShortToast(
+						"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
+			}
+		});
+	}
+
 }

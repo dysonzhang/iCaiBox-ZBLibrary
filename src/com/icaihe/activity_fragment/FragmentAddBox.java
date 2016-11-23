@@ -144,16 +144,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 		}
 	}
 
-	/**
-	 * 替换为BoxFragment
-	 */
-	private void replaceToBoxFragment() {
-		FragmentTransaction trasection = getFragmentManager().beginTransaction();
-		Fragment boxFragment = new FragmentBox();
-		trasection.replace(R.id.flBottomTabFragmentContainer, boxFragment);
-		trasection.addToBackStack(null);
-		trasection.commit();
-	}
+
 
 	/**
 	 * TODO 添加财盒
@@ -190,66 +181,12 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 		}
 	}
 
-	/**
-	 * TODO 表单验证
-	 * 
-	 * @return
-	 */
-	private boolean checkFormValid() {
-		if (et_company_name.getText().equals(null) || et_company_name.getText().toString().trim().equals("")) {
-			et_company_name.setShakeAnimation();
-			showShortToast("企业组织名称不能为空");
-			return false;
-		}
-		if (et_ichid.getText().equals(null) || et_ichid.getText().toString().trim().equals("")) {
-			et_ichid.setShakeAnimation();
-			showShortToast("财盒ID不能为空");
-			return false;
-		}
-		if (et_wifi_ssid.getText().equals(null) || et_wifi_ssid.getText().toString().trim().equals("")) {
-			et_wifi_ssid.setShakeAnimation();
-			showShortToast("WIFI名称不能为空");
-			return false;
-		}
-		if (et_wifi_pwd.getText().equals(null) || et_wifi_pwd.getText().toString().trim().equals("")) {
-			et_wifi_pwd.setShakeAnimation();
-			showShortToast("WIFI密码不能为空");
-			return false;
-		}
-		if (et_box_name.getText().equals(null) || et_box_name.getText().toString().trim().equals("")) {
-			et_box_name.setShakeAnimation();
-			showShortToast("财盒名称不能为空");
-			return false;
-		}
-
-		return true;
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode != RESULT_OK) {
-			return;
-		}
-		switch (requestCode) {
-		case REQUEST_TO_CAMERA_SCAN:
-			if (data != null) {
-				String result = data.getStringExtra(ActivityScan.RESULT_QRCODE_STRING);
-				et_ichid.setText(result);
-			}
-			break;
-		default:
-			break;
-		}
-	}
-
 	private void onEsptoucResultAddedPerform(final IEsptouchResult result) {
 		runUiThread(new Runnable() {
 			@Override
 			public void run() {
 				String text = result.getBssid() + "连接WIFI成功";
 				showShortToast(text);
-				addBox();
 			}
 		});
 	}
@@ -275,6 +212,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 
 		@Override
 		protected void onPreExecute() {
+			
 			mProgressDialog = new ProgressDialog(context);
 			mProgressDialog.setMessage("配置中, 请稍等...");
 			mProgressDialog.setCanceledOnTouchOutside(false);
@@ -348,11 +286,77 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 					if (count < result.size()) {
 						sb.append("\nthere's " + (result.size() - count) + " more result(s) without showing\n");
 					}
+					
+					addBox();
+					
 					mProgressDialog.setMessage(sb.toString());
 				} else {
 					mProgressDialog.setMessage("配置失败");
 				}
 			}
+		}
+	}
+
+	/**
+	 * TODO 表单验证
+	 * 
+	 * @return
+	 */
+	private boolean checkFormValid() {
+		if (et_company_name.getText().equals(null) || et_company_name.getText().toString().trim().equals("")) {
+			et_company_name.setShakeAnimation();
+			showShortToast("企业组织名称不能为空");
+			return false;
+		}
+		if (et_ichid.getText().equals(null) || et_ichid.getText().toString().trim().equals("")) {
+			et_ichid.setShakeAnimation();
+			showShortToast("财盒ID不能为空");
+			return false;
+		}
+		if (et_wifi_ssid.getText().equals(null) || et_wifi_ssid.getText().toString().trim().equals("")) {
+			et_wifi_ssid.setShakeAnimation();
+			showShortToast("WIFI名称不能为空");
+			return false;
+		}
+		if (et_wifi_pwd.getText().equals(null) || et_wifi_pwd.getText().toString().trim().equals("")) {
+			et_wifi_pwd.setShakeAnimation();
+			showShortToast("WIFI密码不能为空");
+			return false;
+		}
+		if (et_box_name.getText().equals(null) || et_box_name.getText().toString().trim().equals("")) {
+			et_box_name.setShakeAnimation();
+			showShortToast("财盒名称不能为空");
+			return false;
+		}
+
+		return true;
+	}
+	/**
+	 * 替换为BoxFragment
+	 */
+	private void replaceToBoxFragment() {
+		FragmentTransaction trasection = getFragmentManager().beginTransaction();
+		Fragment boxFragment = new FragmentBox();
+		trasection.replace(R.id.flBottomTabFragmentContainer, boxFragment);
+		trasection.addToBackStack(null);
+		trasection.commit();
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode != RESULT_OK) {
+			return;
+		}
+		switch (requestCode) {
+		case REQUEST_TO_CAMERA_SCAN:
+			if (data != null) {
+				String result = data.getStringExtra(ActivityScan.RESULT_QRCODE_STRING);
+				et_ichid.setText(result);
+			}
+			break;
+		default:
+			break;
 		}
 	}
 }

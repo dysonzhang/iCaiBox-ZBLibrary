@@ -64,7 +64,7 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 		User user = ICHApplication.getInstance().getCurrentUser();
 		isCanAddBox = user.isGroupCreator();
 		boxId = user.getBoxId();
-		
+
 		if (isCanAddBox) {
 			bt_open.setVisibility(View.VISIBLE);
 			bt_auth.setVisibility(View.VISIBLE);
@@ -74,7 +74,10 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 			bt_auth.setVisibility(View.GONE);
 			bt_config.setVisibility(View.GONE);
 		}
-		
+		if (boxId == 0L) {
+			showShortToast("财盒ID为0");
+			return;
+		}
 		HttpRequest.queryBoxDetail(boxId, HttpRequest.RESULT_QUERY_BOX_DETAIL_SUCCEED, new OnHttpResponseListener() {
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
@@ -121,7 +124,7 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 
 		switch (requestCode) {
 		case 0:
-			this.showShortToast("打开财盒");
+			this.showShortToast("跳转到重新配置财盒信息界面");
 			break;
 		default:
 			break;
@@ -132,7 +135,7 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.bt_open:
-			openBox(boxId);
+			toActivity(ActivityBoxBeacon.createIntent(context));
 			break;
 		case R.id.bt_auth:
 			toActivity(ActivityAuthMember.createIntent(context));
@@ -145,24 +148,5 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 		}
 	}
 
-	/**
-	 * 开箱记录添加
-	 * 
-	 * @param boxId
-	 */
-	private void openBox(long boxId) {
-		HttpRequest.openBox(boxId, 1, HttpRequest.RESULT_OPEN_BOX_SUCCEED, new OnHttpResponseListener() {
 
-			@Override
-			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
-				showShortToast("开箱记录添加成功");
-			}
-
-			@Override
-			public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
-				showShortToast(
-						"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
-			}
-		});
-	}
 }

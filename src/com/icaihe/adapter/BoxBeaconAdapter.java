@@ -2,17 +2,17 @@ package com.icaihe.adapter;
 
 import java.util.List;
 
-import com.icaihe.model.BoxBeacon;
 import com.icaihe.view.BoxBeaconView;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothDevice;
 import android.view.View;
 import android.view.ViewGroup;
 import zuo.biao.library.base.BaseAdapter;
 
-public class BoxBeaconAdapter extends BaseAdapter<BoxBeacon> {
+public class BoxBeaconAdapter extends BaseAdapter<BluetoothDevice> {
 
-	public BoxBeaconAdapter(Activity context, List<BoxBeacon> list) {
+	public BoxBeaconAdapter(Activity context, List<BluetoothDevice> list) {
 		super(context, list);
 	}
 

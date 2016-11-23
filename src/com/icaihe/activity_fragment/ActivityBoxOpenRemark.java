@@ -23,15 +23,17 @@ import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.ui.DatePickerWindow;
+import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.SettingUtil;
 import zuo.biao.library.util.StringUtil;
 import zuo.biao.library.util.TimeUtil;
 
 /**
- * @author dyson
+ * 财盒控制中心
  */
 public class ActivityBoxOpenRemark extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
+
 	public static Intent createIntent(Context context) {
 		return new Intent(context, ActivityBoxOpenRemark.class);
 	}
@@ -54,6 +56,9 @@ public class ActivityBoxOpenRemark extends BaseActivity
 			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
 		}
 	}
+
+	public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
+	public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
 	private TextView tv_box_name;
 
@@ -152,6 +157,9 @@ public class ActivityBoxOpenRemark extends BaseActivity
 		return false;
 	}
 
+	/**
+	 * TODO 开箱备注
+	 */
 	private void openRemark() {
 
 		if (checkForm()) {
