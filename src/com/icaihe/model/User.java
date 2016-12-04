@@ -10,7 +10,7 @@ public class User extends BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	String token; // "A6kK5pVdU42UMZF65uInSrflS6r1sTRO7pKDaiaiXSs%3D"
-	// long id; // 用户id
+	long userId; // 用户id
 	String name; // 用户姓名
 	String phone; // 用户手机号
 	String alarmNum;// 表示未读报警记录数目
@@ -20,24 +20,13 @@ public class User extends BaseModel {
 	long boxId;// 具有开箱权限的财盒的ID
 	String wifiId;// 财盒绑定的无线网的名称
 	boolean isGroupCreator;//是否是群主 true是 false否 目前只有群主可以添加财盒，修改重新配置，授权
-	/**
-	 * 默认构造方法，JSON等解析时必须要有
-	 */
-	public User() {
-		// default
+
+	public long getUserId() {
+		return userId;
 	}
 
-	public User(long id) {
-		this(id, null);
-	}
-
-	public User(String name) {
-		this(-1, name);
-	}
-
-	public User(long id, String name) {
-		this.id = id;
-		this.name = name;
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 	public String getToken() {
@@ -122,7 +111,7 @@ public class User extends BaseModel {
 
 	@Override
 	public boolean isCorrect() {// 根据自己的需求决定，也可以直接 return true
-		return id > 0;// && StringUtil.isNotEmpty(phone, true);
+		return true;// && StringUtil.isNotEmpty(phone, true);
 	}
 
 }

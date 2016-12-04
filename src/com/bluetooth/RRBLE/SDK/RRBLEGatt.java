@@ -170,6 +170,7 @@ public class RRBLEGatt {
 		byte[] lockON = new byte[2];// {0, 0};
 		if (on) {
 			lockON[0] = 1;
+			lockON[1] = 1;
 		}
 
 		RRBLE_ConfigCharacteristic.setValue(lockON);

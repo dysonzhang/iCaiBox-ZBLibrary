@@ -1,5 +1,6 @@
 package com.icaihe.activity_fragment;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
 import com.ichihe.util.HttpRequest;
 
@@ -37,14 +38,9 @@ public class ActivityFeedback extends BaseActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_feedback, this);
-
 		initView();
 		initData();
 		initEvent();
-
-		if (SettingUtil.isOnTestMode) {
-			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
-		}
 	}
 
 	private ImageView iv_back;
@@ -98,16 +94,19 @@ public class ActivityFeedback extends BaseActivity
 
 		if (checkForm()) {
 			String content = et_content.getText().toString();
+			SVProgressHUD.showWithStatus(context, "请稍候...");
 			HttpRequest.feedback(content, HttpRequest.RESULT_FEEDBACK_SUCCEED, new OnHttpResponseListener() {
 				@Override
 				public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 						String resultData) {
+					SVProgressHUD.dismiss(context);
 					showShortToast("非常感谢您的反馈！");
 					finish();
 				}
 
 				@Override
 				public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+					SVProgressHUD.dismiss(context);
 					showShortToast(
 							"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
 				}

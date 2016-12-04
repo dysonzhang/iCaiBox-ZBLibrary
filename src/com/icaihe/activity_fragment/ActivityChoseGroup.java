@@ -1,7 +1,6 @@
 package com.icaihe.activity_fragment;
 
 import com.icaihe.R;
-import com.ichihe.util.HttpRequest;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,7 +12,6 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
-import zuo.biao.library.util.SettingUtil;
 
 /**
  * 选择财盒群界面
@@ -33,23 +31,20 @@ public class ActivityChoseGroup extends BaseActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chose_group, this);
-
 		initView();
 		initData();
 		initEvent();
-
-		if (SettingUtil.isOnTestMode) {
-			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
-		}
 	}
 
 	private Button bt_create_group;
+	private Button bt_create_private_group;
 	private Button bt_add_group;
 
 	@Override
 	public void initView() {
 		super.initView();
 		bt_create_group = (Button) findViewById(R.id.bt_create_group);
+		bt_create_private_group = (Button) findViewById(R.id.bt_create_private_group);
 		bt_add_group = (Button) findViewById(R.id.bt_add_group);
 	}
 
@@ -62,6 +57,7 @@ public class ActivityChoseGroup extends BaseActivity
 	public void initEvent() {
 		super.initEvent();
 		bt_create_group.setOnClickListener(this);
+		bt_create_private_group.setOnClickListener(this);
 		bt_add_group.setOnClickListener(this);
 	}
 
@@ -73,8 +69,16 @@ public class ActivityChoseGroup extends BaseActivity
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.bt_create_group:
-			startActivity(ActivityCreateGroup.createIntent(context));
+		case R.id.bt_create_group: 
+			Intent intent0 =ActivityCreateGroup.createIntent(context);
+			intent0.putExtra("isPrivate", 0); 
+			toActivity(intent0);
+			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
+			break;
+		case R.id.bt_create_private_group:
+			Intent intent1 =ActivityCreateGroup.createIntent(context);
+			intent1.putExtra("isPrivate", 1); 
+			toActivity(intent1);
 			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
 			break;
 		case R.id.bt_add_group:

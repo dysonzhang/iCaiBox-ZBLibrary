@@ -23,7 +23,6 @@ import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.ui.DatePickerWindow;
-import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.SettingUtil;
 import zuo.biao.library.util.StringUtil;
 import zuo.biao.library.util.TimeUtil;
@@ -47,14 +46,9 @@ public class ActivityBoxOpenRemark extends BaseActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_box_open_remark, this);
-
 		initView();
 		initData();
 		initEvent();
-
-		if (SettingUtil.isOnTestMode) {
-			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
-		}
 	}
 
 	public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";

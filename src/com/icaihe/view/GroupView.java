@@ -63,7 +63,7 @@ public class GroupView extends BaseView<Group> implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.bt_add_group:
 			Intent intent =ActivityCompleteInfo.createIntent(context);
-			intent.putExtra("groupId", data.getId());
+			intent.putExtra("groupId", data.getGroupId());
 			intent.putExtra("groupName", data.getGroupName());
 			toActivity(intent);
 			break;

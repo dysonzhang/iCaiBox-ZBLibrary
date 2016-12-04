@@ -3,9 +3,10 @@ package com.icaihe.activity_fragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
-import com.icaihe.application.ICHApplication;
 import com.icaihe.jpush.PushSetUtil;
+import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;
@@ -23,12 +24,15 @@ import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.DataKeeper;
+import zuo.biao.library.util.Log;
 import zuo.biao.library.util.SettingUtil;
 
 /**
  * 手机号登录界面
  */
 public class ActivityLogin extends BaseActivity implements OnClickListener, OnLongClickListener, OnBottomDragListener {
+
+	public static String TAG = "ActivityLogin";
 
 	public static Intent createIntent(Context context) {
 		return new Intent(context, ActivityLogin.class);
@@ -47,10 +51,6 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 		initView();
 		initData();
 		initEvent();
-
-		if (SettingUtil.isOnTestMode) {
-			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
-		}
 	}
 
 	private TimeCount time = new TimeCount(60000, 1000);
@@ -111,11 +111,13 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 			time.start();
 
 			final String phone = et_phone.getText().toString();
+			SVProgressHUD.showWithStatus(this, "请稍候...");
 			HttpRequest.getCode(phone, 1, HttpRequest.RESULT_GET_CODE_SUCCEED, new OnHttpResponseListener() {
 
 				@Override
 				public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 						String resultData) {
+					SVProgressHUD.dismiss(context);
 					// 收到验证码后存储手机号码
 					DataKeeper.save(DataKeeper.getRootSharedPreferences(), "verifyPhone", phone);
 					showShortToast("验证码已发送，请稍候...");
@@ -123,6 +125,7 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 
 				@Override
 				public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+					SVProgressHUD.dismiss(context);
 					showShortToast(
 							"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
 				}
@@ -135,6 +138,7 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 	 */
 	private void login() {
 		if (checkFormValid()) {
+
 			// 验证存储的手机号是否为空
 			if (DataKeeper.getRootSharedPreferences().getString("verifyPhone", "").toString().trim().equals("")) {
 				showShortToast("请先验证您的手机号码");
@@ -144,20 +148,28 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 			final String phone = et_phone.getText().toString();
 			final String code = et_code.getText().toString();
 
+			SVProgressHUD.showWithStatus(this, "请稍候...");
 			HttpRequest.login(phone, code, HttpRequest.RESULT_LOGN_SUCCEED, new OnHttpResponseListener() {
 
 				@Override
 				public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 						String resultData) {
-
+					SVProgressHUD.dismiss(context);
 					showShortToast("登录成功！");
+
+					String info = "resultCode->" + resultCode + " resultMessage->" + resultMessage + " resultData->"
+							+ resultData;
+					showShortToast(info);
+
+					Log.i(TAG, "resultCode-->" + resultCode + " resultMessage-->" + resultMessage);
+					Log.i(TAG, "resultData-->" + resultData);
 
 					// 保存用户信息
 					User user = saveUserInfo(resultData);
 
 					// JPush推送设置标签和别名
 					PushSetUtil pushSetUtil = new PushSetUtil(context);
-					pushSetUtil.setAlias(user.getId() + "");
+					pushSetUtil.setAlias(user.getUserId() + "");
 
 					// 跳转到选择财盒群组界面
 					if (user.isNewUser()) {
@@ -172,6 +184,7 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 
 				@Override
 				public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+					SVProgressHUD.dismiss(context);
 					showShortToast(
 							"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
 				}
@@ -214,7 +227,7 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 			Boolean isGroupCreator = jsonObject.getBoolean("isGroupCreator");
 
 			// user =JSON.parseObject(resultData, User.class);
-			user.setId(userId);
+			user.setUserId(userId);
 			user.setToken(token);
 			user.setBoxId(boxId);
 			user.setCompanyName(companyName);
@@ -225,7 +238,7 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 			user.setAlarmNum(alarmNum);
 			user.setWifiId(wifiId);
 			user.setGroupCreator(isGroupCreator);
-			ICHApplication.getInstance().saveCurrentUser(user);
+			DataManager.getInstance().saveCurrentUser(user);
 
 		} catch (JSONException e) {
 			e.printStackTrace();

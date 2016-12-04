@@ -46,6 +46,8 @@ public class FragmentFristBox extends BaseFragment implements OnClickListener, O
 		tv_box_config_tips = (TextView) findViewById(R.id.tv_box_config_tips);
 		bt_box_config = (Button) findViewById(R.id.bt_box_config);
 		bt_box_buy = (Button) findViewById(R.id.bt_box_buy);
+
+		ActivityMainTab.setTabMenu(0);
 	}
 
 	@Override
@@ -55,7 +57,7 @@ public class FragmentFristBox extends BaseFragment implements OnClickListener, O
 			tv_box_config_tips.setText(" 您还没有添加财盒哦！马上点击按钮添加吧！");
 			bt_box_config.setVisibility(View.VISIBLE);
 		} else {
-			tv_box_config_tips.setText(" 财盒群还没有授权您管理财盒哦！");
+			tv_box_config_tips.setText(" 您还没有已授权的财盒哦！");
 			bt_box_config.setVisibility(View.GONE);
 		}
 	}

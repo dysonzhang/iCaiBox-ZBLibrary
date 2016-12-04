@@ -2,8 +2,8 @@ package com.icaihe.activity_fragment;
 
 import java.util.ArrayList;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
-import com.icaihe.application.ICHApplication;
 import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
@@ -24,7 +24,6 @@ import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.ui.DatePickerWindow;
-import zuo.biao.library.util.SettingUtil;
 import zuo.biao.library.util.StringUtil;
 import zuo.biao.library.util.TimeUtil;
 
@@ -47,14 +46,9 @@ public class ActivityCompleteInfo extends BaseActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_complete_info, this);
-
 		initView();
 		initData();
 		initEvent();
-
-		if (SettingUtil.isOnTestMode) {
-			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
-		}
 	}
 
 	private ImageView iv_back;
@@ -150,22 +144,24 @@ public class ActivityCompleteInfo extends BaseActivity
 		if (checkForm()) {
 			final String userName = et_user_name.getText().toString();
 			String joinDate = et_add_date.getText().toString();
-
+			SVProgressHUD.showWithStatus(this, "请稍候..");
 			HttpRequest.joinGroup(groupId, userName, joinDate, HttpRequest.RESULT_JOIN_GROUP_SUCCEED,
 					new OnHttpResponseListener() {
 
 						@Override
 						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 								String resultData) {
+							SVProgressHUD.dismiss(context);
 							showShortToast("加入成功！");
 
 							// 更新用户信息
-							User user = ICHApplication.getInstance().getCurrentUser();
+							User user = DataManager.getInstance().getCurrentUser();
 							user.setName(userName);
 							user.setCompanyName(groupName);
 							user.setGroupId(groupId);
 							user.setNewUser(false);
-							ICHApplication.getInstance().saveCurrentUser(user);
+							user.setGroupCreator(false);
+							DataManager.getInstance().saveCurrentUser(user);
 
 							//跳转至主页
 							startActivity(
@@ -177,6 +173,7 @@ public class ActivityCompleteInfo extends BaseActivity
 
 						@Override
 						public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+							SVProgressHUD.dismiss(context);
 							showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
 									+ resultMessage);
 							DataManager.getInstance().saveCurrentUser(null);

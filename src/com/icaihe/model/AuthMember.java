@@ -14,26 +14,6 @@ public class AuthMember extends BaseModel {
 	// ‘0’表示未授权开箱，‘1’表示已经授权开箱
 	private int authority;
 
-	/**
-	 * 默认构造方法，JSON等解析时必须要有
-	 */
-	public AuthMember() {
-		// default
-	}
-
-	public AuthMember(long id) {
-		this(id, null);
-	}
-
-	public AuthMember(String userName) {
-		this(-1, userName);
-	}
-
-	public AuthMember(long id, String userName) {
-		this.id = id;
-		this.userName = userName;
-	}
-
 	public long getUserId() {
 		return userId;
 	}
@@ -84,6 +64,6 @@ public class AuthMember extends BaseModel {
 
 	@Override
 	public boolean isCorrect() {// 根据自己的需求决定，也可以直接 return true
-		return id > 0;// && StringUtil.isNotEmpty(phone, true);
+		return true;// && StringUtil.isNotEmpty(phone, true);
 	}
 }

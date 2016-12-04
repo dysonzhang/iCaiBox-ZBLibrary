@@ -35,8 +35,8 @@
     <Button
         android:id="@+id/bt_auth"
         android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:layout_margin="20dp"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
         android:background="@drawable/selector_golden_corners_button"
         android:text="马上授权/取消授权"
         android:textColor="@color/black"

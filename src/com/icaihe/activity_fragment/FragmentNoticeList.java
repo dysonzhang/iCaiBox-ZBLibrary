@@ -7,14 +7,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
 import com.icaihe.adapter.NoticeAdapter;
-import com.icaihe.application.ICHApplication;
+import com.icaihe.manager.DataManager;
 import com.icaihe.model.Notice;
 import com.icaihe.model.User;
 import com.ichihe.util.HttpRequest;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +29,6 @@ import android.widget.TextView;
 import zuo.biao.library.base.BaseHttpListFragment;
 import zuo.biao.library.base.BaseModel;
 import zuo.biao.library.interfaces.AdapterCallBack;
-import zuo.biao.library.interfaces.CacheCallBack;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.Json;
 
@@ -35,7 +36,9 @@ import zuo.biao.library.util.Json;
  * 动态界面fragment
  */
 public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapter>
-		implements OnItemClickListener, OnClickListener, CacheCallBack<Notice> {
+		implements OnItemClickListener, OnClickListener {
+
+	public static String TAG = "FragmentNoticeList";
 
 	public static FragmentNoticeList createInstance() {
 		FragmentNoticeList fragment = new FragmentNoticeList();
@@ -50,21 +53,20 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 		argument = getArguments();
 		if (argument != null) {
 		}
-		initCache(this);
 
 		initView();
 		initData();
 		initEvent();
 
-		lvBaseList.onRefresh();
 		return view;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
+		SVProgressHUD.showWithStatus(context, "请稍候...");
 		lvBaseList.onRefresh();
+		SVProgressHUD.dismiss(context);
 	}
 
 	private ImageView iv_head_user;
@@ -80,6 +82,8 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 		tv_name = (TextView) findViewById(R.id.tv_name);
 		bt_my_box = (Button) findViewById(R.id.bt_my_box);
 		bt_check_in = (Button) findViewById(R.id.bt_check_in);
+		
+		ActivityMainTab.setTabMenu(1);
 	}
 
 	@Override
@@ -100,7 +104,7 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 	@Override
 	public void initData() {
 		super.initData();
-		User user = ICHApplication.getInstance().getCurrentUser();
+		User user = DataManager.getInstance().getCurrentUser();
 		String name = user.getName();
 
 		tv_name.setText(name);
@@ -135,6 +139,10 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 
 	private void setOnHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
 		// List<Notice> noticeList = processNoticeData(resultData);
+
+		Log.i(TAG, "resultCode-->" + resultCode + " resultMessage-->" + resultMessage);
+		Log.i(TAG, "resultData-->" + resultData);
+
 		JSONObject jsonObject;
 		String results = "";
 		try {
@@ -143,7 +151,6 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 			JSONArray jsonArray = new JSONArray(results);
 
 			if (jsonArray.length() <= 0) {
-				showShortToast("当前暂无最新动态");
 				stopLoadData();
 			} else {
 				onHttpRequestSuccess(requestCode, resultCode, resultMessage, results);
@@ -196,22 +203,6 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 	}
 
 	@Override
-	public Class<Notice> getCacheClass() {
-		return Notice.class;
-	}
-
-	@Override
-	public String getCacheGroup() {
-		// return "range=" + range;
-		return "";
-	}
-
-	@Override
-	public String getCacheId(Notice data) {
-		return data == null ? null : "" + data.getId();
-	}
-
-	@Override
 	public void initEvent() {// 必须调用
 		super.initEvent();
 
@@ -248,7 +239,7 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 			// showShortToast("onClick tv_name");
 			break;
 		case R.id.bt_my_box:
-			ActivityMainTab mainTabActivity = (ActivityMainTab ) getActivity();
+			ActivityMainTab mainTabActivity = (ActivityMainTab) getActivity();
 			mainTabActivity.selectFragment(1);
 			break;
 		case R.id.bt_check_in:

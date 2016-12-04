@@ -8,4 +8,6 @@ public class Constant {
 	public static final String APP_WEBSITE_HELP_CENTER = "http://www.baidu.com";
 	public static final String APP_WEBSITE_ABOUT = "http://www.icaihe.cn";
 
+	public static String mDeviceName = "";
+	public static String mDeviceAddress = "";
 }

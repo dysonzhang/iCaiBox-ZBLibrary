@@ -1,7 +1,9 @@
 package com.icaihe.view;
 
 import com.icaihe.R;
+import com.icaihe.manager.DataManager;
 import com.icaihe.model.AuthMember;
+import com.icaihe.model.User;
 import com.ichihe.util.HttpRequest;
 
 import android.annotation.SuppressLint;
@@ -31,6 +33,8 @@ public class AuthMemberView extends BaseView<AuthMember> implements OnClickListe
 	public TextView tv_user_number;
 	public Button bt_auth;
 
+	public User user = DataManager.getInstance().getCurrentUser();
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View createView(LayoutInflater inflater) {
@@ -40,6 +44,7 @@ public class AuthMemberView extends BaseView<AuthMember> implements OnClickListe
 		tv_user_name = findViewById(R.id.tv_user_name, this);
 		tv_user_number = findViewById(R.id.tv_user_number, this);
 		bt_auth = findViewById(R.id.bt_auth, this);
+		bt_auth.setOnClickListener(this);
 
 		return convertView;
 	}
@@ -53,13 +58,20 @@ public class AuthMemberView extends BaseView<AuthMember> implements OnClickListe
 		this.data = data;
 		tv_user_name.setText(data.getUserName());
 		tv_user_number.setText(data.getUserPhone());
-		// ‘0’表示未授权开箱，‘1’表示已经授权开箱
-		if (data.getAuthority() == 0) {
-			bt_auth.setText("马上授权");
+
+		if (data.getUserPhone().equals(user.getPhone())) {
+			bt_auth.setVisibility(View.GONE);
 		} else {
-			bt_auth.setText("取消授权");
+			bt_auth.setVisibility(View.VISIBLE);
+			// ‘0’表示未授权开箱，‘1’表示已经授权开箱
+			if (data.getAuthority() == 0) {
+				bt_auth.setText("马上授权");
+				bt_auth.setTextColor(getResources().getColor(R.color.black));
+			} else {
+				bt_auth.setText("取消授权");
+				bt_auth.setTextColor(getResources().getColor(R.color.red));
+			}
 		}
-		bt_auth.setOnClickListener(this);
 	}
 
 	@Override
@@ -87,6 +99,7 @@ public class AuthMemberView extends BaseView<AuthMember> implements OnClickListe
 								bt_auth.setText("取消授权");
 								showShortToast("授权成功！");
 							}
+
 							@Override
 							public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
 								showShortToast("onHttpRequestError " + "requestCode->" + requestCode
@@ -95,8 +108,8 @@ public class AuthMemberView extends BaseView<AuthMember> implements OnClickListe
 						});
 
 			} else {
-				HttpRequest.cancelAuthUser(Long.parseLong(boxId), data.getUserId(), HttpRequest.RESULT_CANCEL_AUTH_USER_SUCCEED,
-						new OnHttpResponseListener() {
+				HttpRequest.cancelAuthUser(Long.parseLong(boxId), data.getUserId(),
+						HttpRequest.RESULT_CANCEL_AUTH_USER_SUCCEED, new OnHttpResponseListener() {
 
 							@Override
 							public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
@@ -105,6 +118,7 @@ public class AuthMemberView extends BaseView<AuthMember> implements OnClickListe
 								bt_auth.setText("马上授权");
 								showShortToast("取消授权成功！");
 							}
+
 							@Override
 							public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
 								showShortToast("onHttpRequestError " + "requestCode->" + requestCode

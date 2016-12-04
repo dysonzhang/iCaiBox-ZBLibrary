@@ -1,7 +1,7 @@
 package com.icaihe.activity_fragment;
 
 import com.icaihe.R;
-import com.icaihe.application.ICHApplication;
+import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 
 import android.app.Activity;
@@ -22,7 +22,7 @@ public class ActivitySplash extends Activity {
 
 			@Override
 			public void run() {
-				User user = ICHApplication.getInstance().getCurrentUser();
+				User user = DataManager.getInstance().getCurrentUser();
 				if (user == null) {
 					// 未登录
 					startActivity(ActivityLogin.createIntent(ActivitySplash.this));

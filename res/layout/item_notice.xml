@@ -6,7 +6,7 @@
 
     <LinearLayout
         style="@style/ll_vertical_match_wrap"
-        android:layout_marginRight="5dp" >
+        android:layout_marginRight="3dp" >
 
         <LinearLayout
             style="@style/ll_horizontal_match_wrap"
@@ -16,9 +16,9 @@
             <ImageView
                 android:id="@+id/ivDemoItemHead"
                 style="@style/content_item_lf_img"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="6dp"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginRight="2dp"
                 android:background="@drawable/icon_head_small" />
 
             <TextView
@@ -34,7 +34,8 @@
                 style="@style/content_item_rt_tv"
                 android:text="2016-11-20 09:00"
                 android:textColor="@color/grey"
-                android:textSize="16sp" />
+                android:paddingRight="5dp" 
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -46,12 +47,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
                 android:background="@drawable/shape_radiu_textview_style"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="开"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_notice_remark"
@@ -59,11 +61,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
                 android:ellipsize="end"
                 android:gravity="left"
                 android:text="即借即还"
                 android:textColor="@color/grey"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 

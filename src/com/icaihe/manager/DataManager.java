@@ -62,7 +62,7 @@ public class DataManager {
 	 */
 	public long getCurrentUserId() {
 		User user = getCurrentUser();
-		return user == null ? 0 : user.getId();
+		return user == null ? 0 : user.getUserId();
 	}
 
 	/**
@@ -123,6 +123,8 @@ public class DataManager {
 			return null;
 		}
 		Log.i(TAG, "getUser  userId = " + userId);
+		String userStr = sdf.getString(StringUtil.getTrimedString(userId), null);
+		Log.i(TAG, "getUser  userStr = " + userStr);
 		return Json.parseObject(sdf.getString(StringUtil.getTrimedString(userId), null), User.class);
 	}
 
@@ -145,7 +147,7 @@ public class DataManager {
 		}
 		SharedPreferences.Editor editor = sdf.edit();
 		editor.remove(KEY_LAST_USER_ID).putLong(KEY_LAST_USER_ID, getCurrentUserId());
-		editor.remove(KEY_CURRENT_USER_ID).putLong(KEY_CURRENT_USER_ID, user.getId());
+		editor.remove(KEY_CURRENT_USER_ID).putLong(KEY_CURRENT_USER_ID, user.getUserId());
 		editor.commit();
 
 		saveUser(sdf, user);
@@ -173,9 +175,19 @@ public class DataManager {
 			Log.e(TAG, "saveUser sdf == null || user == null >> return;");
 			return;
 		}
-		String key = StringUtil.getTrimedString(user.getId());
-		Log.i(TAG, "saveUser  key = user.getId() = " + user.getId());
+		String key = StringUtil.getTrimedString(user.getUserId());
+		Log.i(TAG, "saveUser  key = user.getUserId() = " + user.getUserId());
 		sdf.edit().remove(key).putString(key, Json.toJSONString(user)).commit();
+	}
+
+	/**
+	 * 删除用户 删除任意一个用户的信息
+	 * 
+	 * @param context
+	 * @param user
+	 */
+	public void removeUser(User user) {
+		removeUser(context.getSharedPreferences(PATH_USER, Context.MODE_PRIVATE), user.getUserId());
 	}
 
 	/**

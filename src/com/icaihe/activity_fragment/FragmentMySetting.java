@@ -1,9 +1,9 @@
 package com.icaihe.activity_fragment;
 
 import com.icaihe.R;
-import com.icaihe.application.ICHApplication;
 import com.icaihe.jpush.PushSetUtil;
 import com.icaihe.manager.DataManager;
+import com.icaihe.model.User;
 import com.ichihe.util.APPManagement;
 import com.ichihe.util.Constant;
 
@@ -24,6 +24,8 @@ import zuo.biao.library.util.CommonUtil;
  * 我的设置fragment
  */
 public class FragmentMySetting extends BaseFragment implements OnClickListener, OnDialogButtonClickListener {
+
+	public static String TAG = "FragmentMySetting";
 
 	public static FragmentMySetting createInstance() {
 		return new FragmentMySetting();
@@ -54,12 +56,14 @@ public class FragmentMySetting extends BaseFragment implements OnClickListener, 
 		tv_user_phone = (TextView) findViewById(R.id.tv_user_phone);
 		tv_version = (TextView) findViewById(R.id.tv_version);
 		bt_logout = (Button) findViewById(R.id.bt_logout);
+		
+		ActivityMainTab.setTabMenu(0);
 	}
 
 	@Override
 	public void initData() {
-		String name = ICHApplication.getInstance().getCurrentUser().getName();
-		String phone = ICHApplication.getInstance().getCurrentUser().getPhone();
+		String name = DataManager.getInstance().getCurrentUser().getName();
+		String phone = DataManager.getInstance().getCurrentUser().getPhone();
 		tv_user_name.setText(name + "");
 		tv_user_phone.setText(phone + "");
 		tv_version.setText("v" + APPManagement.getVersionName(context));
@@ -69,7 +73,9 @@ public class FragmentMySetting extends BaseFragment implements OnClickListener, 
 		PushSetUtil pushSetUtil = new PushSetUtil(context);
 		pushSetUtil.setAlias("null");
 
-		DataManager.getInstance().saveCurrentUser(null);
+		User user = DataManager.getInstance().getCurrentUser();
+
+		DataManager.getInstance().removeUser(user);
 		startActivity(ActivityLogin.createIntent(context));
 
 		context.finish();
@@ -113,13 +119,13 @@ public class FragmentMySetting extends BaseFragment implements OnClickListener, 
 			new AlertDialog(context, "提示", "请确定是否退出登录？", true, 0, this).show();
 			break;
 		case R.id.ll_my_group:
-			// this.toActivity(ActivityFeedback.createIntent(context));
+			toActivity(ActivityGroupMember.createIntent(context));
 			break;
 		case R.id.ll_help_center:
 			CommonUtil.openWebSite(context, Constant.APP_WEBSITE_HELP_CENTER);
 			break;
 		case R.id.ll_feedback:
-			this.toActivity(ActivityFeedback.createIntent(context));
+			 toActivity(ActivityFeedback.createIntent(context));
 			break;
 		case R.id.ll_about:
 			CommonUtil.openWebSite(context, Constant.APP_WEBSITE_ABOUT);

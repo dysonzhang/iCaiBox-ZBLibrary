@@ -1,13 +1,15 @@
 package com.icaihe.view;
 
+import com.bluetooth.RRBLE.SDK.BluetoothLeService;
 import com.icaihe.R;
 import com.icaihe.activity_fragment.ActivityBoxBeacon;
-import com.icaihe.activity_fragment.ActivityBoxOpenRemark;
+import com.ichihe.util.Constant;
 import com.ichihe.util.HttpRequest;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -56,21 +58,15 @@ public class BoxBeaconView extends BaseView<BluetoothDevice> implements OnClickL
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.bt_open_box:
-
-			// if (data == null)
-			// return;
-			// Intent intent = ActivityBoxOpenRemark.createIntent(context);
-			// intent.putExtra(ActivityBoxOpenRemark.EXTRAS_DEVICE_NAME,
-			// data.getName());
-			// intent.putExtra(ActivityBoxOpenRemark.EXTRAS_DEVICE_ADDRESS,
-			// data.getAddress());
-			//
-			// if (ActivityBoxBeacon.mScanning) {
-			// //
-			// ActivityBoxBeacon.mBluetoothAdapter.stopLeScan(mLeScanCallback);
-			// ActivityBoxBeacon.mScanning = false;
-			// }
-			// toActivity(intent);
+			Constant.mDeviceAddress = data.getAddress();
+			Constant.mDeviceName = data.getName();
+			
+			// 开锁服务
+			Intent gattServiceIntent = new Intent(context, BluetoothLeService.class);
+			context.bindService(gattServiceIntent, ActivityBoxBeacon.mServiceConnection, Context.BIND_AUTO_CREATE);
+			showShortToast("Constant.mDeviceAddress "+Constant.mDeviceAddress);
+//			ActivityBoxBeacon.LOCKER.RR_GATT_Connect(Constant.mDeviceAddress);
+			
 			break;
 		default:
 			break;

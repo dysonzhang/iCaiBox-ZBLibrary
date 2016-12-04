@@ -6,9 +6,11 @@ import java.util.List;
 import com.icaihe.application.ICHApplication;
 import com.icaihe.manager.DataManager;
 
+import android.util.Log;
 import zuo.biao.library.bean.Parameter;
 import zuo.biao.library.manager.HttpManager;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
+import zuo.biao.library.util.HttpRequestUtil;
 import zuo.biao.library.util.SettingUtil;
 import zuo.biao.library.util.StringUtil;
 
@@ -261,7 +263,7 @@ public class HttpRequest {
 		String token = DataManager.getInstance().getCurrentUser().getToken();
 		addExistParameter(paramList, KEY_TOKEN, token);
 
-		HttpManager.getInstance().post(paramList, URL_BASE + "api/v1/box/detail", requestCode, listener);
+		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/box/detail", requestCode, listener);
 	}
 
 	/**
@@ -404,7 +406,7 @@ public class HttpRequest {
 
 		String token = DataManager.getInstance().getCurrentUser().getToken();
 		addExistParameter(paramList, KEY_TOKEN, token);
-
+		Log.e("getGroupUsers token", token + "----" + groupId);
 		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/groupMember/list", requestCode, listener);
 	}
 
@@ -482,8 +484,8 @@ public class HttpRequest {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 
 		addExistParameter(paramList, KEY_PAGE_NO, pageNo);
-		
 		String token = DataManager.getInstance().getCurrentUser().getToken();
+
 		addExistParameter(paramList, KEY_TOKEN, token);
 
 		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/boxRecord/userRecord/list", requestCode, listener);
@@ -551,6 +553,7 @@ public class HttpRequest {
 
 		String token = DataManager.getInstance().getCurrentUser().getToken();
 		addExistParameter(paramList, KEY_TOKEN, token);
+
 		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/groupMember/group/list", requestCode, listener);
 	}
 

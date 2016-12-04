@@ -2,20 +2,28 @@ package com.icaihe.activity_fragment;
 
 import java.util.ArrayList;
 
+import com.bluetooth.RRBLE.SDK.BluetoothLeService;
+import com.bluetooth.RRBLE.SDK.RRBLEGatt;
 import com.bluetooth.RRBLE.SDK.RRBLEScan;
 import com.icaihe.R;
 import com.icaihe.adapter.BoxBeaconAdapter;
+import com.ichihe.util.Constant;
 import com.ichihe.util.HttpRequest;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -24,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
+import zuo.biao.library.util.Log;
 import zuo.biao.library.util.SettingUtil;
 
 /**
@@ -31,6 +40,8 @@ import zuo.biao.library.util.SettingUtil;
  */
 public class ActivityBoxBeacon extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
+
+	private static String TAG = "ActivityBoxBeacon";
 
 	public static Intent createIntent(Context context) {
 		return new Intent(context, ActivityBoxBeacon.class);
@@ -45,23 +56,141 @@ public class ActivityBoxBeacon extends BaseActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_box_beacon, this);
-
 		initView();
 		initData();
 		initEvent();
-
-		if (SettingUtil.isOnTestMode) {
-			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
-		}
 	}
+
+	/**
+	 * 连接开锁
+	 * START------------------------------------------------------------------------------------
+	 */
+	public static RRBLEGatt LOCKER = new RRBLEGatt();
+	private boolean mConnected = false;
+
+	public static final ServiceConnection mServiceConnection = new ServiceConnection() {
+		@Override
+		public void onServiceConnected(ComponentName componentName, IBinder service) {
+			if (!LOCKER.RR_GATT_Init(service, Constant.mDeviceAddress)) {
+				// finish();
+			}
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+			LOCKER.RR_GATT_Reinit();
+		}
+	};
+
+	// Handles various events fired by the Service.
+	// ACTION_GATT_CONNECTED: connected to a GATT server.
+	// ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
+	// ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
+	// ACTION_DATA_AVAILABLE: received data from the device. This can be a
+	// result of read or notification operations.
+	private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			final String action = intent.getAction();
+			Log.i("LOCKER_TAG", "the module ----- !" + action);
+			if (LOCKER.RR_GATT_IsConnectAction(action)) {
+				mConnected = true;
+				Log.i("LOCKER_TAG", "the module ----- connected!");
+				showShortToast("连接成功");
+			} else if (LOCKER.RR_GATT_IsDisconnectAction(action)) {
+				mConnected = false;
+				Log.i("LOCKER_TAG", "the module ----- disconnected!");
+				showShortToast("断开连接");
+				Constant.mDeviceAddress = "";
+				Constant.mDeviceName = "";
+			} else if (LOCKER.RR_GATT_IsDiscoverService(action)) {
+				if (!LOCKER.RR_GATT_GetServiceAndCharacteristics()) {
+					showShortToast("Can't get service characteristics");
+				} else {
+					showShortToast("发现服务");
+					shankHandle.postDelayed(runFunShake, 500); // 每隔1s执行
+				}
+			} else if (LOCKER.RR_GATT_IsDataComeIn(action)) {
+				/// display the data from ble device
+				showShortToast("接受到数据");
+				String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
+				int rxCounter = 0;
+				String revBuff = "";
+				if (data != null) {
+					revBuff += data;
+					rxCounter += data.length();
+					Log.i(TAG, "receive ble date count：+" + rxCounter + "-->data-->" + revBuff);
+					showShortToast("读取数据"+revBuff);
+				}
+			} else if (LOCKER.RR_GATT_IsDataReadBack(action)) {
+				shakeUseData(intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA));
+			} else if (LOCKER.RR_GATT_IsDataWriteOver(action)) {
+
+			}
+		}
+	};
+
+	Handler shankHandle = new Handler();
+	Runnable runFunShake = new Runnable() {
+		@Override
+		public void run() {
+			// handler自带方法实现定时器
+			try {
+				Log.i(TAG, "read random");
+				showShortToast("读取服务信息");
+				LOCKER.RR_GATT_ReadShakeRandomData();
+			} catch (Exception e) {
+				Log.i(TAG, "Exception " + e.getMessage());
+			}
+		}
+	};
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbindService(mServiceConnection);
+		LOCKER.RR_GATT_Reinit();
+		// LOCKER = null;
+	}
+
+	private void shakeUseData(byte[] data) {
+		byte[] randCmd = new byte[4];
+		byte t = 0;
+
+		randCmd[0] = (byte) (data[0] >= 0 ? data[0] : data[0] + 256);
+		randCmd[1] = (byte) (data[1] >= 0 ? data[1] : data[1] + 256);
+		t = (byte) (data[0] ^ data[1]);
+		randCmd[2] = (byte) (t >= 0 ? t : t + 256);
+		t = (byte) (data[0] & data[1]);
+		randCmd[3] = (byte) (t >= 0 ? t : t + 256);
+
+		LOCKER.RR_GATT_SendShakeData(randCmd);
+		Log.i(TAG, "ranmd== " + randCmd[0] + ", " + randCmd[1] + ", " + randCmd[2] + ", " + randCmd[3]);
+	}
+
+	private static IntentFilter makeGattUpdateIntentFilter() {
+		final IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
+		intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+		intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
+		intentFilter.addAction(BluetoothLeService.ACTION_DATA_NOTIFY);
+		intentFilter.addAction(BluetoothLeService.ACTION_DATA_READBACK);
+		intentFilter.addAction(BluetoothLeService.ACTION_DATA_WRITEOVER);
+		return intentFilter;
+	}
+
+	/**
+	 * 连接开锁
+	 * END------------------------------------------------------------------------------------
+	 */
 
 	private ImageView iv_back;
 	private TextView tv_bt_tips;
 	private ImageView iv_bt_scan;
 	private ListView lv_beacons;
 
-	public static   BluetoothAdapter mBluetoothAdapter;
-	public static  boolean mScanning;
+	public static BluetoothAdapter mBluetoothAdapter;
+	public static boolean mScanning;
 	private Handler mHandler;
 
 	private static final int REQUEST_ENABLE_BT = 1;
@@ -86,7 +215,6 @@ public class ActivityBoxBeacon extends BaseActivity
 	@Override
 	public void initView() {
 		super.initView();
-
 		iv_back = (ImageView) findViewById(R.id.iv_back);
 		tv_bt_tips = (TextView) findViewById(R.id.tv_bt_tips);
 		iv_bt_scan = (ImageView) findViewById(R.id.iv_bt_scan);
@@ -114,6 +242,10 @@ public class ActivityBoxBeacon extends BaseActivity
 			showShortToast("抱歉！您的手机暂时不支持蓝牙4.0，无法使用此功能！");
 			finish();
 		}
+
+		// 开锁服务
+//		Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+//		bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 	}
 
 	@Override
@@ -134,13 +266,18 @@ public class ActivityBoxBeacon extends BaseActivity
 				startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 			}
 		}
-
 		// Initializes list view adapter.
 		mLeDevices = new ArrayList<BluetoothDevice>();
 		boxBeaconAdapter = new BoxBeaconAdapter(context, mLeDevices);
 		lv_beacons.setAdapter(boxBeaconAdapter);
 
 		scanLeDevice(true);
+
+		// 开锁服务注册
+		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+		if (LOCKER.RR_GATT_ReturnLeService() != null && !Constant.mDeviceAddress.equals("")) {
+			LOCKER.RR_GATT_Connect(Constant.mDeviceAddress);
+		}
 	}
 
 	@Override
@@ -156,6 +293,9 @@ public class ActivityBoxBeacon extends BaseActivity
 	@Override
 	protected void onPause() {
 		super.onPause();
+		// 开锁服务取消注册
+		unregisterReceiver(mGattUpdateReceiver);
+		// 搜索服务
 		scanLeDevice(false);
 		mLeDevices.clear();
 		boxBeaconAdapter.notifyDataSetChanged();
@@ -197,13 +337,27 @@ public class ActivityBoxBeacon extends BaseActivity
 				public void run() {
 					String srvAdvData = RRBLEScan.byte2HexStr(scanRecord);
 					if (RRBLEScan.EH_FilterUUID_128(srvAdvData)) {
-						mLeDevices.add(device);
-						refreshBeaconList();
+						if (!deviceIsHave(mLeDevices, device)) {
+							mLeDevices.add(device);
+							refreshBeaconList();
+						}
 					}
 				}
 			});
 		}
 	};
+
+	private boolean deviceIsHave(ArrayList<BluetoothDevice> btDevices, BluetoothDevice device) {
+		if (btDevices == null || btDevices.size() <= 0) {
+			return false;
+		}
+		for (BluetoothDevice bd : btDevices) {
+			if (device.getAddress().equals(bd.getAddress())) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public void onDragBottom(boolean rightToLeft) {
@@ -224,6 +378,8 @@ public class ActivityBoxBeacon extends BaseActivity
 			mLeDevices.clear();
 			refreshBeaconList();
 			scanLeDevice(true);
+			Constant.mDeviceAddress = "";
+			Constant.mDeviceName = "";
 			break;
 		default:
 			break;
@@ -234,25 +390,24 @@ public class ActivityBoxBeacon extends BaseActivity
 		if (mScanning) {
 			tv_bt_tips.setText("正在搜索财盒信号...");
 		} else {
-			tv_bt_tips.setText("已停止搜索财盒信号，点击以上蓝牙图标可进行重新搜索。");
+			tv_bt_tips.setText("已停止，点击以上蓝牙图标可进行重新搜索");
 		}
 	}
 
 	private void refreshBeaconList() {
-		if (mLeDevices.size() > 0) {
-			// 通过ICHID过滤
-			// List<BluetoothDevice> myDeviceList = new
-			// ArrayList<BluetoothDevice>();
-			// String ichid =
-			// DataKeeper.getRootSharedPreferences().getString("curr_ichid",
-			// "");
-			// for (BluetoothDevice device : mLeDevices) {
-			// if (device.getName().equals(ichid)) {
-			// myDeviceList.add(device);
-			// break;
-			// }
-			// }
-		}
+		// if (mLeDevices.size() > 0) {
+		// // 通过ICHID过滤
+		// List<BluetoothDevice> myDeviceList = new
+		// ArrayList<BluetoothDevice>();
+		// String ichid =
+		// DataKeeper.getRootSharedPreferences().getString("curr_ichid", "");
+		// for (BluetoothDevice device : mLeDevices) {
+		// if (device.getName().equals(ichid)) {
+		// myDeviceList.add(device);
+		// break;
+		// }
+		// }
+		// }
 
 		boxBeaconAdapter = new BoxBeaconAdapter(context, mLeDevices);
 		lv_beacons.setAdapter(boxBeaconAdapter);

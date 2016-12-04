@@ -47,7 +47,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="我的财盒"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
 
             <Button
                 android:id="@+id/bt_check_in"
@@ -58,7 +58,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="打 卡"
-                android:textSize="20dp" />
+                android:textSize="18dp" />
         </LinearLayout>
     </RelativeLayout>
 

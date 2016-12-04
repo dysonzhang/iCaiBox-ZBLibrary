@@ -29,7 +29,7 @@
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="20dip"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/edittext_bg"
+                android:background="@color/white"
                 android:gravity="top"
                 android:hint="请填写您的反馈信息，我们会认真听取您的每一个意见或建议。谢谢！"
                 android:minLines="8"

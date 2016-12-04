@@ -10,7 +10,7 @@ import com.espressif.iot.esptouch.IEsptouchTask;
 import com.espressif.iot.esptouch.admin.EspWifiAdmin;
 import com.espressif.iot.esptouch.task.__IEsptouchTask;
 import com.icaihe.R;
-import com.icaihe.application.ICHApplication;
+import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;
@@ -85,7 +85,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 
 	@Override
 	public void initData() {
-		String complanyName = ICHApplication.getInstance().getCurrentUser().getCompanyName();
+		String complanyName = DataManager.getInstance().getCurrentUser().getCompanyName();
 		et_company_name.setText(complanyName);
 
 		String apSsid = mWifiAdmin.getWifiConnectedSsid();
@@ -154,8 +154,8 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 
 			String ichId = et_ichid.getText().toString();
 			String boxName = et_box_name.getText().toString();
-			long groupId = ICHApplication.getInstance().getCurrentUser().getGroupId();
-			String wifiId = et_wifi_ssid.getText().toString();
+			long groupId = DataManager.getInstance().getCurrentUser().getGroupId();
+			final String wifiId = et_wifi_ssid.getText().toString();
 
 			HttpRequest.addBox(ichId, boxName, groupId, wifiId, HttpRequest.RESULT_ADD_BOX_SUCCEED,
 					new OnHttpResponseListener() {
@@ -165,9 +165,10 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 								String resultData) {
 							showShortToast("添加成功！");
 							long boxId = JSON.parseObject(resultData).getLongValue("boxId");
-							User user = ICHApplication.getInstance().getCurrentUser();
+							User user = DataManager.getInstance().getCurrentUser();
+							user.setWifiId(wifiId);
 							user.setBoxId(boxId);
-							ICHApplication.getInstance().saveCurrentUser(user);
+							DataManager.getInstance().saveCurrentUser(user);
 
 							replaceToBoxFragment();
 						}

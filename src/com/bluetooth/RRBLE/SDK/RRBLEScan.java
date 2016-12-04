@@ -45,13 +45,13 @@ public class RRBLEScan {
 	}
 
 	//// used for fileter the device by uuid /* 2015-03-29*/
-	/// uuid ===
-	//// 0201061107FFEA2103000030001001FE019966FFFF031900000A0952522D4C4F434B45520000000000000000000000000000000000000000000000000000
+
+	// uuid ===
+	// 0201061AFF4C000215-F85CF3F7AE114366841C6719EE09197C-001E8800D8030200FF10094943483130363638383030303031450000000000000000000000
 
 	public static boolean EH_FilterUUID_128(String srcAdvData) {
-
 		Log.i("lock", "uuid === " + srcAdvData);
-		if (srcAdvData.substring(10, 42).equalsIgnoreCase(EH_MC10_DEFAULT_UUID128)) {
+		if (srcAdvData.substring(18, 50).equalsIgnoreCase(EH_MC10_DEFAULT_UUID128)) {
 			return true;
 		}
 		return false;

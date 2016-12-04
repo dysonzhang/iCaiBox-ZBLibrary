@@ -2,9 +2,10 @@ package com.icaihe.activity_fragment;
 
 import java.util.List;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
 import com.icaihe.adapter.ContractAdapter;
-import com.icaihe.application.ICHApplication;
+import com.icaihe.manager.DataManager;
 import com.icaihe.model.Contract;
 import com.ichihe.util.HttpRequest;
 
@@ -18,16 +19,19 @@ import android.widget.AdapterView.OnItemClickListener;
 import zuo.biao.library.base.BaseHttpListFragment;
 import zuo.biao.library.base.BaseModel;
 import zuo.biao.library.interfaces.AdapterCallBack;
-import zuo.biao.library.interfaces.CacheCallBack;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.Json;
+import zuo.biao.library.util.Log;
+import zuo.biao.library.util.SettingUtil;
 
 /**
  * 通讯录界面fragment
  * 
  */
 public class FragmentContractList extends BaseHttpListFragment<Contract, ContractAdapter>
-		implements OnItemClickListener, OnClickListener, CacheCallBack<Contract> {
+		implements OnItemClickListener, OnClickListener {
+
+	public static String TAG = "FragmentContractList";
 
 	public static FragmentContractList createInstance() {
 		FragmentContractList fragment = new FragmentContractList();
@@ -42,26 +46,27 @@ public class FragmentContractList extends BaseHttpListFragment<Contract, Contrac
 		argument = getArguments();
 		if (argument != null) {
 		}
-		initCache(this);
 
 		initView();
 		initData();
 		initEvent();
 
-		lvBaseList.onRefresh();
 		return view;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
+		SVProgressHUD.showWithStatus(context, "请稍候...");
 		lvBaseList.onRefresh();
+		SVProgressHUD.dismiss(context);
 	}
 
 	@Override
 	public void initView() {
 		super.initView();
+
+		ActivityMainTab.setTabMenu(0);
 	}
 
 	@Override
@@ -92,7 +97,7 @@ public class FragmentContractList extends BaseHttpListFragment<Contract, Contrac
 			stopLoadData();
 			return;
 		}
-		long groupId = ICHApplication.getInstance().getCurrentUser().getGroupId();
+		long groupId = DataManager.getInstance().getCurrentUser().getGroupId();
 		HttpRequest.getGroupMemberList(groupId, HttpRequest.RESULT_GET_GROUP_MENBER_SUCCEED,
 				new OnHttpResponseListener() {
 
@@ -114,9 +119,12 @@ public class FragmentContractList extends BaseHttpListFragment<Contract, Contrac
 	}
 
 	private void setOnHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
+
+		Log.i(TAG, "resultCode-->" + resultCode + " resultMessage-->" + resultMessage);
+		Log.i(TAG, "resultData-->" + resultData);
+
 		List<Contract> contractList = Json.parseArray(resultData, Contract.class);
 		if (contractList.size() <= 0) {
-			showShortToast("当前暂无通讯录信息");
 			stopLoadData();
 		} else {
 			onHttpRequestSuccess(requestCode, resultCode, resultMessage, resultData);
@@ -128,22 +136,6 @@ public class FragmentContractList extends BaseHttpListFragment<Contract, Contrac
 	@Override
 	public List<Contract> parseArray(String json) {
 		return Json.parseArray(json, Contract.class);
-	}
-
-	@Override
-	public Class<Contract> getCacheClass() {
-		return Contract.class;
-	}
-
-	@Override
-	public String getCacheGroup() {
-		// return "range=" + range;
-		return "";
-	}
-
-	@Override
-	public String getCacheId(Contract data) {
-		return data == null ? null : "" + data.getId();
 	}
 
 	@Override

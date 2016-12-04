@@ -1,0 +1,31 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/activity_page"
+    android:background="@color/main_bg_color" >
+
+    <LinearLayout style="@style/ll_vertical_match_match" >
+
+        <RelativeLayout style="@style/topbar_bg_golden" >
+
+            <ImageView
+                android:id="@+id/iv_back"
+                style="@style/topbar_return_img" />
+
+            <TextView
+                style="@style/topbar_title"
+                android:layout_centerHorizontal="true"
+                android:text="历史报警记录" />
+
+            <TextView
+                style="@style/topbar_right_btn"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout style="@style/ll_vertical_match_match" >
+
+            <zuo.biao.library.ui.xlistview.XListView
+                android:id="@+id/lvBaseList"
+                style="@style/lv_white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

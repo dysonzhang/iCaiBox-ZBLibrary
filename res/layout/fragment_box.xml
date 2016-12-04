@@ -19,10 +19,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="dyson"
+                    android:layout_marginBottom="0dp"
+                    android:text="我的财盒"
                     android:textColor="@color/golden"
-                    android:textSize="22dp" />
+                    android:textSize="18dp" />
 
                 <ImageView
                     android:id="@+id/iv_icon_box"
@@ -38,9 +38,9 @@
                     android:layout_height="30dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="添加时间：2016-11-06 15:00"
+                    android:text=""
                     android:textColor="@color/white"
-                    android:textSize="20dp" />
+                    android:textSize="16dp" />
             </LinearLayout>
 
             <View style="@style/divider_horizontal_1px_golden" />

@@ -1,8 +1,9 @@
 package com.icaihe.activity_fragment;
 
 import com.alibaba.fastjson.JSON;
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
-import com.icaihe.application.ICHApplication;
+import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 import com.ichihe.util.HttpRequest;
 
@@ -56,12 +57,14 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 		bt_open = (Button) findViewById(R.id.bt_open);
 		bt_auth = (Button) findViewById(R.id.bt_auth);
 		bt_config = (Button) findViewById(R.id.bt_config);
+		
+		ActivityMainTab.setTabMenu(2);
 	}
 
 	@Override
 	public void initData() {
 
-		User user = ICHApplication.getInstance().getCurrentUser();
+		User user = DataManager.getInstance().getCurrentUser();
 		isCanAddBox = user.isGroupCreator();
 		boxId = user.getBoxId();
 
@@ -78,10 +81,11 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 			showShortToast("财盒ID为0");
 			return;
 		}
+		SVProgressHUD.showWithStatus(context, "请稍候...");
 		HttpRequest.queryBoxDetail(boxId, HttpRequest.RESULT_QUERY_BOX_DETAIL_SUCCEED, new OnHttpResponseListener() {
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
-
+				SVProgressHUD.dismiss(context);
 				long id = JSON.parseObject(resultData).getLongValue("id");
 				String ichid = JSON.parseObject(resultData).getString("ichId");
 				String ibeaconId = JSON.parseObject(resultData).getString("ibeaconId");
@@ -103,6 +107,7 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 
 			@Override
 			public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+				SVProgressHUD.dismiss(context);
 				showShortToast(
 						"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
 			}

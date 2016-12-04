@@ -2,6 +2,7 @@ package com.icaihe.activity_fragment;
 
 import java.util.List;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
 import com.icaihe.adapter.AuthMemberAdapter;
 import com.icaihe.model.AuthMember;
@@ -47,9 +48,6 @@ public class ActivityAuthMember extends BaseActivity
 		initData();
 		initEvent();
 
-		if (SettingUtil.isOnTestMode) {
-			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
-		}
 	}
 
 	private ImageView iv_back;
@@ -102,13 +100,14 @@ public class ActivityAuthMember extends BaseActivity
 			showShortToast("当前财盒的群ID或财盒ID数据错误");
 			return;
 		}
-
+		SVProgressHUD.showWithStatus(context, "请稍候...");
 		HttpRequest.getBoxAuthorityList(Long.parseLong(groupId), Long.parseLong(boxId),
 				HttpRequest.RESULT_GET_BOX_AUTH_LIST_SUCCEED, new OnHttpResponseListener() {
 
 					@Override
 					public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 							String resultData) {
+						SVProgressHUD.dismiss(context);
 						if (resultData.equals("null")) {
 							showShortToast("暂无授权记录");
 							return;
@@ -127,6 +126,7 @@ public class ActivityAuthMember extends BaseActivity
 
 					@Override
 					public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+						SVProgressHUD.dismiss(context);
 						showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
 								+ resultMessage);
 					}

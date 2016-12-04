@@ -28,12 +28,23 @@
                 style="@style/btn_large_golden"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="70dp"
                 android:drawableLeft="@drawable/icon_create_group"
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
-                android:text="创建财盒群" />
+                android:text="创建公司群" />
 
+            <Button
+                android:id="@+id/bt_create_private_group"
+                style="@style/btn_large_golden"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:drawableLeft="@drawable/icon_create_group"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:text="创建个人群" />
+            
             <Button
                 android:id="@+id/bt_add_group"
                 style="@style/btn_large_golden"

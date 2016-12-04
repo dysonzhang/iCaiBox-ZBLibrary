@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Lemon added list中的item里不要用button等默认hasFocus的控件，以免onItemClick事件无响应 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/content_item"
+    android:background="@drawable/bg_item_to_alpha" >
+
+    <LinearLayout
+        style="@style/ll_vertical_wrap_wrap"
+        android:layout_weight="1"
+        android:gravity="left|center" >
+
+        <TextView
+            android:id="@+id/tv_remark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="电量不足"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2015-10-23 11:22:33"
+            android:layout_marginBottom="5dp"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+</LinearLayout>

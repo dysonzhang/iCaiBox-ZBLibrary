@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
 import com.icaihe.manager.DataManager;
+import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;
 
@@ -32,7 +34,7 @@ import zuo.biao.library.util.TimeUtil;
  */
 public class ActivityCreateGroup extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	
+
 	public static Intent createIntent(Context context) {
 		return new Intent(context, ActivityCreateGroup.class);
 	}
@@ -46,14 +48,9 @@ public class ActivityCreateGroup extends BaseActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_group, this);
-
 		initView();
 		initData();
 		initEvent();
-
-		if (SettingUtil.isOnTestMode) {
-			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
-		}
 	}
 
 	private ImageView iv_back;
@@ -87,9 +84,13 @@ public class ActivityCreateGroup extends BaseActivity
 		bt_create = (Button) findViewById(R.id.bt_create);
 	}
 
+	int isPrivate;
+
 	@Override
 	public void initData() {
 		super.initData();
+		Intent intent = getIntent();
+		isPrivate = intent.getIntExtra("isPrivate", 0);
 	}
 
 	@Override
@@ -145,12 +146,18 @@ public class ActivityCreateGroup extends BaseActivity
 			String addressX = "121.1111";
 			String addressY = "32.2222";
 
+			if (isPrivate == 1) {
+				groupName += "_个人";
+			}
+			
+			SVProgressHUD.showWithStatus(this, "请稍候...");
 			HttpRequest.createGroup(groupName, creatorName, gCreateTime, groupAddress, addressX, addressY,
 					HttpRequest.RESULT_CREATE_GROUP_SUCCEED, new OnHttpResponseListener() {
 
 						@Override
 						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 								String resultData) {
+							SVProgressHUD.dismiss(context);
 							showShortToast("创建成功！");
 
 							JSONObject jsonObject;
@@ -164,16 +171,27 @@ public class ActivityCreateGroup extends BaseActivity
 								e.printStackTrace();
 							}
 
-							Intent intent = ActivityCompleteInfo.createIntent(context);
-							intent.putExtra("groupId", groupId);
-							intent.putExtra("groupName", groupName);
-							startActivity(intent);
+							// 更新用户信息
+							User user = DataManager.getInstance().getCurrentUser();
+							String creatorName = et_setup_man.getText().toString();
+							user.setName(creatorName);
+							user.setCompanyName(groupName);
+							user.setGroupId(groupId);
+							user.setNewUser(false);
+							user.setGroupCreator(true);
+							DataManager.getInstance().saveCurrentUser(user);
+
+							// 跳转至主页
+							startActivity(
+									ActivityMainTab.createIntent(context).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 							overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
+							enterAnim = exitAnim = R.anim.null_anim;
 							finish();
 						}
 
 						@Override
 						public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+							SVProgressHUD.dismiss(context);
 							showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
 									+ resultMessage);
 							DataManager.getInstance().saveCurrentUser(null);

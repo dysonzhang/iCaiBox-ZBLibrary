@@ -23,7 +23,8 @@
     <Button
         android:id="@+id/bt_open_box"
         style="@style/btn_small_golden"
-        android:layout_marginRight="10dp"
+        android:layout_height="35dp"
+        android:layout_margin="10dp"
         android:text="开 箱" />
 
 </LinearLayout>

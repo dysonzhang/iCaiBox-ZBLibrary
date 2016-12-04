@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
 import com.icaihe.adapter.GroupAdapter;
 import com.icaihe.manager.DataManager;
@@ -31,7 +32,6 @@ import android.widget.Toast;
 import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
-import zuo.biao.library.util.SettingUtil;
 
 /**
  * 搜索加入财盒群界面
@@ -52,14 +52,9 @@ public class ActivitySerachGroup extends BaseActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_serach_group, this);
-
 		initView();
 		initData();
 		initEvent();
-
-		if (SettingUtil.isOnTestMode) {
-			showShortToast("测试服务器\n" + HttpRequest.URL_BASE);
-		}
 	}
 
 	private ImageView iv_back;
@@ -168,7 +163,7 @@ public class ActivitySerachGroup extends BaseActivity
 				String groupName = jObject.getString("groupName");
 				long groupId = jObject.getLong("groupId");
 				Group group = new Group();
-				group.setId(groupId);
+				group.setGroupId(groupId);
 				group.setGroupName(groupName);
 				groupList.add(group);
 			}
@@ -187,10 +182,12 @@ public class ActivitySerachGroup extends BaseActivity
 	 * @param groupName
 	 */
 	private void search(String groupName) {
+		SVProgressHUD.showWithStatus(this, "请稍候..");
 		HttpRequest.searchGroup(groupName, HttpRequest.RESULT_SEARCH_GROUP_SUCCEED, new OnHttpResponseListener() {
 
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
+				SVProgressHUD.dismiss(context);
 				if (resultData.equals("null")) {
 					showShortToast("未搜索到相关财盒群");
 					return;
@@ -205,6 +202,7 @@ public class ActivitySerachGroup extends BaseActivity
 
 			@Override
 			public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+				SVProgressHUD.dismiss(context);
 				showShortToast(
 						"onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->" + resultMessage);
 				DataManager.getInstance().saveCurrentUser(null);
