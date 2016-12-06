@@ -45,21 +45,31 @@
                 android:background="@drawable/my_head_bg"
                 android:gravity="center" >
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginTop="10dp"
+                    android:text="开启财盒需要开启WIFI网络和蓝牙权限哦！"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+
                 <ImageView
                     android:id="@+id/iv_bt_scan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="10dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/icon_bt" />
 
                 <TextView
                     android:id="@+id/tv_bt_tips"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_width="match_parent"
+                   android:gravity="center"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="0dp"
-                    android:text="正在寻找财盒信号..."
+                    android:text="财盒信号检测中..."
                     android:textColor="@color/white"
                     android:textSize="16dp" />
             </LinearLayout>

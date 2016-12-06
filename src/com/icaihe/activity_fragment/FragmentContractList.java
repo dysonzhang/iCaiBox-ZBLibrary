@@ -5,8 +5,10 @@ import java.util.List;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
 import com.icaihe.adapter.ContractAdapter;
+import com.icaihe.jpush.PushSetUtil;
 import com.icaihe.manager.DataManager;
 import com.icaihe.model.Contract;
+import com.icaihe.model.User;
 import com.ichihe.util.HttpRequest;
 
 import android.os.Bundle;
@@ -21,8 +23,6 @@ import zuo.biao.library.base.BaseModel;
 import zuo.biao.library.interfaces.AdapterCallBack;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.Json;
-import zuo.biao.library.util.Log;
-import zuo.biao.library.util.SettingUtil;
 
 /**
  * 通讯录界面fragment
@@ -104,9 +104,17 @@ public class FragmentContractList extends BaseHttpListFragment<Contract, Contrac
 					@Override
 					public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 							String resultData) {
-						// showShortToast("加载成功");
-						// list = Json.parseArray(resultData, Contract.class);
-						// onLoadSucceed(list);
+						if (resultCode != 1) {
+							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+							if (resultCode < 0) {
+								PushSetUtil pushSetUtil = new PushSetUtil(context);
+								pushSetUtil.setAlias("null");
+								User user = DataManager.getInstance().getCurrentUser();
+								DataManager.getInstance().removeUser(user);
+								startActivity(ActivityLogin.createIntent(context));
+							}
+							return;
+						}
 						setOnHttpRequestSuccess(requestCode, resultCode, resultMessage, resultData);
 					}
 
@@ -119,9 +127,6 @@ public class FragmentContractList extends BaseHttpListFragment<Contract, Contrac
 	}
 
 	private void setOnHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
-
-		Log.i(TAG, "resultCode-->" + resultCode + " resultMessage-->" + resultMessage);
-		Log.i(TAG, "resultData-->" + resultData);
 
 		List<Contract> contractList = Json.parseArray(resultData, Contract.class);
 		if (contractList.size() <= 0) {

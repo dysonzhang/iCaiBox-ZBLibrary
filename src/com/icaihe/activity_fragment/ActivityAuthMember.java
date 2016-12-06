@@ -22,7 +22,6 @@ import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.Json;
-import zuo.biao.library.util.SettingUtil;
 
 /**
  * 授权财盒管理
@@ -108,6 +107,12 @@ public class ActivityAuthMember extends BaseActivity
 					public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 							String resultData) {
 						SVProgressHUD.dismiss(context);
+						
+						if (resultCode != 1) {
+							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+							return;
+						}
+						
 						if (resultData.equals("null")) {
 							showShortToast("暂无授权记录");
 							return;

@@ -3,6 +3,7 @@ package com.icaihe.activity_fragment;
 import com.alibaba.fastjson.JSON;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
+import com.icaihe.jpush.PushSetUtil;
 import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 import com.ichihe.util.HttpRequest;
@@ -86,6 +87,18 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
 				SVProgressHUD.dismiss(context);
+				if (resultCode != 1) {
+					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+					if(resultCode<0){
+						PushSetUtil pushSetUtil = new PushSetUtil(context);
+						pushSetUtil.setAlias("null");
+						User user = DataManager.getInstance().getCurrentUser();
+						DataManager.getInstance().removeUser(user);
+						startActivity(ActivityLogin.createIntent(context));
+					}
+					return;
+				}
+				
 				long id = JSON.parseObject(resultData).getLongValue("id");
 				String ichid = JSON.parseObject(resultData).getString("ichId");
 				String ibeaconId = JSON.parseObject(resultData).getString("ibeaconId");
@@ -129,7 +142,7 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 
 		switch (requestCode) {
 		case 0:
-			this.showShortToast("跳转到重新配置财盒信息界面");
+			this.toActivity(ActivityReConfigWifi.createIntent(context));
 			break;
 		default:
 			break;

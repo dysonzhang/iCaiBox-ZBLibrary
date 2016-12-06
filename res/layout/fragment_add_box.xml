@@ -12,12 +12,12 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                 android:layout_marginLeft="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
                 android:drawableLeft="@drawable/icon_info"
                 android:gravity="left|center"
-                android:text=" 请配置您的财盒信息，步骤如下：\n 1.确认手机已连接WIFI；\n 2.扫财盒上的二维码获取财盒ID；\n 3.填写WIFI密码；点击“开始配置”即可；"
+                android:text=" 请配置您的财盒信息，步骤如下：\n 1.确认手机已连接WIFI；\n 2.扫财盒上的二维码获取财盒ID；\n 3.填写WIFI密码，长按财盒网络配置键3秒后松开，点击“开始配置”即可；"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
         </LinearLayout>

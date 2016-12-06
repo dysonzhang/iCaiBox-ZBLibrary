@@ -144,12 +144,54 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 		}
 	}
 
+	/**
+	 * TODO 配网失败添加财盒
+	 */
+	private void addConfigFailWifiBox() {
 
+		showShortToast("很抱歉！财盒网络配置失败，请手动在财盒管理界面重新进行网络配置！");
+
+		if (checkFormValid()) {
+
+			String ichId = et_ichid.getText().toString();
+			String boxName = et_box_name.getText().toString();
+			long groupId = DataManager.getInstance().getCurrentUser().getGroupId();
+			final String wifiId = "";
+
+			HttpRequest.addBox(ichId, boxName, groupId, wifiId, HttpRequest.RESULT_ADD_BOX_SUCCEED,
+					new OnHttpResponseListener() {
+
+						@Override
+						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
+								String resultData) {
+							if (resultCode != 1) {
+								showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+								return;
+							}
+							
+							long boxId = JSON.parseObject(resultData).getLongValue("boxId");
+							User user = DataManager.getInstance().getCurrentUser();
+							user.setBoxId(boxId);
+							DataManager.getInstance().saveCurrentUser(user);
+							replaceToBoxFragment();
+						}
+
+						@Override
+						public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+							showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
+									+ resultMessage);
+						}
+					});
+		}
+	}
 
 	/**
-	 * TODO 添加财盒
+	 * TODO 配网成功添加财盒
 	 */
-	private void addBox() {
+	private void addConfigSuccessWifiBox() {
+
+		showShortToast("恭喜您！财盒网络配置成功！");
+
 		if (checkFormValid()) {
 
 			String ichId = et_ichid.getText().toString();
@@ -163,13 +205,15 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 						@Override
 						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 								String resultData) {
-							showShortToast("添加成功！");
+							if (resultCode != 1) {
+								showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+								return;
+							}
 							long boxId = JSON.parseObject(resultData).getLongValue("boxId");
 							User user = DataManager.getInstance().getCurrentUser();
 							user.setWifiId(wifiId);
 							user.setBoxId(boxId);
 							DataManager.getInstance().saveCurrentUser(user);
-
 							replaceToBoxFragment();
 						}
 
@@ -186,8 +230,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 		runUiThread(new Runnable() {
 			@Override
 			public void run() {
-				String text = result.getBssid() + "连接WIFI成功";
-				showShortToast(text);
+				// String text = result.getBssid() + "连接WIFI成功";
 			}
 		});
 	}
@@ -213,9 +256,9 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 
 		@Override
 		protected void onPreExecute() {
-			
+
 			mProgressDialog = new ProgressDialog(context);
-			mProgressDialog.setMessage("配置中, 请稍等...");
+			mProgressDialog.setMessage("正在配置财盒网络中...");
 			mProgressDialog.setCanceledOnTouchOutside(false);
 			mProgressDialog.setOnCancelListener(new OnCancelListener() {
 				@Override
@@ -230,7 +273,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 					}
 				}
 			});
-			mProgressDialog.setButton(DialogInterface.BUTTON_POSITIVE, "等待...", new DialogInterface.OnClickListener() {
+			mProgressDialog.setButton(DialogInterface.BUTTON_POSITIVE, "请稍等...", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 				}
@@ -277,22 +320,27 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 				if (firstResult.isSuc()) {
 					StringBuilder sb = new StringBuilder();
 					for (IEsptouchResult resultInList : result) {
-						sb.append("配置成功, bssid = " + resultInList.getBssid() + ",IP地址 = "
-								+ resultInList.getInetAddress().getHostAddress() + "\n");
+						// sb.append("配置成功, bssid = " + resultInList.getBssid()
+						// + ",IP地址 = "
+						// + resultInList.getInetAddress().getHostAddress() +
+						// "\n");
+						sb.append("恭喜您！财盒网络配置成功！\n");
+
 						count++;
 						if (count >= maxDisplayCount) {
 							break;
 						}
 					}
 					if (count < result.size()) {
-						sb.append("\nthere's " + (result.size() - count) + " more result(s) without showing\n");
+						 sb.append("\nthere's " + (result.size() - count) + "more result(s) without showing\n");
 					}
-					
-					addBox();
-					
 					mProgressDialog.setMessage(sb.toString());
+					
+					addConfigSuccessWifiBox();
 				} else {
-					mProgressDialog.setMessage("配置失败");
+					mProgressDialog.setMessage("很抱歉！财盒网络配置失败，请检查您输入的WIFI密码是否正确后重试。");
+
+					addConfigFailWifiBox();
 				}
 			}
 		}
@@ -332,6 +380,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 
 		return true;
 	}
+
 	/**
 	 * 替换为BoxFragment
 	 */
@@ -342,7 +391,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 		trasection.addToBackStack(null);
 		trasection.commit();
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);

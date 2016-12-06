@@ -1,4 +1,3 @@
-
 package com.bluetooth.RRBLE.SDK;
 
 import java.util.List;
@@ -63,7 +62,6 @@ public class BluetoothLeService extends Service {
 				Log.i(TAG, "Connected to GATT server.");
 				// Attempts to discover services after successful connection.
 				Log.i(TAG, "Attempting to start service discovery:" + mBluetoothGatt.discoverServices());
-
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
 				intentAction = ACTION_GATT_DISCONNECTED;
 				mConnectionState = STATE_DISCONNECTED;
@@ -93,6 +91,7 @@ public class BluetoothLeService extends Service {
 		public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				Log.i("led", "write ok");
+				broadcastUpdate(ACTION_DATA_WRITEOVER);
 			}
 		}
 
@@ -116,7 +115,6 @@ public class BluetoothLeService extends Service {
 		// This is special handling for the Heart Rate Measurement profile. Data
 		// parsing is
 		// carried out as per profile specifications:
-
 		// For all other profiles, writes the data formatted in HEX.
 		final byte[] data = characteristic.getValue();
 		Log.i("GattTag", "motify, len= " + data.length);
@@ -124,7 +122,6 @@ public class BluetoothLeService extends Service {
 			intent.putExtra(EXTRA_DATA, new String(data));
 			// intent.putExtra(EXTRA_DATA, data);
 		}
-
 		sendBroadcast(intent);/* 数据发送到主activity */
 	}
 
@@ -327,7 +324,6 @@ public class BluetoothLeService extends Service {
 	public List<BluetoothGattService> getSupportedGattServices() {
 		if (mBluetoothGatt == null)
 			return null;
-
 		return mBluetoothGatt.getServices();
 	}
 

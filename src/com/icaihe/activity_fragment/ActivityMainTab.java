@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import com.espressif.iot.esptouch.admin.EspWifiAdmin;
 import com.icaihe.R;
+import com.icaihe.jpush.PushSetUtil;
 import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 import com.icaihe.widget.BadgeView;
@@ -72,6 +73,7 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 		badge = new BadgeView(context, ll_bell);
 		badge.setTextSize(8);
 		badge.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
+		badge.hide();
 	}
 
 	@Override
@@ -93,7 +95,7 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 			tv_open_log.setVisibility(View.GONE);
 		} else if (type == 1) {
 			iv_bell.setVisibility(View.VISIBLE);
-			badge.show();
+			setAlarmNumber();
 			tv_open_log.setVisibility(View.GONE);
 		} else if (type == 2) {
 			iv_bell.setVisibility(View.GONE);
@@ -163,6 +165,7 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 	}
 
 	private long firstTime = 0;
+	private static int count = 0;
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -199,10 +202,12 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 		}
 	}
 
-	private void setAlarmNumber(int count) {
-		if (iv_bell.getVisibility() == View.VISIBLE) {
+	private static void setAlarmNumber() {
+		if (iv_bell.getVisibility() == View.VISIBLE && count > 0) {
 			badge.setText("" + count);
 			badge.show();
+		} else {
+			badge.hide();
 		}
 	}
 
@@ -210,16 +215,18 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 		HttpRequest.getUserDetail(HttpRequest.RESULT_GET_USER_DETAIL_SUCCEED, new OnHttpResponseListener() {
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
-				// "userId": 1,
-				// "name": "lhy",
-				// "phone": "15277665533",
-				// "alarmNum": "0",
-				// "isNewUser": false,
-				// "groupId": 11,
-				// "companyName": "xxx",
-				// "boxId": 12,
-				// "wifiId": "TP-link113"
 
+				if (resultCode != 1) {
+					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+					if (resultCode < 0) {
+						PushSetUtil pushSetUtil = new PushSetUtil(context);
+						pushSetUtil.setAlias("null");
+						User user = DataManager.getInstance().getCurrentUser();
+						DataManager.getInstance().removeUser(user);
+						startActivity(ActivityLogin.createIntent(context));
+					}
+					return;
+				}
 				JSONObject jsonObject;
 				User user = DataManager.getInstance().getCurrentUser();
 				try {
@@ -251,10 +258,8 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 					user.setWifiId(wifiId);
 					DataManager.getInstance().saveCurrentUser(user);
 
-					int count = Integer.parseInt(alarmNum);
-					if (count > 0) {
-						setAlarmNumber(count);
-					}
+					count = Integer.parseInt(alarmNum);
+					setAlarmNumber();
 
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -274,6 +279,18 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 		HttpRequest.resetAlarmNum(HttpRequest.RESULT_RESET_ALARM_NUM_SUCCEED, new OnHttpResponseListener() {
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
+				if (resultCode != 1) {
+					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+					if (resultCode < 0) {
+						PushSetUtil pushSetUtil = new PushSetUtil(context);
+						pushSetUtil.setAlias("null");
+						User user = DataManager.getInstance().getCurrentUser();
+						DataManager.getInstance().removeUser(user);
+						startActivity(ActivityLogin.createIntent(context));
+					}
+					return;
+				}
+				count = 0;
 				badge.setText("");
 				badge.hide();
 			}
@@ -311,10 +328,10 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 
 		switch (requestCode) {
 		case 1:
-			this.showShortToast("跳转到重新配置财盒信息界面");
+			this.toActivity(ActivityReConfigWifi.createIntent(context));
 			break;
 		case 2:
-			this.showShortToast("跳转到重新配置财盒信息界面");
+			this.toActivity(ActivityReConfigWifi.createIntent(context));
 			break;
 		default:
 			break;

@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
+import com.icaihe.jpush.PushSetUtil;
 import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
@@ -26,7 +27,6 @@ import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.ui.DatePickerWindow;
-import zuo.biao.library.util.SettingUtil;
 import zuo.biao.library.util.TimeUtil;
 
 /**
@@ -158,6 +158,15 @@ public class ActivityCreateGroup extends BaseActivity
 						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 								String resultData) {
 							SVProgressHUD.dismiss(context);
+							if (resultCode != 1) {
+								showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+								PushSetUtil pushSetUtil = new PushSetUtil(context);
+								pushSetUtil.setAlias("null");
+								User user = DataManager.getInstance().getCurrentUser();
+								DataManager.getInstance().removeUser(user);
+								startActivity(ActivityLogin.createIntent(context));
+								return;
+							}
 							showShortToast("创建成功！");
 
 							JSONObject jsonObject;
@@ -194,8 +203,6 @@ public class ActivityCreateGroup extends BaseActivity
 							SVProgressHUD.dismiss(context);
 							showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
 									+ resultMessage);
-							DataManager.getInstance().saveCurrentUser(null);
-							startActivity(ActivityLogin.createIntent(context));
 							finish();
 						}
 					});

@@ -10,13 +10,11 @@ import android.util.Log;
 public class RRBLEScan {
 
 	// private BluetoothAdapter mBluetoothAdapter;
-
 	private Handler mHandler;
 	private int mMC10State;
-	// 10秒后停止查找搜索.
-	/// FFEA2103-0000-3000-1001-FE019966FFFF FFEA2103000030001001FE019966FFFF
-	// F85CF3F7-AE11-4366-841C-6719EE09197C
+	/// ibeacon uuid
 	private static final String EH_MC10_DEFAULT_UUID128 = "F85CF3F7AE114366841C6719EE09197C";
+	// 10秒后停止查找搜索.
 	private static final long SCAN_PERIOD = 100000;
 
 	static class DeviceScan {
@@ -45,16 +43,21 @@ public class RRBLEScan {
 	}
 
 	//// used for fileter the device by uuid /* 2015-03-29*/
-
-	// uuid ===
-	// 0201061AFF4C000215-F85CF3F7AE114366841C6719EE09197C-001E8800D8030200FF10094943483130363638383030303031450000000000000000000000
-
+	/// uuid ===
+	//// 0201061107FFEA2103000030001001FE019966FFFF031900000A0952522D4C4F434B45520000000000000000000000000000000000000000000000000000
+	/// 0201061AFF4C0002151111222233334444555566667777888812342856D81107FFEA2103000030001001FE019966FFFF0809694C6F636B65720
 	public static boolean EH_FilterUUID_128(String srcAdvData) {
-		Log.i("lock", "uuid === " + srcAdvData);
+		Log.i("lock", "uuid === " + srcAdvData.substring(17, 49));
 		if (srcAdvData.substring(18, 50).equalsIgnoreCase(EH_MC10_DEFAULT_UUID128)) {
 			return true;
 		}
 		return false;
+	}
+
+	public static String EH_getBeaconMajorMinor(String srcAdvData) {
+		String r = srcAdvData.substring(50, 58);
+		return r;
+
 	}
 
 	public static boolean EH_BLE_Support(Context context) {
@@ -85,5 +88,4 @@ public class RRBLEScan {
 	 * mMC10State = 1; mBluetoothAdapter.startLeScan(mLeScanCallback); } else {
 	 * mMC10State = 0; mBluetoothAdapter.stopLeScan(mLeScanCallback); } }
 	 */
-
 }

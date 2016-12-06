@@ -5,26 +5,44 @@
     android:background="@color/white" >
 
     <ImageView
-        android:id="@+id/ivDemoItemHead"
         style="@style/content_item_lf_img"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginRight="6dp"
-        android:background="@color/alpha_1"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/tv_beacon_name"
-        style="@style/content_item_lf_tv"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_weight="1"
-        android:text="ICH88888888888"
-        android:textColor="@color/black" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/box_bg" />
+
+    <LinearLayout
+        style="@style/ll_vertical_wrap_wrap"
+        android:layout_weight="1"
+        android:gravity="left|center" >
+
+        <TextView
+            android:id="@+id/tv_box_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="BoxName"
+            android:textSize="18dp"/>
+
+        <TextView
+            android:id="@+id/tv_beacon_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="ICH88888888888"
+            android:textSize="16dp"
+            android:textColor="@color/grey" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/bt_open_box"
         style="@style/btn_small_golden"
-        android:layout_height="35dp"
-        android:layout_margin="10dp"
-        android:text="开 箱" />
+        android:layout_width="70dp"
+        android:layout_height="45dp"
+        android:layout_margin="20dp"
+        android:text="打 开"
+        android:textSize="16sp" />
 
 </LinearLayout>

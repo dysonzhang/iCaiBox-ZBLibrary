@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
-import zuo.biao.library.util.SettingUtil;
 import zuo.biao.library.util.StringUtil;
 
 /**
@@ -77,6 +76,7 @@ public class ActivityFeedback extends BaseActivity
 		switch (v.getId()) {
 		case R.id.iv_back:
 			finish();
+			break;
 		case R.id.bt_submit:
 			submitFeedback();
 			break;
@@ -100,6 +100,10 @@ public class ActivityFeedback extends BaseActivity
 				public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 						String resultData) {
 					SVProgressHUD.dismiss(context);
+					if (resultCode != 1) {
+						showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+						return;
+					}
 					showShortToast("非常感谢您的反馈！");
 					finish();
 				}

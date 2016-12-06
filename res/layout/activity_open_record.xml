@@ -13,7 +13,7 @@
             <TextView
                 style="@style/topbar_title"
                 android:layout_centerHorizontal="true"
-                android:text="历史报警记录" />
+                android:text="开箱记录" />
 
             <TextView
                 style="@style/topbar_right_btn"

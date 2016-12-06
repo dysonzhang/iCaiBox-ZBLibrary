@@ -21,7 +21,6 @@ import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.Json;
-import zuo.biao.library.util.SettingUtil;
 
 /**
  * 财盒群管理
@@ -97,6 +96,10 @@ public class ActivityGroupMember extends BaseActivity
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
 	 
 				SVProgressHUD.dismiss(context);
+				if (resultCode != 1) {
+					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+					return;
+				}
 				if (resultData.equals("null")) {
 					showShortToast("会员记录为空");
 					return;

@@ -95,6 +95,10 @@ public class AuthMemberView extends BaseView<AuthMember> implements OnClickListe
 							@Override
 							public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 									String resultData) {
+								if (resultCode != 1) {
+									showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+									return;
+								}
 								data.setAuthority(1);
 								bt_auth.setText("取消授权");
 								showShortToast("授权成功！");
@@ -114,6 +118,10 @@ public class AuthMemberView extends BaseView<AuthMember> implements OnClickListe
 							@Override
 							public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 									String resultData) {
+								if (resultCode != 1) {
+									showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+									return;
+								}
 								data.setAuthority(0);
 								bt_auth.setText("马上授权");
 								showShortToast("取消授权成功！");

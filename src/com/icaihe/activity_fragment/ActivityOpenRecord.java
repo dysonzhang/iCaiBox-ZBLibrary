@@ -25,7 +25,6 @@ import zuo.biao.library.interfaces.AdapterCallBack;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.Json;
-import zuo.biao.library.util.SettingUtil;
 
 public class ActivityOpenRecord extends BaseHttpListActivity<OpenRecord, OpenRecordAdapter>
 		implements OnClickListener, OnItemClickListener, OnLongClickListener, OnBottomDragListener {
@@ -134,6 +133,10 @@ public class ActivityOpenRecord extends BaseHttpListActivity<OpenRecord, OpenRec
 					@Override
 					public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 							String resultData) {
+						if (resultCode != 1) {
+							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+							return;
+						}
 						setOnHttpRequestSuccess(requestCode, resultCode, resultMessage, resultData);
 					}
 

@@ -1,0 +1,94 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/activity_page"
+    android:background="@color/main_bg_color" >
+
+    <LinearLayout style="@style/ll_vertical_match_match" >
+
+        <RelativeLayout style="@style/topbar_bg_golden" >
+
+            <ImageView 
+                android:id="@+id/iv_back"
+                style="@style/topbar_return_img" />
+
+            <TextView
+                style="@style/topbar_title"
+                android:layout_centerHorizontal="true"
+                android:text="财盒WIFI配置" />
+
+            <TextView
+                style="@style/topbar_right_btn"
+                android:text=""
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout style="@style/ll_vertical_match_match" >
+
+            <LinearLayout
+                style="@style/ll_vertical_match_match"
+                android:layout_height="wrap_content"
+                android:background="#F1C83B" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:drawableLeft="@drawable/icon_info"
+                    android:gravity="left|center"
+                    android:text=" 请配置您的财盒信息，步骤如下：\n 1.确认手机已连接WIFI；\n 2.填写手机连接的WIFI密码；\n 3.长按财盒网络配置键3秒后松开，点击“开始配置”即可；"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/ll_vertical_match_match" >
+
+                <EditText
+                    android:id="@+id/et_wifi_ssid"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dip"
+                    android:layout_marginRight="20dip"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/edittext_bg"
+                    android:enabled="false"
+                    android:hint="WIFI SSID"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/golden"
+                    android:textColorHint="@color/edit_text"
+                    android:textSize="18sp" />
+
+                <com.icaihe.widget.ClearEditText
+                    android:id="@+id/et_wifi_pwd"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dip"
+                    android:layout_marginRight="20dip"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/edittext_bg"
+                    android:drawableRight="@drawable/delete_selector"
+                    android:hint="WIFI密码"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/golden"
+                    android:textColorHint="@color/edit_text"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/bt_config"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ll_get_code"
+                    android:layout_marginLeft="20dip"
+                    android:layout_marginRight="20dip"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/button_bg"
+                    android:text="开始配置"
+                    android:textColor="@color/golden"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

@@ -33,7 +33,7 @@ public class ActivityAlarmNotice extends BaseHttpListActivity<AlarmNotice, Alarm
 	public static Intent createIntent(Context context) {
 		return new Intent(context, ActivityAlarmNotice.class);
 	}
-	
+
 	@Override
 	public Activity getActivity() {
 		return this;
@@ -128,6 +128,10 @@ public class ActivityAlarmNotice extends BaseHttpListActivity<AlarmNotice, Alarm
 					@Override
 					public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 							String resultData) {
+						if (resultCode != 1) {
+							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+							return;
+						}
 						setOnHttpRequestSuccess(requestCode, resultCode, resultMessage, resultData);
 					}
 

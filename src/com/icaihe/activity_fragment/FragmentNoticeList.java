@@ -10,13 +10,13 @@ import org.json.JSONObject;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
 import com.icaihe.adapter.NoticeAdapter;
+import com.icaihe.jpush.PushSetUtil;
 import com.icaihe.manager.DataManager;
 import com.icaihe.model.Notice;
 import com.icaihe.model.User;
 import com.ichihe.util.HttpRequest;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -126,6 +126,17 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 		HttpRequest.getUserNotice(pageNum, HttpRequest.RESULT_GET_USER_NOTICE_SUCCEED, new OnHttpResponseListener() {
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
+				if (resultCode != 1) {
+					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+					if(resultCode<0){
+						PushSetUtil pushSetUtil = new PushSetUtil(context);
+						pushSetUtil.setAlias("null");
+						User user = DataManager.getInstance().getCurrentUser();
+						DataManager.getInstance().removeUser(user);
+						startActivity(ActivityLogin.createIntent(context));
+					}
+					return;
+				}
 				setOnHttpRequestSuccess(requestCode, resultCode, resultMessage, resultData);
 			}
 
@@ -139,9 +150,6 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 
 	private void setOnHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
 		// List<Notice> noticeList = processNoticeData(resultData);
-
-		Log.i(TAG, "resultCode-->" + resultCode + " resultMessage-->" + resultMessage);
-		Log.i(TAG, "resultData-->" + resultData);
 
 		JSONObject jsonObject;
 		String results = "";

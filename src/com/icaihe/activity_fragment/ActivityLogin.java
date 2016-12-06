@@ -25,7 +25,6 @@ import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.Log;
-import zuo.biao.library.util.SettingUtil;
 
 /**
  * 手机号登录界面
@@ -118,6 +117,10 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 				public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 						String resultData) {
 					SVProgressHUD.dismiss(context);
+					if (resultCode != 1) {
+						showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+						return;
+					}
 					// 收到验证码后存储手机号码
 					DataKeeper.save(DataKeeper.getRootSharedPreferences(), "verifyPhone", phone);
 					showShortToast("验证码已发送，请稍候...");
@@ -155,11 +158,11 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 				public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 						String resultData) {
 					SVProgressHUD.dismiss(context);
+					if (resultCode != 1) {
+						showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+						return;
+					}
 					showShortToast("登录成功！");
-
-					String info = "resultCode->" + resultCode + " resultMessage->" + resultMessage + " resultData->"
-							+ resultData;
-					showShortToast(info);
 
 					Log.i(TAG, "resultCode-->" + resultCode + " resultMessage-->" + resultMessage);
 					Log.i(TAG, "resultData-->" + resultData);

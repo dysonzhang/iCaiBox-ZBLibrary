@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
+import com.icaihe.jpush.PushSetUtil;
 import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
@@ -152,6 +153,15 @@ public class ActivityCompleteInfo extends BaseActivity
 						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 								String resultData) {
 							SVProgressHUD.dismiss(context);
+							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+							if (resultCode != 1) {
+								PushSetUtil pushSetUtil = new PushSetUtil(context);
+								pushSetUtil.setAlias("null");
+								User user = DataManager.getInstance().getCurrentUser();
+								DataManager.getInstance().removeUser(user);
+								startActivity(ActivityLogin.createIntent(context));
+								return;
+							}
 							showShortToast("加入成功！");
 
 							// 更新用户信息
@@ -176,8 +186,6 @@ public class ActivityCompleteInfo extends BaseActivity
 							SVProgressHUD.dismiss(context);
 							showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
 									+ resultMessage);
-							DataManager.getInstance().saveCurrentUser(null);
-							startActivity(ActivityLogin.createIntent(context));
 							finish();
 						}
 					});

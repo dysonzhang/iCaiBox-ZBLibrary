@@ -188,6 +188,10 @@ public class ActivitySerachGroup extends BaseActivity
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
 				SVProgressHUD.dismiss(context);
+				if (resultCode != 1) {
+					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+					return;
+				}
 				if (resultData.equals("null")) {
 					showShortToast("未搜索到相关财盒群");
 					return;

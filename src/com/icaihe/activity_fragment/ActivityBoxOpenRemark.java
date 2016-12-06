@@ -23,13 +23,10 @@ import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.ui.DatePickerWindow;
-import zuo.biao.library.util.SettingUtil;
+import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.StringUtil;
 import zuo.biao.library.util.TimeUtil;
 
-/**
- * 财盒控制中心
- */
 public class ActivityBoxOpenRemark extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
 
@@ -50,9 +47,6 @@ public class ActivityBoxOpenRemark extends BaseActivity
 		initData();
 		initEvent();
 	}
-
-	public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
-	public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
 	private TextView tv_box_name;
 
@@ -92,17 +86,13 @@ public class ActivityBoxOpenRemark extends BaseActivity
 	public void initData() {
 		super.initData();
 
-		Intent intent = getIntent();
-
-		boxId = intent.getLongExtra("boxId", 0L);
-		boxName = intent.getStringExtra("boxName");
-
-		if (boxId == 0 || boxName.equals("")) {
-			showShortToast("获取当前开箱boxId和boxName为空");
-			return;
-		}
-
+		String curr_boxId = DataKeeper.getRootSharedPreferences().getString("curr_boxId", "");
+		boxId = Long.parseLong(curr_boxId);
+		String curr_boxName = DataKeeper.getRootSharedPreferences().getString("curr_boxName", "");
+		boxName = curr_boxName;
+		
 		tv_box_name.setText(boxName);
+		et_return_date.setText("默认");
 	}
 
 	@Override
@@ -167,6 +157,10 @@ public class ActivityBoxOpenRemark extends BaseActivity
 							@Override
 							public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 									String resultData) {
+								if (resultCode != 1) {
+									showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+									return;
+								}
 								showShortToast("添加备注成功！");
 								finish();
 							}
@@ -186,6 +180,10 @@ public class ActivityBoxOpenRemark extends BaseActivity
 							@Override
 							public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 									String resultData) {
+								if (resultCode != 1) {
+									showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+									return;
+								}
 								showShortToast("添加备注成功！");
 								finish();
 							}

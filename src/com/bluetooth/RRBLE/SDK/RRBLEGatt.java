@@ -16,9 +16,6 @@ public class RRBLEGatt {
 	public static String Data_UUID = "FFEA2103-0003-3000-1001-FE019966FFFF";
 	public static String Mac_Address_UUID = "FFEA2103-0004-3000-1001-FE019966FFFF";
 
-	public static String InfoServiceUUID = "0000180a-0000-1000-8000-00805f9b34fb";
-	public static String Version_UUID = "00002a26-0000-1000-8000-00805f9b34fb";
-
 	public static BluetoothLeService mBluetoothLeService;
 
 	private static BluetoothGattService RRBLE_DataService;
@@ -50,7 +47,6 @@ public class RRBLEGatt {
 	public boolean RR_GATT_GetServiceAndCharacteristics() {
 
 		RRBLE_DataService = RR_GATT_GetSerivce(UUID.fromString(DataServiceUUID));
-		RRBLE_InfoService = RR_GATT_GetSerivce(UUID.fromString(InfoServiceUUID));
 		if (RRBLE_DataService == null) {
 			// Toast.makeText(this, "Can't get service",
 			// Toast.LENGTH_SHORT).show();
@@ -61,7 +57,6 @@ public class RRBLEGatt {
 		RRBLE_ShakeCharacteristic = RR_GATT_GetCharacteristic(RRBLE_DataService, UUID.fromString(Shake_UUID));
 		RRBLE_ConfigCharacteristic = RR_GATT_GetCharacteristic(RRBLE_DataService, UUID.fromString(Control_UUID));
 		RRBLE_MacCharacteristic = RR_GATT_GetCharacteristic(RRBLE_DataService, UUID.fromString(Mac_Address_UUID));
-		RRBLE_InfoCharacteristic = RR_GATT_GetCharacteristic(RRBLE_InfoService, UUID.fromString(Version_UUID));
 
 		if (RRBLE_DataCharacteristic == null) {
 			// Toast.makeText(this, "Can't get characteristics",
@@ -71,7 +66,6 @@ public class RRBLEGatt {
 
 		Log.i("lock", "get service over");
 		RR_GATT_StartNotify(true);
-
 		return true;
 	}
 
@@ -85,7 +79,6 @@ public class RRBLEGatt {
 
 		for (BluetoothGattService svc : services) {
 			Log.i(TAG, "service uuid =" + svc.getUuid().toString());
-
 		}
 
 		for (BluetoothGattService gattService : services) {
@@ -98,7 +91,6 @@ public class RRBLEGatt {
 	}
 
 	public boolean RR_GATT_Init(IBinder service, String mDeviceAddress) {
-
 		mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
 
 		if (!mBluetoothLeService.initialize()) {
@@ -108,7 +100,6 @@ public class RRBLEGatt {
 		// Automatically connects to the device upon successful start-up
 		// initialization.
 		mBluetoothLeService.connect(mDeviceAddress);
-
 		return true;
 	}
 
@@ -117,22 +108,18 @@ public class RRBLEGatt {
 	}
 
 	public boolean RR_GATT_IsConnectAction(String action) {
-
 		return BluetoothLeService.ACTION_GATT_CONNECTED.equals(action);
 	}
 
 	public boolean RR_GATT_IsDisconnectAction(String action) {
-
 		return BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action);
 	}
 
 	public boolean RR_GATT_IsDiscoverService(String action) {
-
 		return BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action);
 	}
 
 	public boolean RR_GATT_IsDataComeIn(String action) {
-
 		return BluetoothLeService.ACTION_DATA_NOTIFY.equals(action);
 	}
 
@@ -160,10 +147,11 @@ public class RRBLEGatt {
 
 	/////// **RRBLE api*///////////////////////
 	public void RR_GATT_SendData(byte[] d) {
-
-		RRBLE_DataCharacteristic.setValue(d);
-		RRBLE_DataCharacteristic.setWriteType(RRBLE_DataCharacteristic.getWriteType());
-		mBluetoothLeService.writeCharacteristic(RRBLE_DataCharacteristic);
+		if (d.length > 0) {
+			RRBLE_DataCharacteristic.setValue(d);
+			RRBLE_DataCharacteristic.setWriteType(RRBLE_DataCharacteristic.getWriteType());
+			mBluetoothLeService.writeCharacteristic(RRBLE_DataCharacteristic);
+		}
 	}
 
 	public void RR_GATT_Locker_on(boolean on) {
@@ -171,27 +159,51 @@ public class RRBLEGatt {
 		if (on) {
 			lockON[0] = 1;
 			lockON[1] = 1;
-		}
 
+		} else {
+			lockON[0] = 1;
+			lockON[1] = 0;
+		}
+		RRBLE_ConfigCharacteristic.setValue(lockON);
+		RRBLE_ConfigCharacteristic.setWriteType(RRBLE_ConfigCharacteristic.getWriteType());
+		mBluetoothLeService.writeCharacteristic(RRBLE_ConfigCharacteristic);
+	}
+
+	public void RR_GATT_IPconfig() {
+		byte[] lockON = new byte[2];// {0, 0};
+		lockON[0] = 2;
+		RRBLE_ConfigCharacteristic.setValue(lockON);
+		RRBLE_ConfigCharacteristic.setWriteType(RRBLE_ConfigCharacteristic.getWriteType());
+		mBluetoothLeService.writeCharacteristic(RRBLE_ConfigCharacteristic);
+	}
+
+	public void RR_GATT_IPPortconfig() {
+		byte[] lockON = new byte[2];// {0, 0};
+		lockON[0] = 3;
+		RRBLE_ConfigCharacteristic.setValue(lockON);
+		RRBLE_ConfigCharacteristic.setWriteType(RRBLE_ConfigCharacteristic.getWriteType());
+		mBluetoothLeService.writeCharacteristic(RRBLE_ConfigCharacteristic);
+	}
+
+	public void RR_GATT_IDconfig() {
+		byte[] lockON = new byte[2];// {0, 0};
+		lockON[0] = 4;
 		RRBLE_ConfigCharacteristic.setValue(lockON);
 		RRBLE_ConfigCharacteristic.setWriteType(RRBLE_ConfigCharacteristic.getWriteType());
 		mBluetoothLeService.writeCharacteristic(RRBLE_ConfigCharacteristic);
 	}
 
 	public void RR_GATT_ReadShakeRandomData() {
-
 		mBluetoothLeService.readCharacteristic(RRBLE_ShakeCharacteristic);
 	}
 
 	public void RR_GATT_SendShakeData(byte[] d) {
-
 		RRBLE_ShakeCharacteristic.setValue(d);
 		RRBLE_ShakeCharacteristic.setWriteType(RRBLE_ShakeCharacteristic.getWriteType());
 		mBluetoothLeService.writeCharacteristic(RRBLE_ShakeCharacteristic);
 	}
 
 	public void RR_GATT_ReadVersion() {
-
 		mBluetoothLeService.readCharacteristic(RRBLE_InfoCharacteristic);
 	}
 
