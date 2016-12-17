@@ -132,11 +132,19 @@
             android:name="com.icaihe.activity_fragment.ActivityOpenRecord"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
-       <activity
+        <activity
             android:name="com.icaihe.activity_fragment.ActivityReConfigWifi"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
-       
+        <activity
+            android:name="com.icaihe.activity_fragment.ActivityMap"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.icaihe.activity_fragment.ActivityWran"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
         <service
             android:name="com.bluetooth.RRBLE.SDK.BluetoothLeService"
             android:enabled="true" />

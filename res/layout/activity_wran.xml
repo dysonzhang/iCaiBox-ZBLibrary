@@ -1,0 +1,74 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/activity_page"
+    android:background="@color/white" >
+
+    <LinearLayout style="@style/ll_vertical_match_match" >
+
+        <RelativeLayout style="@style/topbar_bg_golden" >
+
+            <ImageView
+                android:id="@+id/iv_back"
+                style="@style/topbar_return_img" />
+
+            <TextView
+                style="@style/topbar_title"
+                android:layout_centerHorizontal="true"
+                android:text="财盒提醒" />
+
+            <TextView
+                style="@style/topbar_right_btn"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout
+            style="@style/ll_vertical_match_match"
+            android:layout_height="60dp"
+            android:background="#F1C83B" >
+
+            <TextView
+                android:id="@+id/tv_add_group_tips"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="10dp"
+                android:drawableLeft="@drawable/icon_info"
+                android:gravity="left|center"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/ll_vertical_match_match" >
+
+            <com.skyfishjy.library.RippleBackground
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:rb_color="#d84a49"
+                app:rb_duration="3000"
+                app:rb_radius="32dp"
+                app:rb_rippleAmount="6"
+                app:rb_scale="6" >
+
+                <ImageView
+                    android:id="@+id/centerImage"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_wran_battery_low" />
+
+                <ImageView
+                    android:id="@+id/foundDevice"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_above="@id/centerImage"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_toLeftOf="@id/centerImage"
+                    android:src="@drawable/icon_warn_ring"
+                    android:visibility="invisible" />
+            </com.skyfishjy.library.RippleBackground>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

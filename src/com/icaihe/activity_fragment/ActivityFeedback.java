@@ -41,7 +41,12 @@ public class ActivityFeedback extends BaseActivity
 		initData();
 		initEvent();
 	}
-
+	@Override
+	public void toWarnActivity(boolean isBattery) {
+		Intent intent = ActivityWran.createIntent(context);
+		intent.putExtra("isBattery", isBattery ? 1 : 0);
+		toActivity(intent);
+	}
 	private ImageView iv_back;
 	private EditText et_content;
 	private Button bt_submit;

@@ -57,6 +57,13 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 		}
 	}
 
+	@Override
+	public void toWarnActivity(boolean isBattery) {
+		Intent intent = ActivityWran.createIntent(context);
+		intent.putExtra("isBattery", isBattery ? 1 : 0);
+		toActivity(intent);
+	}
+
 	private static LinearLayout ll_bell;
 	private static ImageView iv_bell;
 	private static TextView tv_open_log;
@@ -158,6 +165,7 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 	protected void onResume() {
 		super.onResume();
 		updateUserInfo();
+		showAlarmTips();
 	}
 
 	@Override
@@ -208,6 +216,12 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 			badge.show();
 		} else {
 			badge.hide();
+		}
+	}
+
+	private void showAlarmTips() {
+		if (count > 0) {
+			new AlertDialog(context, "提示", "财盒有新的报警信息，请确认是否查看？", true, 0, this).show();
 		}
 	}
 
@@ -327,6 +341,10 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 		}
 
 		switch (requestCode) {
+		case 0:
+			this.toActivity(ActivityAlarmNotice.createIntent(context));
+			clearAlarm();
+			break;
 		case 1:
 			this.toActivity(ActivityReConfigWifi.createIntent(context));
 			break;

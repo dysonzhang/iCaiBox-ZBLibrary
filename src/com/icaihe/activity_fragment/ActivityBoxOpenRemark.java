@@ -48,6 +48,13 @@ public class ActivityBoxOpenRemark extends BaseActivity
 		initEvent();
 	}
 
+	@Override
+	public void toWarnActivity(boolean isBattery) {
+		Intent intent = ActivityWran.createIntent(context);
+		intent.putExtra("isBattery", isBattery ? 1 : 0);
+		toActivity(intent);
+	}
+
 	private TextView tv_box_name;
 
 	private RadioGroup rg_open_type;
@@ -90,7 +97,7 @@ public class ActivityBoxOpenRemark extends BaseActivity
 		boxId = Long.parseLong(curr_boxId);
 		String curr_boxName = DataKeeper.getRootSharedPreferences().getString("curr_boxName", "");
 		boxName = curr_boxName;
-		
+
 		tv_box_name.setText(boxName);
 		et_return_date.setText("默认");
 	}
@@ -146,33 +153,31 @@ public class ActivityBoxOpenRemark extends BaseActivity
 	 */
 	private void openRemark() {
 
+		String remark = et_remark.getText().toString();
+		String backTime = et_return_date.getText().toString();
+
+		if (borrowType == 5) {
+			HttpRequest.borrowReturnBox(borrowType, boxId, remark, HttpRequest.RESULT_BORROW_RETURN_BOX_SUCCEED,
+					new OnHttpResponseListener() {
+						@Override
+						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
+								String resultData) {
+							if (resultCode != 1) {
+								showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+								return;
+							}
+							finish();
+						}
+
+						@Override
+						public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
+							showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
+									+ resultMessage);
+						}
+					});
+			return;
+		}
 		if (checkForm()) {
-			String remark = et_remark.getText().toString();
-			String backTime = et_return_date.getText().toString();
-
-			if (borrowType == 5) {
-				HttpRequest.borrowReturnBox(borrowType, boxId, remark, HttpRequest.RESULT_BORROW_RETURN_BOX_SUCCEED,
-						new OnHttpResponseListener() {
-
-							@Override
-							public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
-									String resultData) {
-								if (resultCode != 1) {
-									showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
-									return;
-								}
-								showShortToast("添加备注成功！");
-								finish();
-							}
-
-							@Override
-							public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
-								showShortToast("onHttpRequestError " + "requestCode->" + requestCode
-										+ " resultMessage->" + resultMessage);
-							}
-						});
-			}
-
 			if (borrowType == 4) {
 				HttpRequest.borrowBox(borrowType, boxId, backTime, remark, HttpRequest.RESULT_BORROW_BOX_SUCCEED,
 						new OnHttpResponseListener() {

@@ -82,7 +82,7 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 		tv_name = (TextView) findViewById(R.id.tv_name);
 		bt_my_box = (Button) findViewById(R.id.bt_my_box);
 		bt_check_in = (Button) findViewById(R.id.bt_check_in);
-		
+
 		ActivityMainTab.setTabMenu(1);
 	}
 
@@ -128,7 +128,7 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
 				if (resultCode != 1) {
 					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
-					if(resultCode<0){
+					if (resultCode < 0) {
 						PushSetUtil pushSetUtil = new PushSetUtil(context);
 						pushSetUtil.setAlias("null");
 						User user = DataManager.getInstance().getCurrentUser();
@@ -247,11 +247,13 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 			// showShortToast("onClick tv_name");
 			break;
 		case R.id.bt_my_box:
-			ActivityMainTab mainTabActivity = (ActivityMainTab) getActivity();
-			mainTabActivity.selectFragment(1);
+			// ActivityMainTab mainTabActivity = (ActivityMainTab)
+			// getActivity();
+			// mainTabActivity.selectFragment(1);
 			break;
 		case R.id.bt_check_in:
-			showShortToast("onClick  bt_check_in");
+			showShortToast("敬请期待！");
+			toActivity(ActivityWran.createIntent(context));
 			break;
 		default:
 			break;

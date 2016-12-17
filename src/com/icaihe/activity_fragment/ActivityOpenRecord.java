@@ -51,7 +51,12 @@ public class ActivityOpenRecord extends BaseHttpListActivity<OpenRecord, OpenRec
 		lvBaseList.onRefresh();
 		SVProgressHUD.dismiss(context);
 	}
-
+	@Override
+	public void toWarnActivity(boolean isBattery) {
+		Intent intent = ActivityWran.createIntent(context);
+		intent.putExtra("isBattery", isBattery ? 1 : 0);
+		toActivity(intent);
+	}
 	private ImageView iv_back;
 
 	@Override

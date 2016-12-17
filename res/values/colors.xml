@@ -11,7 +11,6 @@
     <color name="gray_service">#ff626862</color>
     <color name="gray_closed">#ffCEC5AE</color>
     <color name="gray_light">#ffE9EAE8</color>
-    
     <color name="gray_bg">#ffeeeeec</color>
     <color name="gray_bg_2">#fff1f1f1</color>
     <color name="gray_bg_3">#ffefeff4</color>
@@ -70,15 +69,17 @@
     <color name="color_e">#ffeeeeee</color>
     <color name="color_ec">#ffececec</color>
     <color name="color_e9">#ffe9e9e9</color>
-	<!-- SVProgressHUD -->
-    <!--覆盖颜色-->
+    <color name="rippelColor">#0099CC</color>
+
+    <!-- SVProgressHUD -->
+    <!-- 覆盖颜色 -->
     <color name="bgColor_overlay">#60000000</color>
     <color name="bgColor_overlay_black">#95000000</color>
-    <!--窗口背景颜色-->
+    <!-- 窗口背景颜色 -->
     <color name="bgColor_svprogressdefaultview">@android:color/white</color>
-    <!--标题颜色-->
+    <!-- 标题颜色 -->
     <color name="textColor_svprogresshuddefault_msg">#000000</color>
     <color name="roundColor_svprogresshuddefault">#e5e5e5</color>
     <color name="roundProgressColor_svprogresshuddefault">@android:color/black</color>
- 
+
 </resources>

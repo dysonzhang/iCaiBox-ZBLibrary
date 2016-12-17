@@ -25,7 +25,6 @@ import zuo.biao.library.interfaces.AdapterCallBack;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.util.Json;
-import zuo.biao.library.util.SettingUtil;
 
 public class ActivityAlarmNotice extends BaseHttpListActivity<AlarmNotice, AlarmNoticeAdapter>
 		implements OnClickListener, OnItemClickListener, OnLongClickListener, OnBottomDragListener {
@@ -52,7 +51,12 @@ public class ActivityAlarmNotice extends BaseHttpListActivity<AlarmNotice, Alarm
 		lvBaseList.onRefresh();
 		SVProgressHUD.dismiss(context);
 	}
-
+	@Override
+	public void toWarnActivity(boolean isBattery) {
+		Intent intent = ActivityWran.createIntent(context);
+		intent.putExtra("isBattery", isBattery ? 1 : 0);
+		toActivity(intent);
+	}
 	private ImageView iv_back;
 
 	@Override

@@ -53,7 +53,12 @@ public class ActivityReConfigWifi extends BaseActivity
 		initData();
 		initEvent();
 	}
-
+	@Override
+	public void toWarnActivity(boolean isBattery) {
+		Intent intent = ActivityWran.createIntent(context);
+		intent.putExtra("isBattery", isBattery ? 1 : 0);
+		toActivity(intent);
+	}
 	private EspWifiAdmin mWifiAdmin;
 
 	private ImageView iv_back;

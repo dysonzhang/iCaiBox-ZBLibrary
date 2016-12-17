@@ -403,10 +403,8 @@ public class HttpRequest {
 		List<Parameter> paramList = new ArrayList<Parameter>();
 
 		addExistParameter(paramList, KEY_GROUP_ID, groupId);
-
 		String token = DataManager.getInstance().getCurrentUser().getToken();
 		addExistParameter(paramList, KEY_TOKEN, token);
-		Log.e("getGroupUsers token", token + "----" + groupId);
 		HttpManager.getInstance().get(paramList, URL_BASE + "api/v1/groupMember/list", requestCode, listener);
 	}
 

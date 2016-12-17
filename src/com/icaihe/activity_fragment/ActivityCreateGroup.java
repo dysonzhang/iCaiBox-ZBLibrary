@@ -66,6 +66,10 @@ public class ActivityCreateGroup extends BaseActivity
 
 	private Button bt_create;
 
+	public static String addressX = "";
+	public static String addressY = "";
+	public static String location = "";
+
 	@Override
 	public void initView() {
 		super.initView();
@@ -103,6 +107,12 @@ public class ActivityCreateGroup extends BaseActivity
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		et_company_location.setText(location);
+	}
+
+	@Override
 	public void onDragBottom(boolean rightToLeft) {
 		finish();
 	}
@@ -119,11 +129,8 @@ public class ActivityCreateGroup extends BaseActivity
 					TimeUtil.getDateDetail(System.currentTimeMillis())), REQUEST_TO_DATE_PICKER, false);
 			break;
 		case R.id.ib_chose_location:
-			// startActivity(BottomTabActivity.createIntent(context).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-			// overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
-			// enterAnim = exitAnim = R.anim.null_anim;
-			// finish();
-			et_company_location.setText("地图上选择的地址");
+			startActivity(ActivityMap.createIntent(context));
+			overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
 			break;
 		case R.id.bt_create:
 			create();
@@ -143,13 +150,11 @@ public class ActivityCreateGroup extends BaseActivity
 			String creatorName = et_setup_man.getText().toString();
 			String gCreateTime = et_company_date.getText().toString();
 			String groupAddress = et_company_location.getText().toString();
-			String addressX = "121.1111";
-			String addressY = "32.2222";
 
 			if (isPrivate == 1) {
 				groupName += "_个人";
 			}
-			
+
 			SVProgressHUD.showWithStatus(this, "请稍候...");
 			HttpRequest.createGroup(groupName, creatorName, gCreateTime, groupAddress, addressX, addressY,
 					HttpRequest.RESULT_CREATE_GROUP_SUCCEED, new OnHttpResponseListener() {
@@ -159,7 +164,6 @@ public class ActivityCreateGroup extends BaseActivity
 								String resultData) {
 							SVProgressHUD.dismiss(context);
 							if (resultCode != 1) {
-								showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
 								PushSetUtil pushSetUtil = new PushSetUtil(context);
 								pushSetUtil.setAlias("null");
 								User user = DataManager.getInstance().getCurrentUser();

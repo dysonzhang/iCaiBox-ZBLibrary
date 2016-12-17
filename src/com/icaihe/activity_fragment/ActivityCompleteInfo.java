@@ -153,7 +153,6 @@ public class ActivityCompleteInfo extends BaseActivity
 						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 								String resultData) {
 							SVProgressHUD.dismiss(context);
-							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
 							if (resultCode != 1) {
 								PushSetUtil pushSetUtil = new PushSetUtil(context);
 								pushSetUtil.setAlias("null");

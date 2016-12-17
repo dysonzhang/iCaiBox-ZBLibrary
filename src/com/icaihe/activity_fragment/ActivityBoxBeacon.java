@@ -64,7 +64,12 @@ public class ActivityBoxBeacon extends BaseActivity
 		initData();
 		initEvent();
 	}
-
+	@Override
+	public void toWarnActivity(boolean isBattery) {
+		Intent intent = ActivityWran.createIntent(context);
+		intent.putExtra("isBattery", isBattery ? 1 : 0);
+		toActivity(intent);
+	}
 	/**
 	 * 连接开锁
 	 * START--------------------------------------------------------------------------------------------------------------------------------------

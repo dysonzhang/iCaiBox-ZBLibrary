@@ -13,16 +13,23 @@ import com.icaihe.R;
 import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
 import com.icaihe.widget.ClearEditText;
+import com.ichihe.util.BluetoothController;
 import com.ichihe.util.HttpRequest;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -144,6 +151,53 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 		}
 	}
 
+	private void onScanning() {
+		BluetoothController.openBTAdapter();
+		// .argument...argument.
+	}
+
+	private static final int REQUEST_FINE_LOCATION = 0;
+
+	private void onScanBluetooth() {
+
+		if (Build.VERSION.SDK_INT >= 23) {
+			int checkCallPhonePermission = ContextCompat.checkSelfPermission(context,
+					Manifest.permission.ACCESS_COARSE_LOCATION);
+			if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
+				// 判断是否需要 向用户解释，为什么要申请该权限
+				if (ActivityCompat.shouldShowRequestPermissionRationale(context,
+						Manifest.permission.ACCESS_COARSE_LOCATION))
+
+					// showToast(context, "请允许开启扫描蓝牙打印机功能", Toast.LENGTH_LONG);
+
+					ActivityCompat.requestPermissions(context,
+							new String[] { Manifest.permission.ACCESS_COARSE_LOCATION }, REQUEST_FINE_LOCATION);
+				return;
+			} else {
+				BluetoothController.openBTAdapter();
+			}
+		} else {
+			BluetoothController.openBTAdapter();
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+			@NonNull int[] grantResults) {
+		switch (requestCode) {
+		case REQUEST_FINE_LOCATION:
+			// If request is cancelled, the result arrays are empty.
+			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				// The requested permission is granted.
+				onScanning();
+			} else {
+				// The user disallowed the requested permission.
+				onScanning();
+			}
+			break;
+		}
+	}
+
 	/**
 	 * TODO 配网失败添加财盒
 	 */
@@ -168,7 +222,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 								showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
 								return;
 							}
-							
+
 							long boxId = JSON.parseObject(resultData).getLongValue("boxId");
 							User user = DataManager.getInstance().getCurrentUser();
 							user.setBoxId(boxId);
@@ -332,10 +386,10 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 						}
 					}
 					if (count < result.size()) {
-						 sb.append("\nthere's " + (result.size() - count) + "more result(s) without showing\n");
+						sb.append("\nthere's " + (result.size() - count) + "more result(s) without showing\n");
 					}
 					mProgressDialog.setMessage(sb.toString());
-					
+
 					addConfigSuccessWifiBox();
 				} else {
 					mProgressDialog.setMessage("很抱歉！财盒网络配置失败，请检查您输入的WIFI密码是否正确后重试。");
