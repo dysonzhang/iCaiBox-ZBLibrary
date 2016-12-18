@@ -31,7 +31,8 @@
             android:layout_marginTop="100dp"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
-            android:text="立即配置我的财盒" />
+            android:text="立即配置我的财盒"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/bt_box_buy"
@@ -42,6 +43,7 @@
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
             android:text="我要购买"
+            android:textSize="20sp"
             android:visibility="gone" />
     </LinearLayout>
 

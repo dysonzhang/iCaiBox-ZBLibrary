@@ -30,9 +30,10 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="70dp"
                 android:drawableLeft="@drawable/icon_create_group"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp"
-                android:text="创建公司群" />
+                android:paddingLeft="80dp"
+                android:paddingRight="70dp"
+                android:text="创建公司群"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/bt_create_private_group"
@@ -41,9 +42,10 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="30dp"
                 android:drawableLeft="@drawable/icon_create_group"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp"
-                android:text="创建个人群" />
+                android:paddingLeft="80dp"
+                android:paddingRight="70dp"
+                android:text="创建个人群"
+                android:textSize="20sp" />
             
             <Button
                 android:id="@+id/bt_add_group"
@@ -52,9 +54,10 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="30dp"
                 android:drawableLeft="@drawable/icon_add_group"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp"
-                android:text="加入财盒群" />
+                android:paddingLeft="80dp"
+                android:paddingRight="70dp"
+                android:text="加入财盒群"
+                android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 

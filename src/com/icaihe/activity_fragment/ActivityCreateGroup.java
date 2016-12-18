@@ -109,7 +109,11 @@ public class ActivityCreateGroup extends BaseActivity
 	@Override
 	protected void onResume() {
 		super.onResume();
-		et_company_location.setText(location);
+		if(location.length()>13){
+			et_company_location.setText(location.substring(0, 12)+"...");
+		}else{
+			et_company_location.setText(location);
+		}
 	}
 
 	@Override
@@ -250,6 +254,8 @@ public class ActivityCreateGroup extends BaseActivity
 	private int[] selectedDate = new int[] { 1971, 0, 1 };
 	private static final int REQUEST_TO_DATE_PICKER = 1;
 
+	public static final int REQUEST_TO_MAP_LOCATION = 2;
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -266,11 +272,17 @@ public class ActivityCreateGroup extends BaseActivity
 					for (int i = 0; i < list.size(); i++) {
 						selectedDate[i] = list.get(i);
 					}
-					showShortToast("选择的日期为" + selectedDate[0] + "-" + (selectedDate[1] + 1) + "-" + selectedDate[2]);
+					// showShortToast("选择的日期为" + selectedDate[0] + "-" +
+					// (selectedDate[1] + 1) + "-" + selectedDate[2]);
 					et_company_date.setText(selectedDate[0] + "-" + (selectedDate[1] + 1) + "-" + selectedDate[2]);
 				}
 			}
 			break;
+		case REQUEST_TO_MAP_LOCATION:
+			if (data != null) {
+				String result = data.getStringExtra(ActivityMap.RESULT_LOCATION_STRING);
+				et_company_location.setText(result);
+			}
 		default:
 			break;
 		}

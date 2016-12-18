@@ -33,7 +33,7 @@ import zuo.biao.library.util.TimeUtil;
  */
 public class ActivityCompleteInfo extends BaseActivity
 		implements OnClickListener, OnLongClickListener, OnBottomDragListener {
-	
+
 	public static Intent createIntent(Context context) {
 		return new Intent(context, ActivityCompleteInfo.class);
 	}
@@ -172,7 +172,7 @@ public class ActivityCompleteInfo extends BaseActivity
 							user.setGroupCreator(false);
 							DataManager.getInstance().saveCurrentUser(user);
 
-							//跳转至主页
+							// 跳转至主页
 							startActivity(
 									ActivityMainTab.createIntent(context).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 							overridePendingTransition(R.anim.bottom_push_in, R.anim.hold);
@@ -215,7 +215,8 @@ public class ActivityCompleteInfo extends BaseActivity
 					for (int i = 0; i < list.size(); i++) {
 						selectedDate[i] = list.get(i);
 					}
-					showShortToast("选择的日期为" + selectedDate[0] + "-" + (selectedDate[1] + 1) + "-" + selectedDate[2]);
+					// showShortToast("选择的日期为" + selectedDate[0] + "-" +
+					// (selectedDate[1] + 1) + "-" + selectedDate[2]);
 					et_add_date.setText(selectedDate[0] + "-" + (selectedDate[1] + 1) + "-" + selectedDate[2]);
 				}
 			}

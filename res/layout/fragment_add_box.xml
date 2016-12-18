@@ -17,7 +17,7 @@
                 android:layout_marginTop="5dp"
                 android:drawableLeft="@drawable/icon_info"
                 android:gravity="left|center"
-                android:text=" 请配置您的财盒信息，步骤如下：\n 1.确认手机已连接WIFI；\n 2.扫财盒上的二维码获取财盒ID；\n 3.填写WIFI密码，长按财盒网络配置键3秒后松开，点击“开始配置”即可；"
+                android:text=" 请配置您的财盒信息，步骤如下：\n 1.确认手机已连接WIFI；\n 2.扫财盒上的二维码或自动搜索获取财盒ID；\n 3.填写WIFI密码，长按财盒网络配置键3秒后松开，点击“开始配置”即可；"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -30,7 +30,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="20dip"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/edittext_bg"
                 android:drawableRight="@drawable/delete_selector"
                 android:enabled="false"
@@ -43,7 +43,7 @@
 
             <RelativeLayout
                 style="@style/ll_horizontal_match_wrap"
-                android:layout_marginTop="20dip" >
+                android:layout_marginTop="10dip" >
 
                 <com.icaihe.widget.ClearEditText
                     android:id="@+id/et_ichid"
@@ -76,7 +76,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="20dip"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/edittext_bg"
                 android:drawableRight="@drawable/delete_selector"
                 android:hint="WIFI SSID"
@@ -92,7 +92,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="20dip"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/edittext_bg"
                 android:drawableRight="@drawable/delete_selector"
                 android:hint="WIFI密码"
@@ -108,7 +108,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="20dip"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/edittext_bg"
                 android:drawableRight="@drawable/delete_selector"
                 android:hint="财盒名称"
@@ -125,12 +125,13 @@
                 android:layout_below="@+id/ll_get_code"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="20dip"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/button_bg"
                 android:text="开始配置"
                 android:textColor="@color/golden"
                 android:textSize="18sp" />
         </LinearLayout>
+
     </LinearLayout>
 
 </FrameLayout>

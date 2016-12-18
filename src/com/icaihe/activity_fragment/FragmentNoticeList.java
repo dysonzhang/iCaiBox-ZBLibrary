@@ -247,13 +247,12 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 			// showShortToast("onClick tv_name");
 			break;
 		case R.id.bt_my_box:
-			// ActivityMainTab mainTabActivity = (ActivityMainTab)
-			// getActivity();
-			// mainTabActivity.selectFragment(1);
+			ActivityMainTab mainTabActivity = (ActivityMainTab) getActivity();
+			mainTabActivity.selectFragment(1);
 			break;
 		case R.id.bt_check_in:
 			showShortToast("敬请期待！");
-			toActivity(ActivityWran.createIntent(context));
+			// toActivity(ActivityWran.createIntent(context));
 			break;
 		default:
 			break;

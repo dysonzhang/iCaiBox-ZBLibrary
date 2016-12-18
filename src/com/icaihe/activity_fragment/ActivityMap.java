@@ -94,6 +94,8 @@ public class ActivityMap extends BaseActivity implements OnGetPoiSearchResultLis
 
 	private int checkPosition;
 
+	public static String RESULT_LOCATION_STRING = "RESULT_LOCATION_STRING";
+
 	public static Intent createIntent(Context context) {
 		return new Intent(context, ActivityMap.class);
 	}
@@ -111,12 +113,14 @@ public class ActivityMap extends BaseActivity implements OnGetPoiSearchResultLis
 		initEvent();
 		initLocation();
 	}
+
 	@Override
 	public void toWarnActivity(boolean isBattery) {
 		Intent intent = ActivityWran.createIntent(context);
 		intent.putExtra("isBattery", isBattery ? 1 : 0);
 		toActivity(intent);
 	}
+
 	@Override
 	public void initView() {
 		super.initView();
@@ -175,6 +179,9 @@ public class ActivityMap extends BaseActivity implements OnGetPoiSearchResultLis
 				// showShortToast(
 				// "名称是: " + dataList.get(checkPosition).name + " 地址是：" +
 				// dataList.get(checkPosition).address);
+				
+//				setResult(RESULT_OK, new Intent().putExtra(RESULT_BOX_BLE_STRING, device.getName()));
+				finish();
 			}
 		});
 

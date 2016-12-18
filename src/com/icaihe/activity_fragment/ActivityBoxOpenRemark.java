@@ -239,7 +239,8 @@ public class ActivityBoxOpenRemark extends BaseActivity
 					for (int i = 0; i < list.size(); i++) {
 						selectedDate[i] = list.get(i);
 					}
-					showShortToast("选择的日期为" + selectedDate[0] + "-" + (selectedDate[1] + 1) + "-" + selectedDate[2]);
+					// showShortToast("选择的日期为" + selectedDate[0] + "-" +
+					// (selectedDate[1] + 1) + "-" + selectedDate[2]);
 					et_return_date.setText(selectedDate[0] + "-" + (selectedDate[1] + 1) + "-" + selectedDate[2]);
 				}
 			}

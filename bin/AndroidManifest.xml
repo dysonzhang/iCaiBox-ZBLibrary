@@ -144,6 +144,10 @@
             android:name="com.icaihe.activity_fragment.ActivityWran"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
+              <activity
+            android:name="com.icaihe.activity_fragment.ActivityScanBox"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="com.bluetooth.RRBLE.SDK.BluetoothLeService"

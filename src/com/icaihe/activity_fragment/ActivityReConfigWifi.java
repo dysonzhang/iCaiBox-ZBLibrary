@@ -159,6 +159,7 @@ public class ActivityReConfigWifi extends BaseActivity
 					public void onHttpRequestError(int requestCode, String resultMessage, Exception exception) {
 						showShortToast("onHttpRequestError " + "requestCode->" + requestCode + " resultMessage->"
 								+ resultMessage);
+						finish();
 					}
 				});
 	}

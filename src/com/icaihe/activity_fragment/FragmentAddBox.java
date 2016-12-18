@@ -9,6 +9,7 @@ import com.espressif.iot.esptouch.IEsptouchResult;
 import com.espressif.iot.esptouch.IEsptouchTask;
 import com.espressif.iot.esptouch.admin.EspWifiAdmin;
 import com.espressif.iot.esptouch.task.__IEsptouchTask;
+import com.herily.dialog.HerilyAlertDialog;
 import com.icaihe.R;
 import com.icaihe.manager.DataManager;
 import com.icaihe.model.User;
@@ -17,7 +18,9 @@ import com.ichihe.util.BluetoothController;
 import com.ichihe.util.HttpRequest;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -74,6 +77,10 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 
 	private Button bt_add_box;
 
+	private String getICHIDString = "扫码获取ID\n自动搜索ID";
+	private final String getICHID[] = getICHIDString.split("\n");
+	private ButtonOnClick buttonOnClick = new ButtonOnClick(1);
+
 	@Override
 	public void initView() {
 		mWifiAdmin = new EspWifiAdmin(context);
@@ -111,6 +118,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 	public void initEvent() {
 		ib_scan_box.setOnClickListener(this);
 		bt_add_box.setOnClickListener(this);
+		onOpenBluetooth();
 	}
 
 	@Override
@@ -121,12 +129,13 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 	}
 
 	public static final int REQUEST_TO_CAMERA_SCAN = 22;
+	public static final int REQUEST_TO_BLE_SCAN = 23;
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.ib_scan_box:
-			toActivity(ActivityScan.createIntent(context), REQUEST_TO_CAMERA_SCAN);
+			showSingleChoiceAlertDialog("请选择获取方式", getICHID, buttonOnClick, null, context);
 			break;
 		case R.id.bt_add_box:
 			boxWifiConnectConfig();
@@ -158,7 +167,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 
 	private static final int REQUEST_FINE_LOCATION = 0;
 
-	private void onScanBluetooth() {
+	private void onOpenBluetooth() {
 
 		if (Build.VERSION.SDK_INT >= 23) {
 			int checkCallPhonePermission = ContextCompat.checkSelfPermission(context,
@@ -167,9 +176,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 				// 判断是否需要 向用户解释，为什么要申请该权限
 				if (ActivityCompat.shouldShowRequestPermissionRationale(context,
 						Manifest.permission.ACCESS_COARSE_LOCATION))
-
 					// showToast(context, "请允许开启扫描蓝牙打印机功能", Toast.LENGTH_LONG);
-
 					ActivityCompat.requestPermissions(context,
 							new String[] { Manifest.permission.ACCESS_COARSE_LOCATION }, REQUEST_FINE_LOCATION);
 				return;
@@ -400,6 +407,30 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 		}
 	}
 
+	public class ButtonOnClick implements DialogInterface.OnClickListener {
+		private int index;
+
+		public ButtonOnClick(int index) {
+			this.index = index;
+		}
+
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			if (which >= 0) {
+				index = which;
+			} else {
+				if (which == DialogInterface.BUTTON_POSITIVE) {
+					if (getICHID[index].contains("扫码获取")) {
+						toActivity(ActivityScan.createIntent(context), REQUEST_TO_CAMERA_SCAN);
+					} else {
+						toActivity(ActivityScanBox.createIntent(context), REQUEST_TO_BLE_SCAN);
+					}
+				} else if (which == DialogInterface.BUTTON_NEGATIVE) {
+				}
+			}
+		}
+	}
+
 	/**
 	 * TODO 表单验证
 	 * 
@@ -459,8 +490,27 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 				et_ichid.setText(result);
 			}
 			break;
+		case REQUEST_TO_BLE_SCAN:
+			if (data != null) {
+				String result = data.getStringExtra(ActivityScanBox.RESULT_BOX_BLE_STRING);
+				et_ichid.setText(result);
+			}
+			break;
 		default:
 			break;
 		}
+	}
+
+	public static AlertDialog showSingleChoiceAlertDialog(String title, CharSequence[] items,
+			ButtonOnClick buttonOnClick, DialogInterface.OnDismissListener pDismissListener, Context context) {
+		AlertDialog mAlertDialog = new HerilyAlertDialog.Builder(context).setTitle(title)
+				.setSingleChoiceItems(items, 2, buttonOnClick).setPositiveButton(android.R.string.ok, buttonOnClick)
+				.setNegativeButton(android.R.string.cancel, buttonOnClick).show();
+		mAlertDialog.setCanceledOnTouchOutside(false);
+		mAlertDialog.setCancelable(false);
+		if (pDismissListener != null) {
+			mAlertDialog.setOnDismissListener(pDismissListener);
+		}
+		return mAlertDialog;
 	}
 }

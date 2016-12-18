@@ -2,6 +2,7 @@ package com.icaihe.activity_fragment;
 
 import com.icaihe.R;
 import com.icaihe.manager.DataManager;
+import com.icaihe.model.User;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -67,7 +68,29 @@ public class FragmentFristBox extends BaseFragment implements OnClickListener, O
 		bt_box_config.setOnClickListener(this);
 		bt_box_buy.setOnClickListener(this);
 	}
-
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		User user = DataManager.getInstance().getCurrentUser();
+		long boxId = user.getBoxId();
+		if (boxId != 0) {
+			// 该用户有已授权财盒或拥有财盒
+			replaceToBoxFragment();
+		}
+	}
+	
+	/**
+	 * 替换为BoxFragment
+	 */
+	private void replaceToBoxFragment() {
+		FragmentTransaction trasection = getFragmentManager().beginTransaction();
+		Fragment boxFragment = new FragmentBox();
+		trasection.replace(R.id.flBottomTabFragmentContainer, boxFragment);
+		trasection.addToBackStack(null);
+		trasection.commit();
+	}
+	
 	@Override
 	public void onDialogButtonClick(int requestCode, boolean isPositive) {
 		if (!isPositive) {

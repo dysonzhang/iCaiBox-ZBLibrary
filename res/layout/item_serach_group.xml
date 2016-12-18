@@ -23,7 +23,9 @@
     <Button
         android:id="@+id/bt_add_group"
         style="@style/btn_small_golden"
-        android:layout_marginRight="10dp"
+        android:layout_width="70dp"
+        android:layout_height="45dp"
+        android:layout_margin="20dp"
         android:text="加 入" />
 
 </LinearLayout>
