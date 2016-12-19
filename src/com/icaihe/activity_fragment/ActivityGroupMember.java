@@ -45,12 +45,14 @@ public class ActivityGroupMember extends BaseActivity
 		initData();
 		initEvent();
 	}
+
 	@Override
 	public void toWarnActivity(boolean isBattery) {
 		Intent intent = ActivityWran.createIntent(context);
 		intent.putExtra("isBattery", isBattery ? 1 : 0);
 		toActivity(intent);
 	}
+
 	private ImageView iv_back;
 	private ListView lv_members;
 	private GroupMemberAdapter groupMemberAdapter;
@@ -99,10 +101,10 @@ public class ActivityGroupMember extends BaseActivity
 
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
-	 
+
 				SVProgressHUD.dismiss(context);
 				if (resultCode != 1) {
-					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+					showShortToast(resultMessage);
 					return;
 				}
 				if (resultData.equals("null")) {

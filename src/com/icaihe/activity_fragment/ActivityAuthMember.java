@@ -48,12 +48,14 @@ public class ActivityAuthMember extends BaseActivity
 		initEvent();
 
 	}
+
 	@Override
 	public void toWarnActivity(boolean isBattery) {
 		Intent intent = ActivityWran.createIntent(context);
 		intent.putExtra("isBattery", isBattery ? 1 : 0);
 		toActivity(intent);
 	}
+
 	private ImageView iv_back;
 	private ListView lv_authors;
 	private AuthMemberAdapter authMemberAdapter;
@@ -112,12 +114,12 @@ public class ActivityAuthMember extends BaseActivity
 					public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 							String resultData) {
 						SVProgressHUD.dismiss(context);
-						
+
 						if (resultCode != 1) {
-							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+							showShortToast(resultMessage);
 							return;
 						}
-						
+
 						if (resultData.equals("null")) {
 							showShortToast("暂无授权记录");
 							return;

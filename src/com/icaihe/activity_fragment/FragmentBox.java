@@ -58,7 +58,7 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 		bt_open = (Button) findViewById(R.id.bt_open);
 		bt_auth = (Button) findViewById(R.id.bt_auth);
 		bt_config = (Button) findViewById(R.id.bt_config);
-		
+
 		ActivityMainTab.setTabMenu(2);
 	}
 
@@ -88,8 +88,8 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
 				SVProgressHUD.dismiss(context);
 				if (resultCode != 1) {
-					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
-					if(resultCode<0){
+					showShortToast(resultMessage);
+					if (resultCode < 0) {
 						PushSetUtil pushSetUtil = new PushSetUtil(context);
 						pushSetUtil.setAlias("null");
 						User user = DataManager.getInstance().getCurrentUser();
@@ -98,7 +98,7 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 					}
 					return;
 				}
-				
+
 				long id = JSON.parseObject(resultData).getLongValue("id");
 				String ichid = JSON.parseObject(resultData).getString("ichId");
 				String ibeaconId = JSON.parseObject(resultData).getString("ibeaconId");
@@ -165,6 +165,5 @@ public class FragmentBox extends BaseFragment implements OnClickListener, OnDial
 			break;
 		}
 	}
-
 
 }

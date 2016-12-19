@@ -2,85 +2,90 @@
     style="@style/activity_page"
     android:background="@color/gray_light" >
 
-    <LinearLayout style="@style/ll_vertical_match_match" >
-
-        <RelativeLayout style="@style/topbar_bg_golden" >
-
-            <ImageView
-                android:id="@+id/iv_back"
-                style="@style/topbar_return_img" />
-
-            <TextView
-                style="@style/topbar_title"
-                android:layout_centerHorizontal="true"
-                android:text="开启财盒" />
-
-            <TextView
-                style="@style/topbar_right_btn"
-                android:visibility="gone" />
-        </RelativeLayout>
-
-        <LinearLayout
-            style="@style/ll_vertical_match_match"
-            android:layout_height="60dp"
-            android:background="#F1C83B"
-            android:visibility="gone" >
-
-            <TextView
-                android:id="@+id/tv_open_tips"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_margin="10dp"
-                android:drawableLeft="@drawable/icon_info"
-                android:gravity="left|center"
-                android:text=" 请立即取出物件，并及时关闭保险箱。"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </LinearLayout>
+    <ScrollView
+        style="@style/ll_vertical_match_match"
+        android:layout_weight="1" >
 
         <LinearLayout style="@style/ll_vertical_match_match" >
 
-            <LinearLayout
-                style="@style/ll_vertical_match_wrap"
-                android:background="@drawable/my_head_bg"
-                android:gravity="center" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginTop="10dp"
-                    android:text="开启财盒需要开启WIFI网络和蓝牙权限哦！"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
+            <RelativeLayout style="@style/topbar_bg_golden" >
 
                 <ImageView
-                    android:id="@+id/iv_bt_scan"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:padding="10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/icon_bt" />
+                    android:id="@+id/iv_back"
+                    style="@style/topbar_return_img" />
 
                 <TextView
-                    android:id="@+id/tv_bt_tips"
-                    android:layout_width="match_parent"
-                   android:gravity="center"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="0dp"
-                    android:text="财盒信号检测中..."
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    style="@style/topbar_title"
+                    android:layout_centerHorizontal="true"
+                    android:text="开启财盒" />
+
+                <TextView
+                    style="@style/topbar_right_btn"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <LinearLayout
+                style="@style/ll_vertical_match_match"
+                android:layout_height="60dp"
+                android:background="#F1C83B"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/tv_open_tips"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="10dp"
+                    android:drawableLeft="@drawable/icon_info"
+                    android:gravity="left|center"
+                    android:text=" 请立即取出物件，并及时关闭保险箱。"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout style="@style/ll_vertical_match_match" >
 
-                <ListView
-                    android:id="@+id/lv_beacons"
-                    style="@style/lv_white" />
+                <LinearLayout
+                    style="@style/ll_vertical_match_wrap"
+                    android:background="@drawable/my_head_bg"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginTop="10dp"
+                        android:text="开启财盒需要开启WIFI网络和蓝牙权限哦！"
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
+
+                    <ImageView
+                        android:id="@+id/iv_bt_scan"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:padding="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/icon_bt" />
+
+                    <TextView
+                        android:id="@+id/tv_bt_tips"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="0dp"
+                        android:gravity="center"
+                        android:text="财盒信号检测中..."
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/ll_vertical_match_match" >
+
+                    <ListView
+                        android:id="@+id/lv_beacons"
+                        style="@style/lv_white" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

@@ -179,8 +179,9 @@ public class ActivityMap extends BaseActivity implements OnGetPoiSearchResultLis
 				// showShortToast(
 				// "名称是: " + dataList.get(checkPosition).name + " 地址是：" +
 				// dataList.get(checkPosition).address);
-				
-//				setResult(RESULT_OK, new Intent().putExtra(RESULT_BOX_BLE_STRING, device.getName()));
+
+				// setResult(RESULT_OK, new
+				// Intent().putExtra(RESULT_BOX_BLE_STRING, device.getName()));
 				finish();
 			}
 		});

@@ -77,7 +77,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 
 	private Button bt_add_box;
 
-	private String getICHIDString = "扫码获取ID\n自动搜索ID";
+	private String getICHIDString = "扫码获取ID\n自动检测ID";
 	private final String getICHID[] = getICHIDString.split("\n");
 	private ButtonOnClick buttonOnClick = new ButtonOnClick(1);
 
@@ -226,7 +226,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 								String resultData) {
 							if (resultCode != 1) {
-								showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+								showShortToast(resultMessage);
 								return;
 							}
 
@@ -267,7 +267,7 @@ public class FragmentAddBox extends BaseFragment implements OnClickListener, OnD
 						public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 								String resultData) {
 							if (resultCode != 1) {
-								showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+								showShortToast(resultMessage);
 								return;
 							}
 							long boxId = JSON.parseObject(resultData).getLongValue("boxId");

@@ -64,12 +64,14 @@ public class ActivityBoxBeacon extends BaseActivity
 		initData();
 		initEvent();
 	}
+
 	@Override
 	public void toWarnActivity(boolean isBattery) {
 		Intent intent = ActivityWran.createIntent(context);
 		intent.putExtra("isBattery", isBattery ? 1 : 0);
 		toActivity(intent);
 	}
+
 	/**
 	 * 连接开锁
 	 * START--------------------------------------------------------------------------------------------------------------------------------------
@@ -131,6 +133,7 @@ public class ActivityBoxBeacon extends BaseActivity
 			} else if (LOCKER.RR_GATT_IsDataWriteOver(action)) {
 				if (!isOpen) {
 					LOCKER.RR_GATT_Locker_on(true);
+					showShortToast("打开成功！");
 					openBox();
 					isOpen = true;
 				}
@@ -158,6 +161,7 @@ public class ActivityBoxBeacon extends BaseActivity
 		if (isBindService) {
 			unbindService(mServiceConnection);
 			LOCKER.RR_GATT_Reinit();
+			isBindService = false;
 		}
 	}
 
@@ -178,7 +182,7 @@ public class ActivityBoxBeacon extends BaseActivity
 							String resultData) {
 						if (resultCode != 1) {
 							shakeUseData(data);
-							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+							showShortToast(resultMessage);
 							return;
 						}
 
@@ -241,7 +245,7 @@ public class ActivityBoxBeacon extends BaseActivity
 						if (resultCode != 1) {
 							isOpen = false;
 							finish();
-							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+							showShortToast(resultMessage);
 							return;
 						}
 

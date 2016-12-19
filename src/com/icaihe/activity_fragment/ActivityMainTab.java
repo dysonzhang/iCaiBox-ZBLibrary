@@ -26,6 +26,7 @@ import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.ui.AlertDialog;
 import zuo.biao.library.ui.AlertDialog.OnDialogButtonClickListener;
+import zuo.biao.library.util.CommonUtil;
 import zuo.biao.library.util.SettingUtil;
 
 /**
@@ -166,6 +167,10 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 		super.onResume();
 		updateUserInfo();
 		showAlarmTips();
+
+		if (!CommonUtil.isNetWorkConnected(context)) {
+			this.showShortToast("您的手机当前网络不稳定或尚未联网，请检查。");
+		}
 	}
 
 	@Override
@@ -231,7 +236,7 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
 
 				if (resultCode != 1) {
-					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+					showShortToast(resultMessage);
 					if (resultCode < 0) {
 						PushSetUtil pushSetUtil = new PushSetUtil(context);
 						pushSetUtil.setAlias("null");
@@ -294,7 +299,7 @@ public class ActivityMainTab extends ActivityBaseBottomTab
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
 				if (resultCode != 1) {
-					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+					showShortToast(resultMessage);
 					if (resultCode < 0) {
 						PushSetUtil pushSetUtil = new PushSetUtil(context);
 						pushSetUtil.setAlias("null");

@@ -66,8 +66,8 @@ public class BoxBeaconView extends BaseView<BluetoothDevice> implements OnClickL
 			SVProgressHUD.showWithStatus(context, "开锁中...");
 			// 开锁服务绑定
 			Intent gattServiceIntent = new Intent(context, BluetoothLeService.class);
-			context.bindService(gattServiceIntent, ActivityBoxBeacon.mServiceConnection, Context.BIND_AUTO_CREATE);
-			ActivityBoxBeacon.isBindService = true;
+			ActivityBoxBeacon.isBindService = context.bindService(gattServiceIntent,
+					ActivityBoxBeacon.mServiceConnection, Context.BIND_AUTO_CREATE);
 			if (ActivityBoxBeacon.LOCKER.RR_GATT_ReturnLeService() != null) {
 				ActivityBoxBeacon.LOCKER.RR_GATT_Connect(Constant.mDeviceAddress);
 			}

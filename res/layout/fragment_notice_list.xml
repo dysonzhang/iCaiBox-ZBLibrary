@@ -58,7 +58,8 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="打 卡"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:visibility="gone" />
         </LinearLayout>
     </RelativeLayout>
 

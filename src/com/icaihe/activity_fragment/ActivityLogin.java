@@ -23,6 +23,7 @@ import android.widget.Button;
 import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
+import zuo.biao.library.util.CommonUtil;
 import zuo.biao.library.util.DataKeeper;
 import zuo.biao.library.util.Log;
 
@@ -80,6 +81,10 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 		et_code.setOnClickListener(this);
 		bt_get_code.setOnClickListener(this);
 		bt_login.setOnClickListener(this);
+
+		if (!CommonUtil.isNetWorkConnected(context)) {
+			this.showShortToast("您的手机当前网络不稳定或尚未联网，请检查。");
+		}
 	}
 
 	@Override
@@ -118,7 +123,7 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 						String resultData) {
 					SVProgressHUD.dismiss(context);
 					if (resultCode != 1) {
-						showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+						showShortToast(resultMessage);
 						return;
 					}
 					// 收到验证码后存储手机号码
@@ -159,7 +164,7 @@ public class ActivityLogin extends BaseActivity implements OnClickListener, OnLo
 						String resultData) {
 					SVProgressHUD.dismiss(context);
 					if (resultCode != 1) {
-						showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+						showShortToast(resultMessage);
 						return;
 					}
 					showShortToast("登录成功！");

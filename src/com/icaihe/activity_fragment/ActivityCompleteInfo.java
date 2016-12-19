@@ -1,6 +1,7 @@
 package com.icaihe.activity_fragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.icaihe.R;
@@ -11,6 +12,9 @@ import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,8 +30,8 @@ import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.ui.DatePickerWindow;
+import zuo.biao.library.util.Log;
 import zuo.biao.library.util.StringUtil;
-import zuo.biao.library.util.TimeUtil;
 
 /**
  * 完善个人信息界面
@@ -105,14 +110,39 @@ public class ActivityCompleteInfo extends BaseActivity
 			finish();
 			break;
 		case R.id.ib_chose_date:
-			toActivity(DatePickerWindow.createIntent(context, new int[] { 1971, 0, 1 },
-					TimeUtil.getDateDetail(System.currentTimeMillis())), REQUEST_TO_DATE_PICKER, false);
+			// toActivity(DatePickerWindow.createIntent(context, new int[] {
+			// 1971, 0, 1 },
+			// TimeUtil.getDateDetail(System.currentTimeMillis())),
+			// REQUEST_TO_DATE_PICKER, false);
+			showDatePickerDialog();
 			break;
 		case R.id.bt_add_group:
 			addGroup();
 			break;
 		default:
 			break;
+		}
+	}
+
+	public void showDatePickerDialog() {
+		DatePickerFragment datePicker = new DatePickerFragment();
+		datePicker.show(getFragmentManager(), "datePicker");
+	}
+
+	class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			final Calendar c = Calendar.getInstance();
+			int year = c.get(Calendar.YEAR);
+			int month = c.get(Calendar.MONTH);
+			int day = c.get(Calendar.DAY_OF_MONTH);
+			return new DatePickerDialog(getActivity(), this, year, month, day);
+		}
+
+		@Override
+		public void onDateSet(DatePicker view, int year, int month, int day) {
+			Log.d("OnDateSet", "select year:" + year + ";month:" + month + ";day:" + day);
+			et_add_date.setText(year + "-" + (month+1) + "-" + day);
 		}
 	}
 
@@ -159,6 +189,7 @@ public class ActivityCompleteInfo extends BaseActivity
 								User user = DataManager.getInstance().getCurrentUser();
 								DataManager.getInstance().removeUser(user);
 								startActivity(ActivityLogin.createIntent(context));
+								showShortToast(resultMessage);
 								return;
 							}
 							showShortToast("加入成功！");

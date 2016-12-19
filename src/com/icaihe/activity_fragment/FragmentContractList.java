@@ -57,9 +57,9 @@ public class FragmentContractList extends BaseHttpListFragment<Contract, Contrac
 	@Override
 	public void onResume() {
 		super.onResume();
-		SVProgressHUD.showWithStatus(context, "请稍候...");
+		// SVProgressHUD.showWithStatus(context, "请稍候...");
 		lvBaseList.onRefresh();
-		SVProgressHUD.dismiss(context);
+		// SVProgressHUD.dismiss(context);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class FragmentContractList extends BaseHttpListFragment<Contract, Contrac
 					public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 							String resultData) {
 						if (resultCode != 1) {
-							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+							showShortToast(resultMessage);
 							if (resultCode < 0) {
 								PushSetUtil pushSetUtil = new PushSetUtil(context);
 								pushSetUtil.setAlias("null");

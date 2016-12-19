@@ -1,6 +1,7 @@
 package com.icaihe.activity_fragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +15,9 @@ import com.icaihe.widget.ClearEditText;
 import com.ichihe.util.HttpRequest;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,13 +25,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import zuo.biao.library.base.BaseActivity;
 import zuo.biao.library.interfaces.OnBottomDragListener;
 import zuo.biao.library.manager.HttpManager.OnHttpResponseListener;
 import zuo.biao.library.ui.DatePickerWindow;
-import zuo.biao.library.util.TimeUtil;
+import zuo.biao.library.util.Log;
 
 /**
  * 财盒群创建界面
@@ -109,9 +114,9 @@ public class ActivityCreateGroup extends BaseActivity
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(location.length()>13){
-			et_company_location.setText(location.substring(0, 12)+"...");
-		}else{
+		if (location.length() > 13) {
+			et_company_location.setText(location.substring(0, 12) + "...");
+		} else {
 			et_company_location.setText(location);
 		}
 	}
@@ -129,8 +134,11 @@ public class ActivityCreateGroup extends BaseActivity
 			finish();
 			break;
 		case R.id.ib_chose_date:
-			toActivity(DatePickerWindow.createIntent(context, new int[] { 1971, 0, 1 },
-					TimeUtil.getDateDetail(System.currentTimeMillis())), REQUEST_TO_DATE_PICKER, false);
+			// toActivity(DatePickerWindow.createIntent(context, new int[] {
+			// 1971, 0, 1 },
+			// TimeUtil.getDateDetail(System.currentTimeMillis())),
+			// REQUEST_TO_DATE_PICKER, false);
+			showDatePickerDialog();
 			break;
 		case R.id.ib_chose_location:
 			startActivity(ActivityMap.createIntent(context));
@@ -141,6 +149,28 @@ public class ActivityCreateGroup extends BaseActivity
 			break;
 		default:
 			break;
+		}
+	}
+
+	public void showDatePickerDialog() {
+		DatePickerFragment datePicker = new DatePickerFragment();
+		datePicker.show(getFragmentManager(), "datePicker");
+	}
+
+	class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			final Calendar c = Calendar.getInstance();
+			int year = c.get(Calendar.YEAR);
+			int month = c.get(Calendar.MONTH);
+			int day = c.get(Calendar.DAY_OF_MONTH);
+			return new DatePickerDialog(getActivity(), this, year, month, day);
+		}
+
+		@Override
+		public void onDateSet(DatePicker view, int year, int month, int day) {
+			Log.d("OnDateSet", "select year:" + year + ";month:" + month + ";day:" + day);
+			et_company_date.setText(year + "-" + (month+1) + "-" + day);
 		}
 	}
 
@@ -173,6 +203,7 @@ public class ActivityCreateGroup extends BaseActivity
 								User user = DataManager.getInstance().getCurrentUser();
 								DataManager.getInstance().removeUser(user);
 								startActivity(ActivityLogin.createIntent(context));
+								showShortToast(resultMessage);
 								return;
 							}
 							showShortToast("创建成功！");

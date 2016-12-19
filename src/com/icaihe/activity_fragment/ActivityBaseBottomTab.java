@@ -118,19 +118,19 @@ public abstract class ActivityBaseBottomTab extends BaseActivity {
 
 		// 用全局的fragmentTransaction因为already committed 崩溃
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		
-//		fragmentTransaction.hide(fragments[currentPosition]);
-//		if (fragments[position].isAdded() == false) {
-//			fragmentTransaction.add(R.id.flBottomTabFragmentContainer, fragments[position]);
-//		}
-//		fragmentTransaction.show(fragments[position]).commit();
-		
-		 if (fragments[position].isAdded() == false) {
-		 fragmentTransaction.replace(R.id.flBottomTabFragmentContainer,
-		 fragments[position]);
-		 }
-		 fragmentTransaction.addToBackStack(null);
-		 fragmentTransaction.commit();
+
+		// fragmentTransaction.hide(fragments[currentPosition]);
+		// if (fragments[position].isAdded() == false) {
+		// fragmentTransaction.add(R.id.flBottomTabFragmentContainer,
+		// fragments[position]);
+		// }
+		// fragmentTransaction.show(fragments[position]).commit();
+
+		if (fragments[position].isAdded() == false) {
+			fragmentTransaction.replace(R.id.flBottomTabFragmentContainer, fragments[position]);
+		}
+		fragmentTransaction.addToBackStack(null);
+		fragmentTransaction.commit();
 
 		this.currentPosition = position;
 	};

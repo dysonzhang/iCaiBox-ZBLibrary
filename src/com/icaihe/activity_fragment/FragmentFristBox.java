@@ -68,7 +68,7 @@ public class FragmentFristBox extends BaseFragment implements OnClickListener, O
 		bt_box_config.setOnClickListener(this);
 		bt_box_buy.setOnClickListener(this);
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -79,7 +79,7 @@ public class FragmentFristBox extends BaseFragment implements OnClickListener, O
 			replaceToBoxFragment();
 		}
 	}
-	
+
 	/**
 	 * 替换为BoxFragment
 	 */
@@ -90,7 +90,7 @@ public class FragmentFristBox extends BaseFragment implements OnClickListener, O
 		trasection.addToBackStack(null);
 		trasection.commit();
 	}
-	
+
 	@Override
 	public void onDialogButtonClick(int requestCode, boolean isPositive) {
 		if (!isPositive) {

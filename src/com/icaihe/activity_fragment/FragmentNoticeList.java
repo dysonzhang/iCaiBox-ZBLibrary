@@ -64,9 +64,9 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 	@Override
 	public void onResume() {
 		super.onResume();
-		SVProgressHUD.showWithStatus(context, "请稍候...");
+		// SVProgressHUD.showWithStatus(context, "请稍候...");
 		lvBaseList.onRefresh();
-		SVProgressHUD.dismiss(context);
+		// SVProgressHUD.dismiss(context);
 	}
 
 	private ImageView iv_head_user;
@@ -127,7 +127,7 @@ public class FragmentNoticeList extends BaseHttpListFragment<Notice, NoticeAdapt
 			@Override
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
 				if (resultCode != 1) {
-					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+					showShortToast(resultMessage);
 					if (resultCode < 0) {
 						PushSetUtil pushSetUtil = new PushSetUtil(context);
 						pushSetUtil.setAlias("null");

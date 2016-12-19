@@ -56,7 +56,7 @@ public class FragmentMySetting extends BaseFragment implements OnClickListener, 
 		tv_user_phone = (TextView) findViewById(R.id.tv_user_phone);
 		tv_version = (TextView) findViewById(R.id.tv_version);
 		bt_logout = (Button) findViewById(R.id.bt_logout);
-		
+
 		ActivityMainTab.setTabMenu(0);
 	}
 
@@ -125,7 +125,7 @@ public class FragmentMySetting extends BaseFragment implements OnClickListener, 
 			CommonUtil.openWebSite(context, Constant.APP_WEBSITE_HELP_CENTER);
 			break;
 		case R.id.ll_feedback:
-			 toActivity(ActivityFeedback.createIntent(context));
+			toActivity(ActivityFeedback.createIntent(context));
 			break;
 		case R.id.ll_about:
 			CommonUtil.openWebSite(context, Constant.APP_WEBSITE_ABOUT);

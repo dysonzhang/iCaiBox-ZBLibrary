@@ -167,12 +167,12 @@ public class ActivitySerachGroup extends BaseActivity
 				group.setGroupName(groupName);
 				groupList.add(group);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			showShortToast("搜索财盒群数据转换异常！");
 		}
-		
+
 		return groupList;
 	}
 
@@ -189,7 +189,7 @@ public class ActivitySerachGroup extends BaseActivity
 			public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage, String resultData) {
 				SVProgressHUD.dismiss(context);
 				if (resultCode != 1) {
-					showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+					showShortToast(resultMessage);
 					return;
 				}
 				if (resultData.equals("null")) {

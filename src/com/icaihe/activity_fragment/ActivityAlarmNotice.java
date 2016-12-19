@@ -47,16 +47,18 @@ public class ActivityAlarmNotice extends BaseHttpListActivity<AlarmNotice, Alarm
 		initData();
 		initEvent();
 
-		SVProgressHUD.showWithStatus(context, "请稍候...");
+		// SVProgressHUD.showWithStatus(context, "请稍候...");
 		lvBaseList.onRefresh();
-		SVProgressHUD.dismiss(context);
+		// SVProgressHUD.dismiss(context);
 	}
+
 	@Override
 	public void toWarnActivity(boolean isBattery) {
 		Intent intent = ActivityWran.createIntent(context);
 		intent.putExtra("isBattery", isBattery ? 1 : 0);
 		toActivity(intent);
 	}
+
 	private ImageView iv_back;
 
 	@Override
@@ -133,7 +135,7 @@ public class ActivityAlarmNotice extends BaseHttpListActivity<AlarmNotice, Alarm
 					public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 							String resultData) {
 						if (resultCode != 1) {
-							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+							showShortToast(resultMessage);
 							return;
 						}
 						setOnHttpRequestSuccess(requestCode, resultCode, resultMessage, resultData);

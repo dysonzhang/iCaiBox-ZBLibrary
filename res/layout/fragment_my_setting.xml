@@ -25,21 +25,21 @@
                 <TextView
                     android:id="@+id/tv_user_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:text=""
                     android:textColor="@color/white"
-                    android:textSize="20dp" />
+                    android:textSize="18dp" />
 
                 <TextView
                     android:id="@+id/tv_user_phone"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
                     android:text=""
                     android:textColor="@color/white"
-                    android:textSize="20dp" />
+                    android:textSize="18dp" />
             </LinearLayout>
 
             <View

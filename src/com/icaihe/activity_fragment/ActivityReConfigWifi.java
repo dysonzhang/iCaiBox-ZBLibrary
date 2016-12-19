@@ -53,12 +53,14 @@ public class ActivityReConfigWifi extends BaseActivity
 		initData();
 		initEvent();
 	}
+
 	@Override
 	public void toWarnActivity(boolean isBattery) {
 		Intent intent = ActivityWran.createIntent(context);
 		intent.putExtra("isBattery", isBattery ? 1 : 0);
 		toActivity(intent);
 	}
+
 	private EspWifiAdmin mWifiAdmin;
 
 	private ImageView iv_back;
@@ -136,7 +138,7 @@ public class ActivityReConfigWifi extends BaseActivity
 
 	private void boxWifiConfigSuccess() {
 		showShortToast("恭喜您！财盒网络配置成功！");
-		
+
 		final User user = DataManager.getInstance().getCurrentUser();
 		long boxId = user.getBoxId();
 		final String wifiId = et_wifi_ssid.getText().toString();
@@ -147,7 +149,7 @@ public class ActivityReConfigWifi extends BaseActivity
 					public void onHttpRequestSuccess(int requestCode, int resultCode, String resultMessage,
 							String resultData) {
 						if (resultCode != 1) {
-							showShortToast("requestCode->" + requestCode + " resultMessage->" + resultMessage);
+							showShortToast(resultMessage);
 							return;
 						}
 						user.setWifiId(wifiId);
@@ -278,7 +280,7 @@ public class ActivityReConfigWifi extends BaseActivity
 					mProgressDialog.setMessage(sb.toString());
 
 					boxWifiConfigSuccess();
-					
+
 				} else {
 					mProgressDialog.setMessage("很抱歉！财盒网络配置失败，请检查您输入的WIFI密码是否正确后重试。");
 				}
